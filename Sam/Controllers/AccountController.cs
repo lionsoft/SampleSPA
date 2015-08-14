@@ -6,7 +6,6 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.ModelBinding;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -52,7 +51,7 @@ namespace Sam.Controllers
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
 
         // GET api/Account/UserInfo
-        [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
+//        [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         [Route("UserInfo")]
         public UserInfoViewModel GetUserInfo()
         {
@@ -328,7 +327,7 @@ namespace Sam.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 
@@ -338,6 +337,58 @@ namespace Sam.Controllers
             }
 
             return Ok();
+        }
+
+        // POST api/Account/Register
+        [AllowAnonymous]
+        [Route("Login")]
+        public async Task<IHttpActionResult> Login(LoginBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
+
+            var user = await UserManager.FindAsync(model.Email, model.Password);
+
+            if (user == null)
+            {
+                return GetErrorResult(new IdentityResult("The user name or password is incorrect."));
+            }
+
+            var oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager, OAuthDefaults.AuthenticationType);
+            var cookiesIdentity = await user.GenerateUserIdentityAsync(UserManager, CookieAuthenticationDefaults.AuthenticationType);
+            var properties = ApplicationOAuthProvider.CreateProperties(user.UserName);
+            var ticket = new AuthenticationTicket(oAuthIdentity, properties);
+            Authentication.SignIn(cookiesIdentity);
+            return Ok();
+            //context.Validated(ticket);
+            //context.Request.Context.Authentication.SignIn(cookiesIdentity);
+/*
+
+            
+            
+            var user = await UserManager.FindByEmailAsync(model.Email);
+
+            if (user == null || !(await UserManager.CheckPasswordAsync(user, model.Password)))
+            {
+                return GetErrorResult(new IdentityResult("Invalid user login or password."));
+            }
+            var oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager, OAuthDefaults.AuthenticationType);
+            var cookieIdentity = await user.GenerateUserIdentityAsync(UserManager, CookieAuthenticationDefaults.AuthenticationType);
+            var properties = ApplicationOAuthProvider.CreateProperties(user.UserName);
+            try
+            {
+                Authentication.SignIn(properties, oAuthIdentity, cookieIdentity);
+            }
+            catch (Exception e)
+            {
+                return GetErrorResult(new IdentityResult(e.Message));
+            }
+            return Ok();
+*/
         }
 
         // POST api/Account/RegisterExternal
@@ -357,7 +408,7 @@ namespace Sam.Controllers
                 return InternalServerError();
             }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
 
             IdentityResult result = await UserManager.CreateAsync(user);
             if (!result.Succeeded)
@@ -390,6 +441,20 @@ namespace Sam.Controllers
         {
             get { return Request.GetOwinContext().Authentication; }
         }
+
+/*
+        private SignInManager SignInManager
+        {
+            get
+            {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            }
+            private set
+            {
+                _signInManager = value;
+            }
+        }
+*/
 
         private IHttpActionResult GetErrorResult(IdentityResult result)
         {
