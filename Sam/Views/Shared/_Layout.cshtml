@@ -12,6 +12,7 @@
     <title data-ng-bind="title">Hot Towel Angular</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
     <script>
         // Must be first. IE10 mobile viewport fix
@@ -23,61 +24,42 @@
         }
     </script>
 
-    <link href="content/ie10mobile.css" rel="stylesheet" />
-    <link href="content/bootstrap.min.css" rel="stylesheet" />
-    <link href="content/font-awesome.min.css" rel="stylesheet" />
-    <link href="content/toastr.css" rel="stylesheet" />
-    <link href="content/customtheme.css" rel="stylesheet">
-    <link href="content/styles.css" rel="stylesheet" />
+    <!--[if lte IE 8]>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/json3/3.2.6/json3.min.js"></script>
+        <script>
+            document.createElement('ng-include');
+            document.createElement('ng-pluralize');
+            document.createElement('ng-view');
+
+            // Optionally these for CSS
+            document.createElement('ng:include');
+            document.createElement('ng:pluralize');
+            document.createElement('ng:view');
+        </script>
+    <![endif]-->
+
+    @Styles.Render("~/Content/css")
+
 </head>
 <body>
 
     @RenderBody()
 
+    @Styles.Render("~/app/css")
+
+
     <!-- Vendor Scripts -->
-    <script src="scripts/jquery-2.1.4.js"></script>
-    <script src="scripts/angular.js"></script>
-    <script src="scripts/angular-animate.js"></script>
-    <script src="scripts/angular-route.js"></script>
-    <script src="scripts/angular-sanitize.js"></script>
-    <script src="scripts/bootstrap.js"></script>
-    <script src="scripts/toastr.js"></script>
-    <script src="scripts/moment.js"></script>
-    <script src="scripts/ui-bootstrap-tpls-0.10.0.js"></script>
-    <script src="scripts/spin.js"></script>
+    @Scripts.Render("~/bundles/vendor")
 
-    <!-- Bootstrapping -->
-    <script src="app/app.js"></script>
-    <script src="app/config.js"></script>
-    <script src="app/config.exceptionHandler.js"></script>
-    <script src="app/config.route.js"></script>
+    @Scripts.Render("~/bundles/app")
 
-    <!-- common Modules -->
-    <script src="app/common/common.js"></script>
-    <script src="app/common/commonConfig.js"></script>
-    <script src="app/common/logger.js"></script>
-    <script src="app/common/spinner.js"></script>
+    @Scripts.Render("~/bundles/app/common")
 
-    <!-- common.bootstrap Modules -->
-    <script src="app/common/bootstrap/bootstrap.dialog.js"></script>
+    @Scripts.Render("~/bundles/app/views")
 
-    <!-- app -->
-    <script src="app/admin/admin.js"></script>
-    <script src="app/dashboard/dashboard.js"></script>
-    <script src="app/layout/shell.js"></script>
-    <script src="app/layout/sidebar.js"></script>
+    @Scripts.Render("~/bundles/app/directives")
 
-    <!-- app Directives -->
-    <script src="app/directives/cc-img-person.js"></script>
-    <script src="app/directives/cc-menu-item-rendered.js"></script>
-    <script src="app/directives/cc-scroll-to-top.js"></script>
-    <script src="app/directives/cc-sidebar.js"></script>
-    <script src="app/directives/cc-spinner.js"></script>
-    <script src="app/directives/cc-widget-close.js"></script>
-    <script src="app/directives/cc-widget-header.js"></script>
-    <script src="app/directives/cc-widget-minimize.js"></script>
-    
-    <!-- app Services -->
-    <script src="app/services/datacontext.js"></script>
+    @Scripts.Render("~/bundles/app/services")
+
 </body>
 </html>
