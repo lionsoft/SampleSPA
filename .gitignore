@@ -3,8 +3,7 @@
 
 /sam/app/**/*.js
 *.map
-!/sam/app/common/LionSoft.Js/js.net/*.js
-!/sam/app/common/LionSoft.Js/LionSoft.Js-0.1.1.ts
+!/sam/app/common/LionSoftJs/js.net/*.js
 !/sam/Scripts/*.js.map
 !/sam/Scripts/*.min.js.map
 
