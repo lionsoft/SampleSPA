@@ -19,7 +19,7 @@ module App.Controllers {
         }
 
         //#region private methods
-        activated() {
+        Activated() {
             this.log('Activated Admin View');
             this.Test1 = ['1111111111', '22222222222222', '333333333333333'];
 /*

@@ -15,11 +15,13 @@ module App {
         /**
          * Ссылка на сервис-переводчик
          */
-        $translate: angular.translate.ITranslateService;
+        $translate: ng.translate.ITranslateService;
 
         $filter: ng.IFilterService;
 
-        $route: angular.route.IRouteService;
+        $route: ng.route.IRouteService;
+
+        $location: ng.ILocationService;
 
         $routeParams: any;
 
@@ -30,10 +32,11 @@ module App {
          */
         protected static addFactoryInjections(injects: string[]) {
             LionSoftAngular.Controller.addFactoryInjections(injects);
-            this.addInjection(injects, "common", "$scope", "$route", "$routeParams", "$translate", "$filter");
+            this.addInjection(injects, "common", "$scope", "$route", "$routeParams", "$translate", "$filter", "$location");
         }
 
 
+        // ReSharper disable once InconsistentNaming
         init(callInit: boolean) {
             this.loading = true;
             this.title = this.$route.current['title'];
@@ -64,14 +67,14 @@ module App {
         protected activate(...promises: Array<ng.IPromise<any>>): ng.IPromise<any> {
             this._activateCalled = true;
             return this.common.activateController(promises, this.ngName)
-                .then(() => this.activated())
+                .then(() => this.Activated())
                 .finally(() => this.loading = false);
         }
 
         /**
          * Вызывается когда контроллер проинициализирован.
          */
-        activated() {
+        Activated() {
 
         }
     }

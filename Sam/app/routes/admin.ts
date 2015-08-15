@@ -6,7 +6,7 @@ module App {
             name: 'admin',
             title: 'АДМИН',
             url: '/admin',
-//            auth: true,
+            auth: true,
             templateUrl: '/app/views/admin/admin.html', // this is default value
             settings: {
                 nav: 2,

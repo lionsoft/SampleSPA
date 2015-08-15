@@ -1,5 +1,5 @@
 ﻿/// <reference path="common/commonconfig.ts" />
-module App{
+module App {
     'use strict';
     import shared = App.Shared;
 
@@ -17,8 +17,6 @@ module App{
         imageSettings: { imageBasePath: string, unknownPersonImageSource: string }
     }
 
-    var app = angular.module('app');
- 
     // Configure Toastr
     toastr.options.timeOut = 4000;
     toastr.options.positionClass = 'toast-bottom-right';
@@ -54,6 +52,22 @@ module App{
         cfg.config.spinnerToggleEvent = config.events.spinnerToggle;
     }]);
     //#endregion
+
+    //#region Configure CORS for $http provider
+    app.config(['$httpProvider', $httpProvider => {
+        $httpProvider.defaults.useXDomain = true;
+        delete $httpProvider.defaults.headers.common['X-Requested-With'];
+    }]);
+    //#endregion
+
+    LionSoftAngular.Services.app = app;
+
+    //#region - Настройка общедоступных сервисов API -
+    app.run(['ApiService', (api) => {
+        app.api = api;
+    }]);    
+    //#endregion
+
 }
 
  

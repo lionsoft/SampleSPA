@@ -1,10 +1,26 @@
+'use strict';
+
+// ReSharper disable InconsistentNaming
 module App {
 
     export interface IApiService {
-        
+
+        Account: IAccountApi;
+    }
+
+    export interface IAccountApi {
+        Register(login: string, password: string): ng.IPromise<IUser>;
+        Login(login: string, password: string, rememberMe?: boolean): ng.IPromise<IUser>;
+        Logout(): ng.IPromise<void>;
     }
 
     export class ApiService extends ApiServiceBase implements IApiService {
+
+        Account: IAccountApi = {
+            Register: <any>{ method: "POST", route: "Register", params: { Login: null, Password: null } },
+            Login: <any>{ method: "POST", route: "Login", params: { Login: null, Password: null, RememberMe: null } },
+            Logout: <any>{ method: "POST", route: "Logout" }
+        };
 /*
         Users: IUsersApi = {
             HashPassword: <any>{ method: "POST", route: "HashPassword", cache: true },

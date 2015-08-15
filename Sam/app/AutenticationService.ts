@@ -1,9 +1,12 @@
 ﻿'use strict';
 
+// ReSharper disable InconsistentNaming
 module App {
 
     export interface IUser {
         Id: string;
+        Login: string;
+        Name: string;
     }
 
     export interface IAutenticationService {
@@ -13,6 +16,10 @@ module App {
         LoggedUser: IUser;
 
         LoggedUserId: string;
+
+        Login(login: string, password: string, rememberMe: boolean): ng.IPromise<void>;
+
+        Logout(): ng.IPromise<void>;
     }
 
     class AutenticationService implements IAutenticationService {
@@ -26,11 +33,21 @@ module App {
             $rootScope.$auth = this;
         }
 
-        public get IsLoggedIn(): boolean { return !!this.LoggedUser; }
+        get IsLoggedIn(): boolean { return !!this.LoggedUser; }
 
-        public LoggedUser: IUser;
+        LoggedUser: IUser;
 
-        public get LoggedUserId() { return this.LoggedUser ? this.LoggedUser.Id : undefined; }
+        get LoggedUserId() { return this.LoggedUser ? this.LoggedUser.Id : undefined; }
+
+        Login(login: string, password: string, rememberMe: boolean): ng.IPromise<void> {
+            return <any>app.api.Account.Login(login, password, rememberMe).then(user => this.LoggedUser = user);
+        }
+
+        Logout(): ng.IPromise<void> {
+            return app.api.Account.Logout().then(() => this.LoggedUser = undefined);
+        }
+
+
     }
 
     App.Shared.commonModule.service('$auth', AutenticationService);

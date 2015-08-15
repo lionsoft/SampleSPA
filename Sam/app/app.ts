@@ -1,14 +1,16 @@
 ﻿'use strict';
 
-interface IApp extends ng.IModule {
-    $auth?: App.IAutenticationService;
+/**
+ * Интерфейс нашего приложения
+ */
+interface IApp extends ng.IModule, LionSoftAngular.INgObject {
+    api: App.IApiService;
+    $auth: App.IAutenticationService;
 }
-
-var app: IApp;
 
 module App {
 
-    export var app: IApp = angular.module('app', [
+    export var app: IApp = <IApp>angular.module('app', [
         // Angular modules 
         'ngAnimate',               // animations
         'ngRoute',                 // routing
@@ -33,10 +35,12 @@ module App {
         "oc.lazyLoad"
     ]);
 
-    window['app'] = app;
-    
     // Handle routing errors and success events
-    app.run(['$route',  function ($route) {
-            // Include $route to kick start the router.
-    }]);        
+    app.run(['$route', function ($route) {
+        // Include $route to kick start the router.
+    }]);
 }
+
+var app: IApp = App.app;
+
+

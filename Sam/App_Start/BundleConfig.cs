@@ -85,9 +85,9 @@ namespace Sam
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/LionSoftJs")
-                .IncludeDirectory("~/app/common/LionSoft.Js/js.net", "*.js")
+                .IncludeDirectory("~/app/common/LionSoftJs/js.net", "*.js")
                 .Include(
-                    "~/app/common/LionSoft.Js/LionSoft.Js-{version}.js"
+                    "~/app/common/LionSoftJs/LionSoftJs-{version}.js"
                 )
             );
             bundles.Add(new ScriptBundle("~/bundles/LionSoftAngular").Include(
@@ -120,6 +120,7 @@ namespace Sam
                       "~/app/routes.js"
                     , "~/app/routes/dashboard.js"
                     , "~/app/routes/admin.js"
+                    , "~/app/routes/login.js"
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/app/common").Include(
@@ -156,7 +157,7 @@ namespace Sam
 
             bundles.Add(new ScriptBundle("~/bundles/app/services").Include(
                   "~/app/services/ApiServiceBase.js"
-                , "~/app/services/ApiServiceBase.js"
+                , "~/app/services/ApiService.js"
                 , "~/app/services/datacontext.js"
             ));
         }

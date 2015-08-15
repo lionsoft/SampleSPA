@@ -5,17 +5,17 @@ module App.URL {
     /**
     * Базовый адрес внутреннего WebAPI приложения
     */
-    export var API: string = "/api";
+    export const API: string = "/api";
 
     /**
      * Базовый адрес приложения
      */
-    export var APP_ROOT = '/app/';
+    export const APP_ROOT = '/app/';
 
     /**
      * Базовый адрес размещения всех директив
      */
-    export var DIRECTIVES_ROOT = APP_ROOT + 'directives/';
+    export const DIRECTIVES_ROOT = APP_ROOT + 'directives/';
 };
 
  

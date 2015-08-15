@@ -1,14 +1,41 @@
+'use strict';
+
+// ReSharper disable InconsistentNaming
 module App {
 
+    /**
+     * Описание нашего базового интерфейса CRUD-контроллера ресурсов
+     */
+    export interface IResourceClass<T> {
+        query?(params?: Object): ng.IPromise<ng.resource.IResourceArray<T>>;
+
+        //select(): ng.IPromise<ng.resource.IResourceArray<T>>;
+
+        get?(id): ng.IPromise<T>;
+
+        /*
+                save(data: T): ng.IPromise<T>;
+                save(params: Object, data: T): ng.IPromise<T>;
+        */
+        create?(data: T): ng.IPromise<T>;
+        update?(data: T): ng.IPromise<T>;
+
+        delete?(id): ng.IPromise<boolean>;
+    }
+
     export class ApiServiceBase extends LionSoftAngular.Service {
+
         /**
-         * Обрабатывает ошибку, возникшую при вызове методов сервиса.
+         * Выделяет ошибку из ответа серевера, возникшую при вызове методов сервиса.
          */
-        HandleError(err: any): void {
+        static ExctractError(err: any): string {
             var error = (err || "Fatal error").toString();
-            if (typeof err.data == "object") {
-                error = (err.data.ExceptionMessage == undefined) ? err.data.Message : err.data.ExceptionMessage;
-                if (!error && err.data.result && typeof err.data.result == "object") {
+            if (typeof err.data === "object") {
+                if (typeof err.data.ModelState === "object")
+                    error = err.data.ModelState[""];
+                else
+                    error = (err.data.ExceptionMessage == undefined) ? err.data.Message : err.data.ExceptionMessage;
+                if (!error && err.data.result && typeof err.data.result === "object") {
                     error = (err.data.result.ExceptionMessage == undefined) ? err.data.result.Message : err.data.result.ExceptionMessage;
                 }
             }
@@ -17,7 +44,15 @@ module App {
             }
             else if (err.data != undefined) {
                 error = err.data.toString().substr(0, 100);
-            }                                                                       
+            }
+            return error;
+        }
+
+        /**
+         * Обрабатывает ошибку, возникшую при вызове методов сервиса.
+         */
+        static HandleError(err: any): void {
+            var error = this.ExctractError(err);
             //alert(error);
             LionSoftAngular.Services.PopupService.error(error);
         }
@@ -60,7 +95,7 @@ module App {
 
             })
             .catch(reason=> {
-                this.HandleError(reason);
+                //this.HandleError(reason);
                 newRes.reject(reason);
             })
             ;

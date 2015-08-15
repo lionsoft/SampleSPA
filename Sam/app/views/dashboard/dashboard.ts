@@ -24,7 +24,7 @@ module App.Controllers
             this.activate(this.getMessageCount(), this.getPeople());
         }
 
-        activated() {
+        Activated() {
             this.log('Activated Dashboard View');
         }
 

@@ -88,7 +88,7 @@ module App {
                     evt.preventDefault();
                     $rootScope.$broadcast(config.events.controllerActivateSuccess);
                 } else {
-                    $location.path("/login/{0}".format(encodeURIComponent("/#" + $location.path())));
+                    $location.path("/login/{0}".format(encodeURIComponent($location.path())));
                 }
             }
         });

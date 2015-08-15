@@ -235,7 +235,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Api\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -250,11 +250,11 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app\common\LionSoft.Js\js.net\js.net.array.js" />
-    <Content Include="app\common\LionSoft.Js\js.net\js.net.md5.js" />
-    <Content Include="app\common\LionSoft.Js\js.net\js.net.path.js" />
-    <Content Include="app\common\LionSoft.Js\js.net\js.net.string.js" />
-    <Content Include="app\common\LionSoft.Js\js.net\string.format-1.0.js" />
+    <Content Include="app\common\LionSoftJs\js.net\js.net.array.js" />
+    <Content Include="app\common\LionSoftJs\js.net\js.net.md5.js" />
+    <Content Include="app\common\LionSoftJs\js.net\js.net.path.js" />
+    <Content Include="app\common\LionSoftJs\js.net\js.net.string.js" />
+    <Content Include="app\common\LionSoftJs\js.net\string.format-1.0.js" />
     <Content Include="app\views\admin\admin.html" />
     <Content Include="app\common\LionSoft.Angular\html\ng-dialog.html" />
     <Content Include="app\common\LionSoft.Angular\html\ng-prompt-dialog.html" />
@@ -265,6 +265,8 @@
     <Content Include="app\images\background.jpg" />
     <Content Include="app\images\ic_settings_white.png" />
     <Content Include="app\images\logo.png" />
+    <Content Include="app\views\login\login.css" />
+    <Content Include="app\views\login\login.html" />
     <Content Include="Content\angular-ui.css" />
     <Content Include="Content\angular-ui.min.css" />
     <Content Include="Content\breeze.directives.css" />
@@ -1206,7 +1208,7 @@
     <Content Include="Scripts\version.json" />
     <TypeScriptCompile Include="app\common\Controller.ts" />
     <TypeScriptCompile Include="app\common\Directive.ts" />
-    <TypeScriptCompile Include="app\common\LionSoft.Js\LionSoft.Js-0.1.1.ts" />
+    <TypeScriptCompile Include="app\common\LionSoftJs\LionSoftJs-0.1.1.ts" />
     <TypeScriptCompile Include="app\common\Service.ts" />
     <TypeScriptCompile Include="app\common\TemplatedDirective.ts" />
     <TypeScriptCompile Include="app\common\utils\Color.ts" />
@@ -1389,6 +1391,7 @@
     <Content Include="Content\DataTables\css\dataTables.responsive.scss" />
     <Content Include="Content\DataTables\css\dataTables.jqueryui.scss" />
     <Content Include="app\views\dashboard\dashboard.css" />
+    <Content Include="app\web.config" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
@@ -1428,7 +1431,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Api\" />
     <Folder Include="app\common\LionSoft.Angular\css\" />
     <Folder Include="app\css\" />
     <Folder Include="App_Data\" />
@@ -1474,6 +1476,7 @@
     <TypeScriptCompile Include="app\routes\dashboard.ts" />
     <TypeScriptCompile Include="app\routes\login.ts" />
     <TypeScriptCompile Include="app\services\datacontext.ts" />
+    <TypeScriptCompile Include="app\views\login\login.ts" />
     <TypeScriptCompile Include="Scripts\linq.array.d.ts" />
     <TypeScriptCompile Include="Scripts\linq.d.ts" />
     <TypeScriptCompile Include="Scripts\linq.jquery.d.ts" />

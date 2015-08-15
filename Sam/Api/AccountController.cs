@@ -50,8 +50,58 @@ namespace Sam.Controllers
 
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
 
+        // POST api/Account/Register
+        [AllowAnonymous]
+        [Route("Register")]
+        public async Task<IHttpActionResult> Register(RegisterBindingModel model)
+        {
+            var user = new ApplicationUser { UserName = model.Login, Email = model.Login };
+
+            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+
+            if (!result.Succeeded)
+            {
+                return GetErrorResult(result);
+            }
+
+            return Ok(new { Id = user.Id, Login = user.UserName, Name = user.UserName });
+        }
+
+        // POST api/Account/Register
+        [AllowAnonymous]
+        [Route("Login")]
+        public async Task<IHttpActionResult> Login(LoginBindingModel model)
+        {
+            Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
+
+            var user = await UserManager.FindAsync(model.Login, model.Password);
+
+            if (user == null)
+            {
+                return GetErrorResult(new IdentityResult("The user name or password is incorrect."));
+            }
+
+            var oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager, OAuthDefaults.AuthenticationType);
+            var cookieIdentity = await user.GenerateUserIdentityAsync(UserManager, CookieAuthenticationDefaults.AuthenticationType);
+            var properties = ApplicationOAuthProvider.CreateProperties(user.UserName);
+            properties.IsPersistent = model.RememberMe;
+            Authentication.SignIn(properties, oAuthIdentity, cookieIdentity);
+
+            return Ok(new { Id = user.Id, Login = user.UserName, Name = user.UserName });
+        }
+
+        // GET api/Account/Logout
+        [Route("Logout")]
+        [HttpGet, HttpPost]
+        public IHttpActionResult Logout()
+        {
+            Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
+            return Ok();
+        }
+
+
         // GET api/Account/UserInfo
-//        [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
+        [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         [Route("UserInfo")]
         public UserInfoViewModel GetUserInfo()
         {
@@ -63,14 +113,6 @@ namespace Sam.Controllers
                 HasRegistered = externalLogin == null,
                 LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
             };
-        }
-
-        // POST api/Account/Logout
-        [Route("Logout")]
-        public IHttpActionResult Logout()
-        {
-            Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
-            return Ok();
         }
 
         // GET api/Account/ManageInfo?returnUrl=%2F&generateState=true
@@ -317,79 +359,6 @@ namespace Sam.Controllers
             return logins;
         }
 
-        // POST api/Account/Register
-        [AllowAnonymous]
-        [Route("Register")]
-        public async Task<IHttpActionResult> Register(RegisterBindingModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-
-            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
-
-            return Ok();
-        }
-
-        // POST api/Account/Register
-        [AllowAnonymous]
-        [Route("Login")]
-        public async Task<IHttpActionResult> Login(LoginBindingModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
-
-            var user = await UserManager.FindAsync(model.Email, model.Password);
-
-            if (user == null)
-            {
-                return GetErrorResult(new IdentityResult("The user name or password is incorrect."));
-            }
-
-            var oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager, OAuthDefaults.AuthenticationType);
-            var cookiesIdentity = await user.GenerateUserIdentityAsync(UserManager, CookieAuthenticationDefaults.AuthenticationType);
-            var properties = ApplicationOAuthProvider.CreateProperties(user.UserName);
-            var ticket = new AuthenticationTicket(oAuthIdentity, properties);
-            Authentication.SignIn(cookiesIdentity);
-            return Ok();
-            //context.Validated(ticket);
-            //context.Request.Context.Authentication.SignIn(cookiesIdentity);
-/*
-
-            
-            
-            var user = await UserManager.FindByEmailAsync(model.Email);
-
-            if (user == null || !(await UserManager.CheckPasswordAsync(user, model.Password)))
-            {
-                return GetErrorResult(new IdentityResult("Invalid user login or password."));
-            }
-            var oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager, OAuthDefaults.AuthenticationType);
-            var cookieIdentity = await user.GenerateUserIdentityAsync(UserManager, CookieAuthenticationDefaults.AuthenticationType);
-            var properties = ApplicationOAuthProvider.CreateProperties(user.UserName);
-            try
-            {
-                Authentication.SignIn(properties, oAuthIdentity, cookieIdentity);
-            }
-            catch (Exception e)
-            {
-                return GetErrorResult(new IdentityResult(e.Message));
-            }
-            return Ok();
-*/
-        }
 
         // POST api/Account/RegisterExternal
         [OverrideAuthentication]
