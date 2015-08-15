@@ -250,16 +250,16 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app\views\admin\admin.html" />
-    <Content Include="app\common\LionSoft.Angular\html\ng-dialog.html" />
-    <Content Include="app\common\LionSoft.Angular\html\ng-prompt-dialog.html" />
-    <Content Include="app\common\LionSoft.Angular\html\ng-tag.html" />
-    <Content Include="app\common\LionSoft.Angular\html\ng-tags.html" />
     <Content Include="app\common\LionSoft.Js\js.net\js.net.array.js" />
     <Content Include="app\common\LionSoft.Js\js.net\js.net.md5.js" />
     <Content Include="app\common\LionSoft.Js\js.net\js.net.path.js" />
     <Content Include="app\common\LionSoft.Js\js.net\js.net.string.js" />
     <Content Include="app\common\LionSoft.Js\js.net\string.format-1.0.js" />
+    <Content Include="app\views\admin\admin.html" />
+    <Content Include="app\common\LionSoft.Angular\html\ng-dialog.html" />
+    <Content Include="app\common\LionSoft.Angular\html\ng-prompt-dialog.html" />
+    <Content Include="app\common\LionSoft.Angular\html\ng-tag.html" />
+    <Content Include="app\common\LionSoft.Angular\html\ng-tags.html" />
     <Content Include="app\views\admin\admin.css" />
     <Content Include="app\views\dashboard\dashboard.html" />
     <Content Include="app\images\background.jpg" />
@@ -1206,6 +1206,7 @@
     <Content Include="Scripts\version.json" />
     <TypeScriptCompile Include="app\common\Controller.ts" />
     <TypeScriptCompile Include="app\common\Directive.ts" />
+    <TypeScriptCompile Include="app\common\LionSoft.Js\LionSoft.Js-0.1.1.ts" />
     <TypeScriptCompile Include="app\common\Service.ts" />
     <TypeScriptCompile Include="app\common\TemplatedDirective.ts" />
     <TypeScriptCompile Include="app\common\utils\Color.ts" />
@@ -1450,7 +1451,6 @@
     <TypeScriptCompile Include="app\common\LionSoft.Angular\ng-popup.ts" />
     <TypeScriptCompile Include="app\common\LionSoft.Angular\ng-tag.ts" />
     <TypeScriptCompile Include="app\common\LionSoft.Angular\nv-fill-container.ts" />
-    <TypeScriptCompile Include="app\common\LionSoft.Js\LionSoft.Js-0.1.1.ts" />
     <TypeScriptCompile Include="app\common\logger.ts" />
     <TypeScriptCompile Include="app\common\spinner.ts" />
     <TypeScriptCompile Include="app\config.exceptionHandler.ts" />
