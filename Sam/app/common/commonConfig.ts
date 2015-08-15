@@ -38,6 +38,7 @@ module App.Shared
     }
 
     commonModule.provider(CommonConfig.providerId, () => new CommonConfig());
+
     //#region explanation
     // THIS IS A PROVIDER THAT ALLOWS YOU TO SET CONFIGURATIONS THAT ARE RUN INN CONFIG_PHASE, BEFORE
     // THE APPLICATION LIFE-CYCLE ENTERS THE RUN PHASE AND SERVICES ARE INSTANSIATED

@@ -1,17 +1,15 @@
 ﻿'use strict';
 module App.Controllers
 {
-
-
-    export interface ISidebarCtrl
+    export interface ISidebar
     {
         isCurrent(route): string
         navRoutes: Array<Object>
     }
 
-    export class SidebarCtrl implements ISidebarCtrl
+    export class Sidebar implements ISidebar
     {
-        public static controllerId:string = 'sidebarCtrl';
+        public static controllerId:string = 'sidebar';
         navRoutes: Array<Object>;
 
         //using shortcut syntax on private variables in the constructor
@@ -48,6 +46,6 @@ module App.Controllers
 
     // Register with angular
     app.controller(
-        SidebarCtrl.controllerId,
-        ['$route', 'config', 'routes', ($r, c, r) => new SidebarCtrl($r, c, r)]);
+        Sidebar.controllerId,
+        ['$route', 'config', 'routes', ($r, c, r) => new Sidebar($r, c, r)]);
 }

@@ -371,7 +371,6 @@
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="index.html" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />
     <Content Include="Scripts\angular-mocks.js" />
@@ -408,10 +407,6 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
-    <Content Include="Scripts\angular.min.js.map" />
-    <Content Include="Scripts\angular-animate.min.js.map" />
-    <Content Include="Scripts\angular-route.min.js.map" />
-    <Content Include="Scripts\angular-sanitize.min.js.map" />
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
@@ -447,6 +442,7 @@
     <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\ui-bootstrap-tpls-0.10.0.js" />
     <Content Include="Scripts\ui-bootstrap-tpls-0.10.0.min.js" />
+    <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -458,34 +454,29 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Scripts\jquery-2.1.4.min.map" />
-    <Content Include="Scripts\toastr.min.js.map" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Api\" />
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app\admin\admin.ts" />
     <TypeScriptCompile Include="app\app.ts" />
     <TypeScriptCompile Include="app\common\bootstrap\bootstrap.dialog.ts" />
-    <TypeScriptCompile Include="app\common\bootstrap\common.bootstapModule.ts" />
     <TypeScriptCompile Include="app\common\common.ts" />
     <TypeScriptCompile Include="app\common\commonConfig.ts" />
-    <TypeScriptCompile Include="app\common\commonModule.ts" />
     <TypeScriptCompile Include="app\common\logger.ts" />
     <TypeScriptCompile Include="app\common\spinner.ts" />
     <TypeScriptCompile Include="app\config.exceptionHandler.ts" />
     <TypeScriptCompile Include="app\config.route.ts" />
     <TypeScriptCompile Include="app\config.ts" />
-    <TypeScriptCompile Include="app\dashboard\dashboardCtrl.ts" />
+    <TypeScriptCompile Include="app\dashboard\dashboard.ts" />
     <TypeScriptCompile Include="app\directives\cc-img-person.ts" />
     <TypeScriptCompile Include="app\directives\cc-menu-item-rendered.ts" />
     <TypeScriptCompile Include="app\directives\cc-scroll-to-top.ts" />
@@ -494,8 +485,8 @@
     <TypeScriptCompile Include="app\directives\cc-widget-close.ts" />
     <TypeScriptCompile Include="app\directives\cc-widget-header.ts" />
     <TypeScriptCompile Include="app\directives\cc-widget-minimize.ts" />
-    <TypeScriptCompile Include="app\layout\shellCtrl.ts" />
-    <TypeScriptCompile Include="app\layout\sidebarCtrl.ts" />
+    <TypeScriptCompile Include="app\layout\shell.ts" />
+    <TypeScriptCompile Include="app\layout\sidebar.ts" />
     <TypeScriptCompile Include="app\services\datacontext.ts" />
     <TypeScriptCompile Include="app\services\entityManagerFactory.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />

@@ -8,7 +8,6 @@ module App
         config: ng.route.IRoute;
     }
 
-
     export class RouteConfigurator
     {
         constructor($routeProvider: ng.route.IRouteProvider, routes)

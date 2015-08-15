@@ -12,8 +12,6 @@ module App{
         'common.bootstrap', // bootstrap dialog wrapper functions
 
         // 3rd Party Modules
-        'breeze.angular',    // configures breeze for an angular app
-        'breeze.directives', // contains the breeze validation directive (zValidate)
         'ui.bootstrap'       // ui-bootstrap (ex: carousel, pagination, dialog)
     ]);
     

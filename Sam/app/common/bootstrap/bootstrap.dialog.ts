@@ -104,6 +104,19 @@ module App.Shared
             $scope.cancel = () => { $modalInstance.dismiss('cancel'); };
         }
     }
+
+    //#region explanation
+    //-------STARTING COMMON MODULE----------
+    // NB! script for this file must get loaded before the "child" script files
+
+    // THIS CREATES THE ANGULAR CONTAINER NAMED 'common', A BAG THAT HOLDS SERVICES
+    // CREATION OF A MODULE IS DONE USING ...module('moduleName', []) => retrieved using ...module.('...')
+    // Contains services:
+    //  - common
+    //  - logger
+    //  - spinner
+    //#endregion
+    export var commonBootstrapModule: ng.IModule = angular.module('common.bootstrap', []);
   
     // Register bootstrap.dialog service
     commonBootstrapModule.factory(BootstrapDialog.serviceId, ['$modal', '$templateCache', (m, tc) => new BootstrapDialog(m, tc)])

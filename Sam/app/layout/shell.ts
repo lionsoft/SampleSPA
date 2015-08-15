@@ -3,8 +3,7 @@
 
 module App.Controllers
 {
-
-    export interface IShellCtrl
+    export interface IShell
     {
         busyMessage: string;
         isBusy: boolean;
@@ -21,12 +20,12 @@ module App.Controllers
         toggleSpinner(on: boolean): void;
     }
 
-    export class ShellCtrl implements IShellCtrl
+    export class Shell implements IShell
     {
-        public static controllerId = 'shellCtrl';
+        public static controllerId = 'shell';
         //#region Variables
         busyMessage = 'Please wait...';
-        controllerId = ShellCtrl.controllerId;
+        controllerId = Shell.controllerId;
         isBusy= true;
         spinnerOperations = {
             radius: 40,
@@ -84,7 +83,7 @@ module App.Controllers
     }
 
     // Register with angular
-    app.controller(ShellCtrl.controllerId,
+    app.controller(Shell.controllerId,
         ['$rootScope', 'common', 'config',
-            ($rS, com, con) => new ShellCtrl($rS, com, con)]);
+            ($rS, com, con) => new Shell($rS, com, con)]);
 }

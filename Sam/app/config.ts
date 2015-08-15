@@ -7,21 +7,17 @@ module App{
         controllerActivateSuccess: string;
         spinnerToggle: string;
     }
-    export interface IImageSettings
-    {
-        imageBasePath: string;
-        unknownPersonImageSource: string;
-    }
 
     export interface IConfigurations {
         appErrorPrefix: string;//Configure the exceptionHandler decorator
         docTitle: string;
         events: IEvents;
         remoteServiceName: string;
-        version: string;
-        imageSettings: IImageSettings;
+        version: string,
+        imageSettings: { imageBasePath: string, unknownPersonImageSource: string }
     }
 
+    var app = angular.module('app');
  
     // Configure Toastr
     toastr.options.timeOut = 4000;
@@ -35,20 +31,17 @@ module App{
         spinnerToggle: 'spinner.toggle'
     };
 
-    var config:IConfigurations = {
+    var config: IConfigurations = {
         appErrorPrefix: '[HT Error] ', //Configure the exceptionHandler decorator
         docTitle: 'HotTowel: ',
         events: events,
         remoteServiceName: remoteServiceName,
         version: '2.1.0',
-        imageSettings: {
-            imageBasePath: '',
-            unknownPersonImageSource:''
-        }
+        imageSettings: { imageBasePath: '', unknownPersonImageSource: '' }
     };
 
-    var app = angular.module('app');
     app.value('config', config);
+
     app.config(['$logProvider', $logProvider => {
         // turn debugging off/on (no info or warn)
         if ($logProvider.debugEnabled) {
