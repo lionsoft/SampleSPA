@@ -25,48 +25,122 @@ namespace Sam
             ));
 
 
-
-
-
             bundles.Add(new ScriptBundle("~/bundles/vendor").Include(
                   "~/scripts/jquery-{version}.js"
+
                 , "~/scripts/angular.js"
                 , "~/scripts/angular-animate.js"
                 , "~/scripts/angular-route.js"
+                , "~/Scripts/angular-resource.js"
                 , "~/scripts/angular-sanitize.js"
+                , "~/Scripts/angular-translate.js"
+                , "~/Scripts/angular-translate-loader-static-files.js"
+                , "~/Scripts/angular-ui/ui-bootstrap.js"
+                , "~/Scripts/angular-ui/ui-bootstrap-tpls.js"
+
+                , "~/Scripts/select2.js"
+                , "~/Scripts/angular-ui.js"
+                , "~/Scripts/select.js"
+
+                , "~/Scripts/DataTables/jquery.dataTables.js"
+                , "~/Scripts/DataTables/jQuery.dataTables.oData.js"
+                , "~/Scripts/DataTables/jquery.dataTables.naturalSort.js"
+
+                , "~/Scripts/DataTables/dataTables.bootstrap.js"
+
+                , "~/Scripts/DataTables/dataTables.autoFill.js"
+                , "~/Scripts/DataTables/dataTables.colReorder.js"
+                , "~/Scripts/DataTables/dataTables.colVis.js"
+                , "~/Scripts/DataTables/dataTables.fixedColumns.js"
+                , "~/Scripts/DataTables/dataTables.fixedHeader.js"
+                , "~/Scripts/DataTables/dataTables.responsive.js"
+                , "~/Scripts/DataTables/dataTables.scroller.js"
+                , "~/Scripts/DataTables/dataTables.tableTools.js"
+                , "~/Scripts/jquery.dataTables.columnFilter.js"
+
+                , "~/Scripts/DataTables/angular-datatables.js"
+                , "~/Scripts/DataTables/plugins/bootstrap/angular-datatables.bootstrap.js"
+
+
+                , "~/Scripts/linq.js"
+                , "~/Scripts/linq.jquery.js"
+                , "~/Scripts/linq.array.js"
+
                 , "~/scripts/bootstrap.js"
-                , "~/scripts/toastr.js"
-                , "~/scripts/moment.js"
+                , "~/Scripts/respond.js"
                 , "~/scripts/ui-bootstrap-tpls-{version}.js"
+
+
+                , "~/Scripts/ResizeSensor/ResizeSensor.js"
+                , "~/Scripts/ResizeSensor/ElementQueries.js"
+
+
+                //, "~/scripts/moment.js"
+                , "~/Scripts/moment-with-locales.js"
+
                 , "~/scripts/spin.js"
+                , "~/scripts/toastr.js"
+                , "~/Scripts/loading-bar.js"
+                , "~/Scripts/oclazyload.js"
             ));
 
-            bundles.Add(new ScriptBundle("~/bundles/app").Include(
-                // !--Bootstrapping-- >
-                  "~/app/app.js"
-                , "~/app/config.js"
-                , "~/app/config.exceptionHandler.js"
-                , "~/app/config.route.js"
+            bundles.Add(new ScriptBundle("~/bundles/LionSoftJs")
+                .IncludeDirectory("~/app/common/LionSoft.Js/js.net", "*.js")
+                .Include(
+                    "~/app/common/LionSoft.Js/LionSoft.Js-{version}.js"
+                )
+            );
+            bundles.Add(new ScriptBundle("~/bundles/LionSoftAngular").Include(
+                    "~/app/common/LionSoft.Angular/LionSoft.Angular-{version}.js"
+            ));
+            bundles.Add(new ScriptBundle("~/bundles/app")
+                .IncludeDirectory("~/app/consts", "*.js")
+                .Include(
+                      "~/app/l10n/!.js"
+                    // !--Bootstrapping-- >
+                    , "~/app/app.js"
+                    , "~/app/config.js"
+                    , "~/app/config.exceptionHandler.js"
+                    , "~/app/config.l10n.js"
+                    , "~/app/config.route.js"
 
-                // !--common Modules-- >
-                , "~/app/common/common.js"
-                , "~/app/common/commonConfig.js"
-                , "~/app/common/logger.js"
-                , "~/app/common/spinner.js"
+                    // !--common Modules-- >
+                    , "~/app/common/common.js"
+                    , "~/app/common/commonConfig.js"
+                    , "~/app/AutenticationService.js"
+                    , "~/app/common/logger.js"
+                    , "~/app/common/spinner.js"
 
-                // !--common.bootstrap Modules-- >
-                , "~/app/common/bootstrap/bootstrap.dialog.js"
+
+                    // !--common.bootstrap Modules-- >
+                    , "~/app/common/bootstrap/bootstrap.dialog.js"
+            ));
+
+            bundles.Add(new ScriptBundle("~/bundles/app/routes").Include(
+                      "~/app/routes.js"
+                    , "~/app/routes/dashboard.js"
+                    , "~/app/routes/admin.js"
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/app/common").Include(
+                      "~/app/common/utils/Color.js"
+                    , "~/app/common/utils/DateTime.js"
+                    , "~/app/common/utils/Icon.js"
+                    , "~/app/common/utils/Json.js"
+                    , "~/app/common/utils/ng.js"
 
-            ));
+                    , "~/app/common/Controller.js"
+                    , "~/app/common/Service.js"
+                    , "~/app/common/Directive.js"
+                    , "~/app/common/TemplatedDirective.js"
+                )
+            );
 
             bundles.Add(new ScriptBundle("~/bundles/app/views").Include(
-                  "~/app/admin/admin.js"
-                , "~/app/dashboard/dashboard.js"
-                , "~/app/layout/shell.js"
+                  "~/app/layout/shell.js"
                 , "~/app/layout/sidebar.js"
+//                , "~/app/views/admin/admin.js"
+//                , "~/app/views/dashboard/dashboard.js"
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/app/directives").Include(
@@ -81,7 +155,9 @@ namespace Sam
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/app/services").Include(
-                  "~/app/services/datacontext.js"
+                  "~/app/services/ApiServiceBase.js"
+                , "~/app/services/ApiServiceBase.js"
+                , "~/app/services/datacontext.js"
             ));
         }
     }

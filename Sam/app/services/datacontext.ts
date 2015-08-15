@@ -1,6 +1,4 @@
-﻿/// <reference path="../../scripts/typings/angularjs/angular.d.ts" />
-
-module App.Services {
+﻿module App.Services {
 
     export interface IDatacontext {
         getMessageCount(): ng.IPromise<number>;

@@ -1,0 +1,46 @@
+﻿<style>
+    .modal-footer {
+        padding: 10px 15px;
+        margin-top: 0;
+        text-align: right;
+        border-top: 1px solid #dddddd;
+    }
+    .panel {
+        margin-bottom: 0;
+    }
+    .panel-title {
+        font-weight: bold;
+    }
+</style>
+
+<div class="panel" ng-class="panelClass">
+    <div class="panel-heading modal-header">
+        <h3 class="panel-title" ng-bind-html="headerContent"></h3>
+    </div>
+
+    <div class="panel-body modal-body" ng-bind-html="bodyContent">
+    </div>
+
+    <div class="panel-footer modal-footer">
+        <button type="button" class="btn"
+                data-ng-click="ok(true)"
+                ng-class="yesButtonClass || (hasNoButtonContent || isConfirmDialog || isAskDialog ? 'btn-success' : 'btn-default')"
+                ng-show="hasYesButtonContent"
+                ng-bind-html="yesButtonContent">
+        </button>
+        <button type="button"
+                class="btn"
+                ng-class="noButtonClass || 'btn-danger'"
+                data-ng-click="ok(false)"
+                ng-show="hasNoButtonContent"
+                ng-bind-html="noButtonContent">
+        </button>
+        <button type="button"
+                class="btn"
+                data-ng-click="cancel(false)"
+                ng-class="cancelButtonClass || (isConfirmDialog ? 'btn-danger' : 'btn-default')"
+                ng-show="hasCancelButtonContent"
+                ng-bind-html="cancelButtonContent">
+        </button>
+    </div>
+</div>

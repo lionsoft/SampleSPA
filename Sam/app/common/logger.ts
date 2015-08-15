@@ -3,11 +3,11 @@
 module App.Shared{
 
     export interface ILogger {
-        getLogFn(moduleId: string, fnName?: string): Function
-        log(message: string, data: any, source: string, showToast: boolean)
-        logError(message: string, data: any, source: string, showToast: boolean)
-        logSuccess(message: string, data: any, source: string, showToast: boolean)
-        logWarning(message: string, data: any, source: string, showToast: boolean)
+        getLogFn(moduleId: string, fnName?: string): (msg: string, data?: any, showToast?: boolean) => void;
+        log(message: string, data: any, source: string, showToast: boolean);
+        logError(message: string, data: any, source: string, showToast: boolean);
+        logSuccess(message: string, data: any, source: string, showToast: boolean);
+        logWarning(message: string, data: any, source: string, showToast: boolean);
     }
     
 
@@ -31,7 +31,7 @@ module App.Shared{
         }
         //#region Public Methods
         //TODO: see if there is a way to solve this more intuitive than returning an anonymous function
-        getLogFn(moduleId: string, logFunctionName?: string): Function
+        getLogFn(moduleId: string, logFunctionName?: string): (msg: string, data?: any, showToast?: boolean) => void
         {
             logFunctionName = logFunctionName || 'log';
             switch (logFunctionName.toLowerCase()) { // convert aliases
