@@ -4,7 +4,8 @@ module App {
     Routes.push(
         {
             name: 'login',
-            url: '/login/:returnUrl?'
+            title: 'MENU.SignIn | Sign In',
+            url: '/login'
         }
     );
 }

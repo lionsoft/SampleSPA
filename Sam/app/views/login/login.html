@@ -1,9 +1,7 @@
 ﻿<div class="container-fluid">
     <div class="row">
-        <h1 class="text-center">Служба 102</h1>
+        <h1 class="text-center">{{App.Site.TITLE | translate}}</h1>
         <hr />
-        <img class="center-block" src="/app/images/logo.png" alt="Логотип" />
-        <h2 class="text-center">УВД Украины в Днепропетровской области</h2>
         <div class="row">
             <div class="form-container">
                 <div class="form-group">
@@ -24,7 +22,7 @@
                         <label class="pull-right">
                             <input type="checkbox" value="{{$.rememberMe}}" name="RememberMe" ng-model="$.rememberMe">
                             <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
-                            <span>Запоминить</span>
+                            <span>Запомнить</span>
                         </label>
                     </div>
                 </div>

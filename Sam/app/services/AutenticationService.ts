@@ -24,9 +24,9 @@ module App {
 
     class AutenticationService implements IAutenticationService {
 
-        static $inject = ['$rootScope'];
+        static $inject = ['$rootScope', '$location', '$route'];
 
-        constructor(private $rootScope) {
+        constructor(private $rootScope, private $location: ng.ILocationService, private $route: ng.route.IRouteService) {
             this.LoggedUser = app['__loggedUser'];
             app['__loggedUser'] = undefined;
             app.$auth = this;
@@ -44,11 +44,13 @@ module App {
         }
 
         Logout(): ng.IPromise<void> {
-            return app.api.Account.Logout().HandleError().then(() => this.LoggedUser = undefined);
+            var res = app.api.Account.Logout().HandleError().then(() => this.LoggedUser = undefined);
+            res.then(() => location.reload());
+            return res;
         }
 
 
     }
 
-    App.Shared.commonModule.service('$auth', AutenticationService);
+    Shared.commonModule.service('$auth', AutenticationService);
 } 

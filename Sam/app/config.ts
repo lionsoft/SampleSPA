@@ -1,7 +1,5 @@
-﻿/// <reference path="common/commonconfig.ts" />
+﻿'use strict';
 module App {
-    'use strict';
-    import shared = App.Shared;
 
     export interface IEvents {
         controllerActivateSuccess: string;
@@ -9,10 +7,9 @@ module App {
     }
 
     export interface IConfigurations {
-        appErrorPrefix: string;//Configure the exceptionHandler decorator
+        appErrorPrefix: string;  //Configure the exceptionHandler decorator
         docTitle: string;
         events: IEvents;
-        remoteServiceName: string;
         version: string,
         imageSettings: { imageBasePath: string, unknownPersonImageSource: string }
     }
@@ -20,9 +17,6 @@ module App {
     // Configure Toastr
     toastr.options.timeOut = 4000;
     toastr.options.positionClass = 'toast-bottom-right';
-
-    // For use with the HotTowel-Angular-Breeze add-on that uses Breeze
-    var remoteServiceName = 'breeze/Breeze';
 
     var events: IEvents = {
         controllerActivateSuccess: 'controller.activateSuccess',
@@ -33,7 +27,6 @@ module App {
         appErrorPrefix: '[HT Error] ', //Configure the exceptionHandler decorator
         docTitle: 'HotTowel: ',
         events: events,
-        remoteServiceName: remoteServiceName,
         version: '2.1.0',
         imageSettings: { imageBasePath: '', unknownPersonImageSource: '' }
     };
@@ -47,7 +40,7 @@ module App {
         }
     }]);
     //#region Configure the common services via commonConfig
-    app.config(['commonConfigProvider', (cfg:shared.ICommonConfig) => {
+    app.config(['commonConfigProvider', (cfg: Shared.ICommonConfig) => {
         cfg.config.controllerActivateSuccessEvent = config.events.controllerActivateSuccess;
         cfg.config.spinnerToggleEvent = config.events.spinnerToggle;
     }]);
@@ -65,9 +58,10 @@ module App {
     LionSoftAngular.Services.app = app;
 
     //#region - Настройка общедоступных сервисов API -
-    app.run(['ApiService', 'popupService', (api, popup) => {
+    app.run(['ApiService', 'popupService', '$rootScope', (api, popup, $rootScope) => {
         app.api = api;
         app.popup = popup;
+        $rootScope.App = App;
     }]);    
     //#endregion
 

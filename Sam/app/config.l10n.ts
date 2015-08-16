@@ -11,9 +11,6 @@ module App {
 
     //#region Configure Translate provider
 
-    // ReSharper disable once InconsistentNaming
-    declare var $l10n;
-
     app
         .config(['$translateProvider', ($translateProvider: angular.translate.ITranslateProvider) => {
             var availableLangKeys = ['en', 'ua', 'ru'];
@@ -40,11 +37,11 @@ module App {
                 .determinePreferredLanguage()
             ;
 
-            if (window['$l10n']) {
+            if ($l10n) {
                 if (location.pathname.Trim('/'))
                     $l10n.$defaultLanguage = location.pathname.Trim('/');
                 $l10n.$defaultLanguage = $l10n.$defaultLanguage || "ru";
-                $l10n.$languages = $l10n.$languages || {};
+                $l10n.$languages = $l10n.$languages || <any>{};
                 var defLangName = $l10n.$defaultLanguage;
 
                 var defLang = Enumerable.from($l10n.$languages).firstOrDefault(x => x.key === defLangName);

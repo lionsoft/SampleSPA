@@ -1223,6 +1223,7 @@
     <TypeScriptCompile Include="app\common\utils\Icon.ts" />
     <TypeScriptCompile Include="app\common\utils\Json.ts" />
     <TypeScriptCompile Include="app\common\utils\ng.ts" />
+    <TypeScriptCompile Include="app\consts\Site.ts" />
     <TypeScriptCompile Include="app\l10n.ts" />
     <Content Include="app\layout\shell.html" />
     <Content Include="app\layout\sidebar.html" />
@@ -1448,7 +1449,7 @@
     <TypeScriptCompile Include="app\services\ApiServiceBase.ts" />
     <TypeScriptCompile Include="app\views\admin\admin.ts" />
     <TypeScriptCompile Include="app\app.ts" />
-    <TypeScriptCompile Include="app\AutenticationService.ts" />
+    <TypeScriptCompile Include="app\services\AutenticationService.ts" />
     <TypeScriptCompile Include="app\common\bootstrap\bootstrap.dialog.ts" />
     <TypeScriptCompile Include="app\common\common.ts" />
     <TypeScriptCompile Include="app\common\commonConfig.ts" />

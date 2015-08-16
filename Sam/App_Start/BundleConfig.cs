@@ -121,7 +121,7 @@ namespace Sam
             bundles.Add(new ScriptBundle("~/bundles/app")
                 .IncludeDirectory("~/app/consts", "*.js")
                 .Include(
-                      "~/app/l10n/!.js"
+                      "~/app/l10n.js"
                     // !--Bootstrapping-- >
                     , "~/app/app.js"
                     , "~/app/config.js"
@@ -132,7 +132,7 @@ namespace Sam
                     // !--common Modules-- >
                     , "~/app/common/common.js"
                     , "~/app/common/commonConfig.js"
-                    , "~/app/AutenticationService.js"
+                    , "~/app/services/AutenticationService.js"
                     , "~/app/common/logger.js"
                     , "~/app/common/spinner.js"
 

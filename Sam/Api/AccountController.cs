@@ -72,6 +72,7 @@ namespace Sam.Controllers
         [Route("Login")]
         public async Task<IHttpActionResult> Login(LoginBindingModel model)
         {
+            //Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             Authentication.SignOut();
 
             var user = await UserManager.FindAsync(model.Login, model.Password);

@@ -4,10 +4,10 @@ module App.Controllers {
 
     export class Login extends Controller {
 
-        public login: string = 'eleybov@gmail.com';
-        public password: string = 'P@ssw0rd';
+        public login: string = "eleybov@gmail.com";
+        public password: string = "P@ssw0rd";
         public textError: string;
-        public inputType: string = 'password';
+        public inputType = "password";
         public rememberMe: boolean;
         public loginAction: string;
 
@@ -21,7 +21,7 @@ module App.Controllers {
 
         DoLogin() {
             app.$auth.Login(this.login, this.password, this.rememberMe)
-                .then(() => this.$location.path(decodeURIComponent(this.$routeParams.returnUrl)))
+                .then(() => this.$location.path(this.$rootScope['$priorLocation'] || "/"))
                 .catch(e => this.textError = e);
         }
     }

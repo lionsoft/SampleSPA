@@ -1,3 +1,9 @@
 ﻿{
-    "APP_TITLE": "SAM System"
+    "APP_TITLE": "SAM System",
+
+    "MENU": {
+        "SignIn": "Sign In",
+        "SignOut": "Sign Out"    
+    }
+
 }

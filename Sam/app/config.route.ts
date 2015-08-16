@@ -81,18 +81,31 @@ module App {
 
     //#region - Переход на страницу логина при попытке получить доступ к страницам, требующим авторизации -
     app.run(["$location", "$rootScope", "$route", "config", '$auth', ($location, $rootScope, $route, config: IConfigurations, $auth: IAutenticationService) => {
+
         $rootScope.$on('$locationChangeStart', (evt, next, current) => {
+            if (!$rootScope.$redirectToLogin) {
+                $rootScope.$priorLocation = "/";
+                if (current) {
+                    $rootScope.$priorLocation = current.split('#', 2)[1] || "/";
+                }
+            } else
+                $rootScope.$redirectToLogin = undefined;
+
             var nextRoute = $route.routes[$location.path()];
-            if (nextRoute && nextRoute.originalPath === "") {
-                $rootScope.$broadcast(config.events.controllerActivateSuccess);
-                $location.path("/");
-            }
-            else if (nextRoute && nextRoute.auth && !$auth.IsLoggedIn) {
-                if (current.Contains("/#/login")) {
-                    evt.preventDefault();
-                } else {
-                    $location.path("/login/{0}".format(encodeURIComponent($location.path())));
+            if (nextRoute) {
+                if (nextRoute.originalPath === "") {
+                    $location.path("/");
                     $rootScope.$broadcast(config.events.controllerActivateSuccess);
+                }
+                else if (nextRoute && nextRoute.auth && !$auth.IsLoggedIn) {
+                    if (current.Contains("/#/login")) {
+                        evt.preventDefault();
+                    } else {
+                        $rootScope.$priorLocation = $location.path();
+                        $rootScope.$redirectToLogin = true;
+                        $location.path("/login");
+                        $rootScope.$broadcast(config.events.controllerActivateSuccess);
+                    }
                 }
             }
         });

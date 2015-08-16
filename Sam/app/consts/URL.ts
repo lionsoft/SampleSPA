@@ -1,11 +1,10 @@
 ﻿// ReSharper disable once InconsistentNaming
+"use strict";
 module App.URL {
-    "use strict";
-
     /**
     * Базовый адрес внутреннего WebAPI приложения
     */
-    export const API: string = "/api";
+    export const API = "/api";
 
     /**
      * Базовый адрес приложения

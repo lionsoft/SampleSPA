@@ -24,7 +24,6 @@ module App {
         Register(login: string, password: string): IPromise<IUser>;
         Login(login: string, password: string, rememberMe?: boolean): IPromise<IUser>;
         Logout(): IPromise<void>;
-        Test(): IPromise<string>;
     }
 
     export class ApiService extends ApiServiceBase implements IApiService {
@@ -33,7 +32,6 @@ module App {
             Register: <any>{ method: "POST", route: "Register", params: { Login: null, Password: null } },
             Login: <any>{ method: "POST", route: "Login", params: { Login: null, Password: null, RememberMe: null } },
             Logout: <any>{ method: "POST", route: "Logout" },
-            Test: <any>{ method: "POST", route: "Test" }
         };
 /*
         Users: IUsersApi = {

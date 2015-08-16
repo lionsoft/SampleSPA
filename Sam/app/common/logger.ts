@@ -11,23 +11,24 @@ module App.Shared{
     }
     
 
-    export class Logger implements ILogger{
+    export class Logger implements ILogger {
         public static serviceId = 'logger';
         //#region Variables
         $log;
-        logFn:Function;
+        logFn: (msg: string, data?: any, moduleId?: any, showToast?: boolean) => void;
         service = {
-        getLogFn: this.getLogFn,
-        log: this.log,
-        logError: this.logError,
-        logSuccess: this.logSuccess,
-        logWarning: this.logWarning
+            getLogFn: this.getLogFn,
+            log: this.log,
+            logError: this.logError,
+            logSuccess: this.logSuccess,
+            logWarning: this.logWarning
         };
         //#endregion
         
         constructor($log)
         {
             this.$log = $log;
+            window.alert = (msg) => this.logFn(msg, "", "", true);
         }
         //#region Public Methods
         //TODO: see if there is a way to solve this more intuitive than returning an anonymous function

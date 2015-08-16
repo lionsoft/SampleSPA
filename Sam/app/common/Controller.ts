@@ -45,10 +45,10 @@ module App {
             this.ngName = this.$route.current.controller.toString();
             this.log = this.common.logger.getLogFn(this.ngName);
             this.$rootScope['title'] = undefined;
-            var appTitle = this.$filter("translate")("APP_TITLE");
+            var appTitle = this.$filter("translate")(Site.TITLE);
             this.$scope.$watch((controllerAs ? controllerAs + "." : "") + "title", newVal => {
                 if (newVal)
-                    this.$rootScope['title'] = newVal + " - " + appTitle;
+                    this.$rootScope['title'] = this.$filter("translate")(newVal) + " - " + appTitle;
                 else
                     this.$rootScope['title'] = appTitle;
             });

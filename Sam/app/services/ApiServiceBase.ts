@@ -57,6 +57,12 @@ module App {
             app.popup.error(error);
         }
 
+        $location: ng.ILocationService;
+
+        public static addFactoryInjections(injects: string[]) {
+            LionSoftAngular.Service.addFactoryInjections(injects);
+            this.addInjection(injects, "$location");
+        }
         
 
 
@@ -98,8 +104,12 @@ module App {
 
             })
             .catch(reason => {
-//                ApiServiceBase.HandleError(reason);
-                newRes.reject(reason);
+                if (reason.status === 401) {
+                    // Ошибка авторизации - перекидываем на страницу логина
+                    this.$location.path("/login");
+                } else {
+                    newRes.reject(reason);
+                }
             })
             ;
             var result = <IPromise<T>>newRes.promise;
@@ -121,6 +131,7 @@ module App {
             if (!serviceFactory["__" + methodName])
                 serviceFactory["__" + methodName] = serviceFactory[methodName];
             var $this = this;
+            // ReSharper disable Lambda - to use arguments in function body
             serviceFactory[methodName] = function () {
                 var defaultParamNames = paramNames ? (paramNames[methodName] || paramNames["$default"]) : undefined;
                 var args = [];
@@ -181,20 +192,26 @@ module App {
 
         Init(baseUrl?: string) {
             var self = this;
-            Enumerable.from(this).where(x => !x.key.StartsWith("_") && !x.key.StartsWith("$") && x.key !== "ngName" && x.key !== "ng").forEach(x => {
-                var paramNames = { $default: ["id"] };
-                //var urlBase = "{0}/{1}/".format(self.baseUrl, x.key);
-                var urlBase = "{0}/{1}/".format(baseUrl, x.key);
-                var methods = {
-                    // Добавляем стандартные методы
-                    query: {
-                        method: "GET",
-                        isArray: true,
-                        transformResponse: (data, headers) => this.transformServiceResponse(data, headers) 
-                    },
-                    create: { method: "POST", transformResponse: (data, headers) => this.transformServiceResponse(data, headers) },
-                    update: { method: "PUT", transformResponse: (data, headers) => this.transformServiceResponse(data, headers) },
-                    delete: { method: "DELETE", transformResponse: (data, headers) => this.transformServiceResponse(data, headers) }
+            Enumerable.from(this)
+                .where(x => !x.key.StartsWith("_")
+                    && !x.key.StartsWith("$")
+                    && x.key !== "ngName"
+                    && x.key !== "ng"
+                )
+                .forEach(x => {
+                    var paramNames = { $default: ["id"] };
+                    //var urlBase = "{0}/{1}/".format(self.baseUrl, x.key);
+                    var urlBase = "{0}/{1}/".format(baseUrl, x.key);
+                    var methods = {
+                        // Добавляем стандартные методы
+                        query: {
+                            method: "GET",
+                            isArray: true,
+                            transformResponse: (data, headers) => this.transformServiceResponse(data, headers) 
+                        },
+                        create: { method: "POST", transformResponse: (data, headers) => this.transformServiceResponse(data, headers) },
+                        update: { method: "PUT", transformResponse: (data, headers) => this.transformServiceResponse(data, headers) },
+                        delete: { method: "DELETE", transformResponse: (data, headers) => this.transformServiceResponse(data, headers) }
                 };
                 // Добавляем дополнительные методы
                 for (var method in x.value) {
