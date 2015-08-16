@@ -12,13 +12,33 @@ namespace Sam
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include("~/Scripts/modernizr-*"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                  "~/content/ie10mobile.css"
+                  "~/content/reset.css"
+                , "~/content/ie10mobile.css"
                 , "~/content/bootstrap.min.css"
                 , "~/content/font-awesome.min.css"
+
+                , "~/Content/css/select2.css"
+                , "~/Content/select.css"
+
+                , "~/Scripts/DataTables/plugins/bootstrap/datatables.bootstrap.css"
+                , "~/Content/DataTables/css/jquery.dataTables.css"
+                , "~/Content/DataTables/css/dataTables.colVis.css"
+                , "~/Content/DataTables/css/dataTables.tableTools.css"
+                , "~/Content/DataTables/css/dataTables.responsive.css"
+                , "~/Content/DataTables/css/dataTables.scroller.css"
+                , "~/Content/DataTables/css/dataTables.fixedColumns.css"
+                , "~/Content/DataTables/css/dataTables.fixedHeader.css"
+
+//                , "~/Content/bootstrap-datetimepicker.min.css"
+
                 , "~/content/toastr.css"
+                , "~/Content/loading-bar.min.css"
+
                 , "~/content/customtheme.css"
                 , "~/content/styles.css"
             ));
+
+
 
             bundles.Add(new StyleBundle("~/app/css").IncludeDirectory(
                   "~/app/css", "*.css"

@@ -56,7 +56,9 @@ module App {
     //#region Configure CORS for $http provider
     app.config(['$httpProvider', $httpProvider => {
         $httpProvider.defaults.useXDomain = true;
-        delete $httpProvider.defaults.headers.common['X-Requested-With'];
+        //delete $httpProvider.defaults.headers.common['X-Requested-With'];
+        // Должен остаться признак, что это AJAX-запрос 
+        $httpProvider.defaults.headers.common['X-Ajax-Request'] = "1";
     }]);
     //#endregion
 

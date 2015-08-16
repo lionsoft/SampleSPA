@@ -1,0 +1,12 @@
+﻿/* 
+    Простые классы для декларативного указания цвета. 
+*/
+.green {
+  color: green;
+}
+.blue {
+  color: blue;
+}
+.red {
+  color: red;
+}

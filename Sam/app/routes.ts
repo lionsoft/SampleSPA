@@ -7,7 +7,7 @@ module App {
     export interface IRouteSettings {
         nav?: number;
         content?: string;
-                }
+    }
 
     /**
      * Расширенная информация о роуте страницы
@@ -43,7 +43,7 @@ module App {
          *  Список файлов и бандлов для автоматической загрузке при активизировании страницы.
          */
         files?: string[];
-        }
+    }
 
     export var Routes: IAppRoute[] = [];
 } 

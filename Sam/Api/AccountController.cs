@@ -72,7 +72,7 @@ namespace Sam.Controllers
         [Route("Login")]
         public async Task<IHttpActionResult> Login(LoginBindingModel model)
         {
-            Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
+            Authentication.SignOut();
 
             var user = await UserManager.FindAsync(model.Login, model.Password);
 
@@ -81,24 +81,23 @@ namespace Sam.Controllers
                 return GetErrorResult(new IdentityResult("The user name or password is incorrect."));
             }
 
-            var oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager, OAuthDefaults.AuthenticationType);
-            var cookieIdentity = await user.GenerateUserIdentityAsync(UserManager, CookieAuthenticationDefaults.AuthenticationType);
+            var cookieIdentity = await user.GenerateUserIdentityAsync(UserManager, DefaultAuthenticationTypes.ApplicationCookie);
             var properties = ApplicationOAuthProvider.CreateProperties(user.UserName);
             properties.IsPersistent = model.RememberMe;
-            Authentication.SignIn(properties, oAuthIdentity, cookieIdentity);
+            Authentication.SignIn(properties, cookieIdentity);
 
             return Ok(new { Id = user.Id, Login = user.UserName, Name = user.UserName });
         }
 
         // GET api/Account/Logout
+        [AllowAnonymous]
         [Route("Logout")]
         [HttpGet, HttpPost]
         public IHttpActionResult Logout()
         {
-            Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
+            Authentication.SignOut();
             return Ok();
         }
-
 
         // GET api/Account/UserInfo
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]

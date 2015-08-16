@@ -10,12 +10,12 @@ module App {
 
     export interface IPromise<T> extends ng.IPromise<T> {
         /**
-         * Помечает результат запроса к сервису, что необходимо выполнять обработку ошибки по умолчанию.
+         * РџРѕРјРµС‡Р°РµС‚ СЂРµР·СѓР»СЊС‚Р°С‚ Р·Р°РїСЂРѕСЃР° Рє СЃРµСЂРІРёСЃСѓ, С‡С‚Рѕ РЅРµРѕР±С…РѕРґРёРјРѕ РІС‹РїРѕР»РЅСЏС‚СЊ РѕР±СЂР°Р±РѕС‚РєСѓ РѕС€РёР±РєРё РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ.
          */
         HandleError(): ng.IPromise<T>;
         /**
-         * Помечает результат запроса к сервису, что необходимо в случае ошибки пытаться 
-         * извлечь текст ошибки из ответа. В этом случе параметр reason в методе catch будет строкой - текстом ошибки.
+         * РџРѕРјРµС‡Р°РµС‚ СЂРµР·СѓР»СЊС‚Р°С‚ Р·Р°РїСЂРѕСЃР° Рє СЃРµСЂРІРёСЃСѓ, С‡С‚Рѕ РЅРµРѕР±С…РѕРґРёРјРѕ РІ СЃР»СѓС‡Р°Рµ РѕС€РёР±РєРё РїС‹С‚Р°С‚СЊСЃСЏ 
+         * РёР·РІР»РµС‡СЊ С‚РµРєСЃС‚ РѕС€РёР±РєРё РёР· РѕС‚РІРµС‚Р°. Р’ СЌС‚РѕРј СЃР»СѓС‡Рµ РїР°СЂР°РјРµС‚СЂ reason РІ РјРµС‚РѕРґРµ catch Р±СѓРґРµС‚ СЃС‚СЂРѕРєРѕР№ - С‚РµРєСЃС‚РѕРј РѕС€РёР±РєРё.
          */
         ExtractError(): ng.IPromise<T>;
     }
@@ -24,6 +24,7 @@ module App {
         Register(login: string, password: string): IPromise<IUser>;
         Login(login: string, password: string, rememberMe?: boolean): IPromise<IUser>;
         Logout(): IPromise<void>;
+        Test(): IPromise<string>;
     }
 
     export class ApiService extends ApiServiceBase implements IApiService {
@@ -31,7 +32,8 @@ module App {
         Account: IAccountApi = {
             Register: <any>{ method: "POST", route: "Register", params: { Login: null, Password: null } },
             Login: <any>{ method: "POST", route: "Login", params: { Login: null, Password: null, RememberMe: null } },
-            Logout: <any>{ method: "POST", route: "Logout" }
+            Logout: <any>{ method: "POST", route: "Logout" },
+            Test: <any>{ method: "POST", route: "Test" }
         };
 /*
         Users: IUsersApi = {

@@ -22,6 +22,8 @@ module App.Controllers
             this.news = this.getNews();
             // Queue all promises and wait for them to finish before loading the view
             this.activate(this.getMessageCount(), this.getPeople());
+
+            app.api.Account.Test().HandleError().then(s => alert(s));
         }
 
         Activated() {

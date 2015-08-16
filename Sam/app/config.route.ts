@@ -83,12 +83,16 @@ module App {
     app.run(["$location", "$rootScope", "$route", "config", '$auth', ($location, $rootScope, $route, config: IConfigurations, $auth: IAutenticationService) => {
         $rootScope.$on('$locationChangeStart', (evt, next, current) => {
             var nextRoute = $route.routes[$location.path()];
-            if (nextRoute && nextRoute.auth && !$auth.IsLoggedIn) {
+            if (nextRoute && nextRoute.originalPath === "") {
+                $rootScope.$broadcast(config.events.controllerActivateSuccess);
+                $location.path("/");
+            }
+            else if (nextRoute && nextRoute.auth && !$auth.IsLoggedIn) {
                 if (current.Contains("/#/login")) {
                     evt.preventDefault();
-                    $rootScope.$broadcast(config.events.controllerActivateSuccess);
                 } else {
                     $location.path("/login/{0}".format(encodeURIComponent($location.path())));
+                    $rootScope.$broadcast(config.events.controllerActivateSuccess);
                 }
             }
         });
