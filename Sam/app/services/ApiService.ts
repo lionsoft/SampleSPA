@@ -8,10 +8,22 @@ module App {
         Account: IAccountApi;
     }
 
+    export interface IPromise<T> extends ng.IPromise<T> {
+        /**
+         * Помечает результат запроса к сервису, что необходимо выполнять обработку ошибки по умолчанию.
+         */
+        HandleError(): ng.IPromise<T>;
+        /**
+         * Помечает результат запроса к сервису, что необходимо в случае ошибки пытаться 
+         * извлечь текст ошибки из ответа. В этом случе параметр reason в методе catch будет строкой - текстом ошибки.
+         */
+        ExtractError(): ng.IPromise<T>;
+    }
+
     export interface IAccountApi {
-        Register(login: string, password: string): ng.IPromise<IUser>;
-        Login(login: string, password: string, rememberMe?: boolean): ng.IPromise<IUser>;
-        Logout(): ng.IPromise<void>;
+        Register(login: string, password: string): IPromise<IUser>;
+        Login(login: string, password: string, rememberMe?: boolean): IPromise<IUser>;
+        Logout(): IPromise<void>;
     }
 
     export class ApiService extends ApiServiceBase implements IApiService {

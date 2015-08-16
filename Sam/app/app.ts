@@ -5,6 +5,7 @@
  */
 interface IApp extends ng.IModule, LionSoftAngular.INgObject {
     api: App.IApiService;
+    popup: LionSoftAngular.IPopupService;
     $auth: App.IAutenticationService;
 }
 

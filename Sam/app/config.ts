@@ -63,8 +63,9 @@ module App {
     LionSoftAngular.Services.app = app;
 
     //#region - Настройка общедоступных сервисов API -
-    app.run(['ApiService', (api) => {
+    app.run(['ApiService', 'popupService', (api, popup) => {
         app.api = api;
+        app.popup = popup;
     }]);    
     //#endregion
 

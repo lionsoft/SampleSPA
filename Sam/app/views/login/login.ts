@@ -22,9 +22,7 @@ module App.Controllers {
         DoLogin() {
             app.$auth.Login(this.login, this.password, this.rememberMe)
                 .then(() => this.$location.path(decodeURIComponent(this.$routeParams.returnUrl)))
-                .catch(e => {
-                    this.textError = ApiServiceBase.ExctractError(e);
-                });
+                .catch(e => this.textError = e);
         }
     }
 

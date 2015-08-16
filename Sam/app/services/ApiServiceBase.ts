@@ -54,8 +54,11 @@ module App {
         static HandleError(err: any): void {
             var error = this.ExctractError(err);
             //alert(error);
-            LionSoftAngular.Services.PopupService.error(error);
+            app.popup.error(error);
         }
+
+        
+
 
         private transformServiceResponse(data: any, headers: any): any {
             // Copied from Angular default transform method
@@ -77,7 +80,7 @@ module App {
 
 
 
-        private configServiceResult(res) {
+        private configServiceResult<T>(res): IPromise<T> {
             if (res.$promise != undefined) {
                 res = res.$promise;
             }
@@ -94,12 +97,24 @@ module App {
                 }
 
             })
-            .catch(reason=> {
-                //this.HandleError(reason);
+            .catch(reason => {
+//                ApiServiceBase.HandleError(reason);
                 newRes.reject(reason);
             })
             ;
-            return newRes.promise;
+            var result = <IPromise<T>>newRes.promise;
+            result.HandleError = () => {
+                result.catch(reason => ApiServiceBase.HandleError(reason));
+                return result;
+            };
+            result.ExtractError = () => {
+                var newRes1 = this.defer();
+                result
+                    .then(r => newRes1.resolve(r))
+                    .catch(reason => newRes1.reject(ApiServiceBase.ExctractError(reason)));
+                return newRes1.promise;
+            };
+            return result;
         }
 
         private configServiceFactory(serviceFactory, methodName: string, paramNames?: {}) {

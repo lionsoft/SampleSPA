@@ -40,11 +40,11 @@ module App {
         get LoggedUserId() { return this.LoggedUser ? this.LoggedUser.Id : undefined; }
 
         Login(login: string, password: string, rememberMe: boolean): ng.IPromise<void> {
-            return <any>app.api.Account.Login(login, password, rememberMe).then(user => this.LoggedUser = user);
+            return <any>app.api.Account.Login(login, password, rememberMe).ExtractError().then(user => this.LoggedUser = user);
         }
 
         Logout(): ng.IPromise<void> {
-            return app.api.Account.Logout().then(() => this.LoggedUser = undefined);
+            return app.api.Account.Logout().HandleError().then(() => this.LoggedUser = undefined);
         }
 
 

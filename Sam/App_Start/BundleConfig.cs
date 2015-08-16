@@ -91,7 +91,12 @@ namespace Sam
                 )
             );
             bundles.Add(new ScriptBundle("~/bundles/LionSoftAngular").Include(
-                    "~/app/common/LionSoft.Angular/LionSoft.Angular-{version}.js"
+                      "~/app/common/LionSoft.Angular/LionSoft.Angular-{version}.js"
+                    , "~/app/common/LionSoft.Angular/fieldset.js"
+                    , "~/app/common/LionSoft.Angular/ng-inverted.js"
+                    , "~/app/common/LionSoft.Angular/ng-popup.js"
+                    , "~/app/common/LionSoft.Angular/ng-tag.js"
+                    , "~/app/common/LionSoft.Angular/nv-fill-container.js"
             ));
             bundles.Add(new ScriptBundle("~/bundles/app")
                 .IncludeDirectory("~/app/consts", "*.js")
