@@ -7,21 +7,50 @@ module App {
      * Описание нашего базового интерфейса CRUD-контроллера ресурсов
      */
     export interface IResourceClass<T> {
-        query?(params?: Object): ng.IPromise<ng.resource.IResourceArray<T>>;
+        query?(params?: Object): IPromise<ng.resource.IResourceArray<T>>;
+        get?(id): IPromise<T>;
+/*
+        select(): IPromise<ng.resource.IResourceArray<T>>;
+        save(data: T): IPromise<T>;
+        save(params: Object, data: T): IPromise<T>;
+*/
+        create?(data: T): IPromise<T>;
+        update?(data: T): IPromise<T>;
 
-        //select(): ng.IPromise<ng.resource.IResourceArray<T>>;
-
-        get?(id): ng.IPromise<T>;
-
-        /*
-                save(data: T): ng.IPromise<T>;
-                save(params: Object, data: T): ng.IPromise<T>;
-        */
-        create?(data: T): ng.IPromise<T>;
-        update?(data: T): ng.IPromise<T>;
-
-        delete?(id): ng.IPromise<boolean>;
+        delete?(id): IPromise<boolean>;
     }
+    
+    export interface IPromise<T> extends ng.IPromise<T> {
+
+        /**
+         * Regardless of when the promise was or will be resolved or rejected, then calls one of the success or error callbacks asynchronously as soon as the result is available. The callbacks are called with a single argument: the result or rejection reason. Additionally, the notify callback may be called zero or more times to provide a progress indication, before the promise is resolved or rejected.
+         * The successCallBack may return IPromise<void> for when a $q.reject() needs to be returned
+         * This method returns a new promise which is resolved or rejected via the return value of the successCallback, errorCallback. It also notifies via the return value of the notifyCallback method. The promise can not be resolved or rejected from the notifyCallback method.
+         */
+        then<TResult>(successCallback: (promiseValue: T) => ng.IHttpPromise<TResult>|App.IPromise<TResult>|IPromise<TResult>|TResult|App.IPromise<void>|IPromise<void>, errorCallback?: (reason: any) => any, notifyCallback?: (state: any) => any): App.IPromise<TResult> | IPromise<TResult>;
+
+        /**
+         * Shorthand for promise.then(null, errorCallback)
+         */
+        catch<TResult>(onRejected: (reason: any) => ng.IHttpPromise<TResult>|IPromise<TResult>|TResult): IPromise<TResult>;
+
+        /**
+         * Allows you to observe either the fulfillment or rejection of a promise, but to do so without modifying the final value. This is useful to release resources or do some clean-up that needs to be done whether the promise was rejected or resolved. See the full specification for more information.
+         *
+         * Because finally is a reserved word in JavaScript and reserved keywords are not supported as property names by ES3, you'll need to invoke the method like promise['finally'](callback) to make your code IE8 and Android 2.x compatible.
+         */
+        finally<TResult>(finallyCallback: () => any): IPromise<TResult>;
+
+        /**
+         * Помечает результат запроса к сервису, что необходимо выполнять обработку ошибки по умолчанию.
+         */
+        HandleError(): IPromise<T>;
+        /**
+         * Помечает результат запроса к сервису, что необходимо в случае ошибки пытаться 
+         * извлечь текст ошибки из ответа. В этом случе параметр reason в методе catch будет строкой - текстом ошибки.
+         */
+        ExtractError(): IPromise<T>;
+    }    
 
     export class ApiServiceBase extends LionSoftAngular.Service {
 
@@ -113,6 +142,7 @@ module App {
             })
             ;
             var result = <IPromise<T>>newRes.promise;
+/*
             result.HandleError = () => {
                 result.catch(reason => ApiServiceBase.HandleError(reason));
                 return result;
@@ -124,22 +154,29 @@ module App {
                     .catch(reason => newRes1.reject(ApiServiceBase.ExctractError(reason)));
                 return newRes1.promise;
             };
+*/
             return result;
         }
 
         private configServiceFactory(serviceFactory, methodName: string, paramNames?: {}) {
             if (!serviceFactory["__" + methodName])
                 serviceFactory["__" + methodName] = serviceFactory[methodName];
-            var $this = this;
-            // ReSharper disable Lambda - to use arguments in function body
+            var _this = this;
+// ReSharper disable once Lambda
             serviceFactory[methodName] = function () {
                 var defaultParamNames = paramNames ? (paramNames[methodName] || paramNames["$default"]) : undefined;
                 var args = [];
                 var params = {};
+
+                // Если первым параметром передан объект ODataParams - превращаем его в строку параметров
+                if (arguments.length > 0 && arguments[0] instanceof Services.ODataParams) {
+                    arguments[0] = arguments[0].query;
+                }
+
                 // Преобразование строки параметров в объект
                 // ReSharper disable SuspiciousThisUsage
                 if (arguments.length > 0 && typeof arguments[0] == "string" && (arguments[0].StartsWith("?") || arguments[0].StartsWith("&") || arguments[0].StartsWith("$"))) {
-                    params = arguments[0].replace(/(^\?)/, "").split("&").map(function (n) { return n = n.split("="), $this[n[0]] = n[1].trim(), $this; }.bind({}))[0];
+                    params = arguments[0].replace(/(^\?)/, "").split("&").map(function (n) { return n = n.split("="), this[n[0]] = n[1].trim(), this; }.bind({}))[0];
                     args.push(params);
                 }
                 // ReSharper restore SuspiciousThisUsage
@@ -165,10 +202,9 @@ module App {
                         }
                     }
                 }
-
-                var oldResult = serviceFactory["__" + methodName].apply($this, args.length === 0 ? arguments : <any>args);
+                var oldResult = serviceFactory["__" + methodName].apply(_this, args.length === 0 ? arguments : <any>args);
                 // Преобразование старого результата в нормальный промис
-                return $this.configServiceResult(oldResult);
+                return _this.configServiceResult(oldResult);
             };
         }
 
@@ -211,7 +247,9 @@ module App {
                         },
                         create: { method: "POST", transformResponse: (data, headers) => this.transformServiceResponse(data, headers) },
                         update: { method: "PUT", transformResponse: (data, headers) => this.transformServiceResponse(data, headers) },
-                        delete: { method: "DELETE", transformResponse: (data, headers) => this.transformServiceResponse(data, headers) }
+                        delete: { method: "DELETE", transformResponse: (data, headers) => this.transformServiceResponse(data, headers) },
+                        head:   { method: "HEAD", transformResponse: (data, headers) => this.transformServiceResponse(data, headers) },
+                        patch:  { method: "PATCH", transformResponse: (data, headers) => this.transformServiceResponse(data, headers) }
                 };
                 // Добавляем дополнительные методы
                 for (var method in x.value) {

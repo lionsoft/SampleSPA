@@ -236,8 +236,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Api\AccountController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Views\Home\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1214,6 +1213,7 @@
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\version.json" />
     <TypeScriptCompile Include="app\common\Controller.ts" />
+    <TypeScriptCompile Include="app\services\CRUDService.ts" />
     <TypeScriptCompile Include="app\common\Directive.ts" />
     <TypeScriptCompile Include="app\common\LionSoftJs\LionSoftJs-0.1.1.ts" />
     <TypeScriptCompile Include="app\common\Service.ts" />
@@ -1380,18 +1380,7 @@
     <Content Include="Content\toastr.less" />
     <Content Include="app\l10n\en.json" />
     <Content Include="app\l10n\ru.json" />
-    <Content Include="Scripts\angular.min.js.map" />
-    <Content Include="Scripts\angular-route.min.js.map" />
     <Content Include="Scripts\errors.json" />
-    <Content Include="Scripts\angular-touch.min.js.map" />
-    <Content Include="Scripts\angular-sanitize.min.js.map" />
-    <Content Include="Scripts\angular-resource.min.js.map" />
-    <Content Include="Scripts\angular-messages.min.js.map" />
-    <Content Include="Scripts\angular-message-format.min.js.map" />
-    <Content Include="Scripts\angular-loader.min.js.map" />
-    <Content Include="Scripts\angular-cookies.min.js.map" />
-    <Content Include="Scripts\angular-aria.min.js.map" />
-    <Content Include="Scripts\angular-animate.min.js.map" />
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
@@ -1447,6 +1436,8 @@
   <ItemGroup>
     <TypeScriptCompile Include="app\services\ApiService.ts" />
     <TypeScriptCompile Include="app\services\ApiServiceBase.ts" />
+    <TypeScriptCompile Include="app\services\ODataFilterCreator.ts" />
+    <TypeScriptCompile Include="app\services\ODataParams.ts" />
     <TypeScriptCompile Include="app\views\admin\admin.ts" />
     <TypeScriptCompile Include="app\app.ts" />
     <TypeScriptCompile Include="app\services\AutenticationService.ts" />
@@ -1467,14 +1458,14 @@
     <TypeScriptCompile Include="app\config.ts" />
     <TypeScriptCompile Include="app\consts\URL.ts" />
     <TypeScriptCompile Include="app\views\dashboard\dashboard.ts" />
-    <TypeScriptCompile Include="app\directives\cc-img-person.ts" />
-    <TypeScriptCompile Include="app\directives\cc-menu-item-rendered.ts" />
-    <TypeScriptCompile Include="app\directives\cc-scroll-to-top.ts" />
-    <TypeScriptCompile Include="app\directives\cc-sidebar.ts" />
-    <TypeScriptCompile Include="app\directives\cc-spinner.ts" />
-    <TypeScriptCompile Include="app\directives\cc-widget-close.ts" />
-    <TypeScriptCompile Include="app\directives\cc-widget-header.ts" />
-    <TypeScriptCompile Include="app\directives\cc-widget-minimize.ts" />
+    <TypeScriptCompile Include="app\directives\cc\cc-img-person.ts" />
+    <TypeScriptCompile Include="app\directives\cc\cc-menu-item-rendered.ts" />
+    <TypeScriptCompile Include="app\directives\cc\cc-scroll-to-top.ts" />
+    <TypeScriptCompile Include="app\directives\cc\cc-sidebar.ts" />
+    <TypeScriptCompile Include="app\directives\cc\cc-spinner.ts" />
+    <TypeScriptCompile Include="app\directives\cc\cc-widget-close.ts" />
+    <TypeScriptCompile Include="app\directives\cc\cc-widget-header.ts" />
+    <TypeScriptCompile Include="app\directives\cc\cc-widget-minimize.ts" />
     <TypeScriptCompile Include="app\layout\shell.ts" />
     <TypeScriptCompile Include="app\layout\sidebar.ts" />
     <TypeScriptCompile Include="app\routes.ts" />

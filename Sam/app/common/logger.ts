@@ -1,5 +1,4 @@
-﻿/// <reference path="common.ts" />
-'use strict';
+﻿'use strict';
 module App.Shared{
 
     export interface ILogger {
@@ -12,9 +11,9 @@ module App.Shared{
     
 
     export class Logger implements ILogger {
-        public static serviceId = 'logger';
+
         //#region Variables
-        $log;
+        $log: ng.ILogService;
         logFn: (msg: string, data?: any, moduleId?: any, showToast?: boolean) => void;
         service = {
             getLogFn: this.getLogFn,
@@ -25,15 +24,14 @@ module App.Shared{
         };
         //#endregion
         
-        constructor($log)
-        {
+        constructor($log) {
             this.$log = $log;
-            window.alert = (msg) => this.logFn(msg, "", "", true);
+            window.alert = (msg) => this.getLogFn("")(msg, "", true);
         }
+        
         //#region Public Methods
         //TODO: see if there is a way to solve this more intuitive than returning an anonymous function
-        getLogFn(moduleId: string, logFunctionName?: string): (msg: string, data?: any, showToast?: boolean) => void
-        {
+        getLogFn(moduleId: string, logFunctionName?: string): (msg: string, data?: any, showToast?: boolean) => void {
             logFunctionName = logFunctionName || 'log';
             switch (logFunctionName.toLowerCase()) { // convert aliases
                 case 'success':
@@ -90,9 +88,8 @@ module App.Shared{
                 }
             }
         }
-
     }
 
     // Register with angular
-    commonModule.factory(Logger.serviceId, ['$log', ($log) => new Logger($log)]);
+    commonModule.factory('logger', ['$log', ($log) => new Logger($log)]);
 }

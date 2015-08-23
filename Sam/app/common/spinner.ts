@@ -1,6 +1,4 @@
-﻿/// <reference path="common.ts" />
-/// <reference path="commonconfig.ts" />
-'use strict';
+﻿'use strict';
 module App.Shared
 {
 

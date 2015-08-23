@@ -8,6 +8,11 @@ module App {
      */
     export class Directive extends LionSoftAngular.Directive {
 
+
+        promiseFromResult<T>(res: T): IPromise<T> {
+            return <any>super.promiseFromResult(res);
+        }
+
         /**
          * Do not override this method. Use methods this.PreLink, this.Link, this.Compile instead.
          */

@@ -37,7 +37,6 @@ module App {
                 .determinePreferredLanguage()
             ;
 
-            if ($l10n) {
                 if (location.pathname.Trim('/'))
                     $l10n.$defaultLanguage = location.pathname.Trim('/');
                 $l10n.$defaultLanguage = $l10n.$defaultLanguage || "ru";
@@ -62,7 +61,6 @@ module App {
                     if (defLang.value.select2)
                         $.getScript("/Scripts/i18n/{0}.js".format(defLang.value.select2));
                 }
-            }
 
         }])
     ;

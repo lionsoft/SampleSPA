@@ -49,7 +49,7 @@ module App {
     //#region Configure CORS for $http provider
     app.config(['$httpProvider', $httpProvider => {
         $httpProvider.defaults.useXDomain = true;
-        //delete $httpProvider.defaults.headers.common['X-Requested-With'];
+        delete $httpProvider.defaults.headers.common['X-Requested-With'];
         // Должен остаться признак, что это AJAX-запрос 
         $httpProvider.defaults.headers.common['X-Ajax-Request'] = "1";
     }]);
@@ -65,6 +65,34 @@ module App {
     }]);    
     //#endregion
 
+
+    //#region Configure $q to return App.IPromise with HandleError and ExtractError methods
+    app.decorator("$q", ['$delegate', 
+        $delegate => {
+            var savedDefer = $delegate.defer;
+            $delegate.defer = () => {
+                var res = savedDefer();
+                res.promise.HandleError = () => {
+                    res.promise.catch(reason => {
+                        console.error(reason);
+                        ApiServiceBase.HandleError(reason);
+                    });
+                    return res.promise;
+                };
+                res.promise.ExtractError = () => {
+                    var newRes1 = $delegate.defer();
+                    res.promise
+                        .then(r => newRes1.resolve(r))
+                        .catch(reason => newRes1.reject(ApiServiceBase.ExctractError(reason)));
+                    return newRes1.promise;
+                };
+                return res;
 }
+            return $delegate;
+        }
+    ]);
+    //#endregion
+}
+
 
  

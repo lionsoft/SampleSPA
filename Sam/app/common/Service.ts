@@ -8,5 +8,10 @@ module App {
      * app.service('myService', MyService.Factory('svc1', 'svc2'));
      */
     export class Service extends LionSoftAngular.Service {
+
+        promiseFromResult<T>(res: T): IPromise<T> {
+            return <any>super.promiseFromResult(res);
+        }
+
     }
 }

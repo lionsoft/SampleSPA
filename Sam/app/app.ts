@@ -37,9 +37,10 @@ module App {
     ]);
 
     // Handle routing errors and success events
-    app.run(['$route', function ($route) {
+    app.run(['$route',  $route => {
         // Include $route to kick start the router.
     }]);
+
 }
 
 var app: IApp = App.app;

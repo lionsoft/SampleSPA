@@ -20,7 +20,8 @@ module App.Controllers {
                 return '';
             }
             var menuName = route.name;
-            var res = this.$route.current.name.substr(0, menuName.length) === menuName ? 'current' : '';
+//            var res = this.$route.current.name.substr(0, menuName.length) === menuName ? 'current' : '';
+            var res = (this.$route.current.name === menuName || this.$route.current.name.substr(0, menuName.length + 1) === `${menuName}.`) ? 'current' : '';
 
             this.IsSidebarVisible = this.$route.current.name !== "login";
             return res;

@@ -98,7 +98,26 @@ module App.Shared {
             })();
         }
 
-        public debouncedThrottle(key: string, callback: Function, delay: number, immediate: boolean): void {
+        public debouncedThrottle(callback: Function, delay: number, immediate?: boolean): void;
+        public debouncedThrottle(key: string, callback: Function, delay: number, immediate?: boolean): void;
+        public debouncedThrottle(p1, p2, p3?, p4?): void {
+            var key: string;
+            var callback: Function;
+            var delay: number;
+            var immediate: boolean;
+            if (typeof p1 === "function") {
+                key = p1.toString().ToMd5();
+                callback = p1;
+                delay = p3;
+                immediate = p4;
+            } else {
+                key = p1;
+                callback = p2;
+                delay = p3;
+                immediate = p4;
+            }
+
+
             // Perform some action (callback) after a delay. 
             // Track the callback by key, so if the same callback 
             // is issued again, restart the delay.

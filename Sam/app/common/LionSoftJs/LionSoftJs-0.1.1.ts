@@ -60,6 +60,22 @@ interface String {
     ExtractFileName(separator?: string);
 
     /**
+        Extracts file name without extension from path.
+         for 'fileName.ext' -> returns 'fileName'
+         for 'fileName.' -> returns 'fileName'
+         for 'fileName.name1.name2.ext' -> returns 'fileName.name1.name2'
+    */
+    ExtractOnlyFileName(separator?: string);
+
+    /**
+        Extracts file extension from path.
+         for 'fileName.ext' -> returns 'ext'
+         for 'fileName.' -> returns ''
+         for 'fileName' -> returns undefined
+    */
+    ExtractFileExt(separator?: string);
+
+    /**
         Expand filename with the passed base path.
 
         If the base path is empty the filename will be expanded from site root origin (if filename starts with '/') 
@@ -101,6 +117,11 @@ interface String {
     HtmlDecode(): string;
 
     ToMd5(): string;
+}
+
+interface Function {
+    getBody(): string;   
+    isEmpty(): boolean;   
 }
 
 interface Number {
@@ -177,6 +198,7 @@ interface Array<T> {
 }
 
 interface Location {
+
     /**
         Value is the same as LionSoftJs.appFolder
     */
@@ -504,7 +526,16 @@ module LionSoftJs {
 
     }
 
+    Function.prototype.getBody = function () {
+        // Get content between first { and last }
+        var m = this.toString().match(/\{([\s\S]*)\}/m)[1];
+        // Strip comments
+        return m.replace(/^\s*\/\/.*$/mg, '');
+    };
 
+    Function.prototype.isEmpty = function () {
+        return (this.getBody() || "").trim() === "";
+    }
 
     // Getting current version
     var scripts = document.getElementsByTagName("script"),

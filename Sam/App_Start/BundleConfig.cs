@@ -170,18 +170,21 @@ namespace Sam
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/app/directives").Include(
-                  "~/app/directives/cc-img-person.js"
-                , "~/app/directives/cc-menu-item-rendered.js"
-                , "~/app/directives/cc-scroll-to-top.js"
-                , "~/app/directives/cc-sidebar.js"
-                , "~/app/directives/cc-spinner.js"
-                , "~/app/directives/cc-widget-close.js"
-                , "~/app/directives/cc-widget-header.js"
-                , "~/app/directives/cc-widget-minimize.js"
+                  "~/app/directives/cc/cc-img-person.js"
+                , "~/app/directives/cc/cc-menu-item-rendered.js"
+                , "~/app/directives/cc/cc-scroll-to-top.js"
+                , "~/app/directives/cc/cc-sidebar.js"
+                , "~/app/directives/cc/cc-spinner.js"
+                , "~/app/directives/cc/cc-widget-close.js"
+                , "~/app/directives/cc/cc-widget-header.js"
+                , "~/app/directives/cc/cc-widget-minimize.js"
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/app/services").Include(
-                  "~/app/services/ApiServiceBase.js"
+                  "~/app/services/ODataFilterCreator.js"
+                , "~/app/services/ODataParams.js"
+                , "~/app/services/CRUDService.js"
+                , "~/app/services/ApiServiceBase.js"
                 , "~/app/services/ApiService.js"
                 , "~/app/services/datacontext.js"
             ));

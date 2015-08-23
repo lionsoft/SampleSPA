@@ -71,6 +71,7 @@ module LionSoftAngular {
         promiseFromResult<T>(res: T): ng.IPromise<T>;
     }
 
+
     /**
      * Все angular-контроллеры реализуют этот интерфейс
      */
@@ -342,7 +343,9 @@ module LionSoftAngular {
                     this.ngName = this.ngName[0].toLowerCase() + this.ngName.substr(1);
             }
             var res = this.ngName;
-            if (!camelCase) {
+            if (res)
+                res = res[0].toLowerCase() + res.substr(1);
+            if (!camelCase && res) {
                 res = res.replace(/[A-Z]/g, (match/*, index, original*/) => ('-' + match.toLowerCase()));
             }
             return res;

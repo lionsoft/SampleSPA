@@ -12,6 +12,10 @@ module App {
 
         common: Shared.ICommon;
 
+        promiseFromResult<T>(res: T): IPromise<T> {
+            return <any>super.promiseFromResult(res);
+        }
+
         /**
          * Ссылка на сервис-переводчик
          */
@@ -35,6 +39,10 @@ module App {
             this.addInjection(injects, "common", "$scope", "$route", "$routeParams", "$translate", "$filter", "$location");
         }
 
+        Translate(langKey: string): string {
+            return this.$filter("translate")(langKey);
+        }
+
 
         // ReSharper disable once InconsistentNaming
         init(callInit: boolean) {
@@ -46,9 +54,9 @@ module App {
             this.log = this.common.logger.getLogFn(this.ngName);
             this.$rootScope['title'] = undefined;
             var appTitle = this.$filter("translate")(Site.TITLE);
-            this.$scope.$watch((controllerAs ? controllerAs + "." : "") + "title", newVal => {
+            this.$scope.$watch((controllerAs ? controllerAs + "." : "") + "title", (newVal: string) => {
                 if (newVal)
-                    this.$rootScope['title'] = this.$filter("translate")(newVal) + " - " + appTitle;
+                    this.$rootScope['title'] = this.Translate(newVal) + " - " + appTitle;
                 else
                     this.$rootScope['title'] = appTitle;
             });

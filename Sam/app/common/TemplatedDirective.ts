@@ -6,6 +6,10 @@ module App {
      */
     export class TemplatedDirective extends LionSoftAngular.TemplatedDirective {
 
+        promiseFromResult<T>(res: T): IPromise<T> {
+            return <any>super.promiseFromResult(res);
+        }
+
         templateUrl = (elem, attr) => {
             this.ngName = this.name || this.ngName;
             this.rootFolder = URL.DIRECTIVES_ROOT + this.getName(false) + "/";

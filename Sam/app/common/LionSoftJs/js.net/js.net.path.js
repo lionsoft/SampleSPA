@@ -20,6 +20,44 @@
         };
     }
 
+    /**
+        Extracts file name without extension from path.
+         for 'fileName.ext' -> returns 'fileName'
+         for 'fileName.' -> returns 'fileName'
+         for 'fileName.name1.name2.ext' -> returns 'fileName.name1.name2'
+    */
+    if (typeof String.prototype.ExtractOnlyFileName != 'function') {
+        String.prototype.ExtractOnlyFileName = function (separator) {
+            var res = this.ExtractFileName(separator);
+            var path = res.split('.');
+            if (path.length > 1) {
+                path.length--;
+                res = path.join('.');
+            }
+            return res;
+        };
+    }
+
+    /**
+        Extracts file extension from path.
+         for 'fileName.ext' -> returns 'ext'
+         for 'fileName.' -> returns ''
+         for 'fileName' -> returns undefined
+    */
+    if (typeof String.prototype.ExtractFileExt != 'function') {
+        String.prototype.ExtractFileExt = function (separator) {
+            var res = this.ExtractFileName(separator);
+            var path = res.split('.');
+            if (path.length > 1) {
+                res = path[path.length - 1];
+            } else {
+                res = undefined;
+            }
+            return res;
+        };
+    }
+
+
     if (typeof String.prototype.ExpandPath != 'function') {
         String.prototype.ExpandPath = function (basePath, separator) {
             if (this.StartsWith(/https?:\/\//i)) {
