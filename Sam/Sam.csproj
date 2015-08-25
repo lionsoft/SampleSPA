@@ -23,6 +23,8 @@
     <IISExpressUseClassicPipelineMode />
     <TypeScriptToolsVersion>1.5</TypeScriptToolsVersion>
     <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -249,17 +251,89 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\app.js">
+      <DependentUpon>app.ts</DependentUpon>
+    </Content>
     <Content Include="app\common\LionSoftJs\js.net\js.net.array.js" />
     <Content Include="app\common\LionSoftJs\js.net\js.net.md5.js" />
     <Content Include="app\common\LionSoftJs\js.net\js.net.path.js" />
     <Content Include="app\common\LionSoftJs\js.net\js.net.string.js" />
     <Content Include="app\common\LionSoftJs\js.net\string.format-1.0.js" />
-    <Content Include="app\css\buttons.css" />
-    <Content Include="app\css\Colors.css" />
-    <Content Include="app\css\fixes.css" />
-    <Content Include="app\css\navbar.css" />
-    <Content Include="app\css\splash.css" />
-    <Content Include="app\css\toastr.css" />
+    <Content Include="app\app.js.map">
+      <DependentUpon>app.ts</DependentUpon>
+    </Content>
+    <Content Include="app\config.exceptionHandler.js">
+      <DependentUpon>config.exceptionHandler.ts</DependentUpon>
+    </Content>
+    <Content Include="app\config.exceptionHandler.js.map">
+      <DependentUpon>config.exceptionHandler.ts</DependentUpon>
+    </Content>
+    <Content Include="app\config.js">
+      <DependentUpon>config.ts</DependentUpon>
+    </Content>
+    <Content Include="app\config.l10n.js">
+      <DependentUpon>config.l10n.ts</DependentUpon>
+    </Content>
+    <Content Include="app\config.l10n.js.map">
+      <DependentUpon>config.l10n.ts</DependentUpon>
+    </Content>
+    <Content Include="app\config.route.js.map">
+      <DependentUpon>config.route.ts</DependentUpon>
+    </Content>
+    <Content Include="app\config.js.map">
+      <DependentUpon>config.ts</DependentUpon>
+    </Content>
+    <None Include="app\css\buttons.less" />
+    <None Include="app\css\Colors.less" />
+    <None Include="app\css\fixes.less" />
+    <None Include="app\css\navbar.less" />
+    <None Include="app\css\splash.less" />
+    <None Include="app\css\toastr.less" />
+    <Content Include="app\config.route.js">
+      <DependentUpon>config.route.ts</DependentUpon>
+    </Content>
+    <Content Include="app\css\buttons.css">
+      <DependentUpon>buttons.less</DependentUpon>
+    </Content>
+    <Content Include="app\css\buttons.min.css">
+      <DependentUpon>buttons.css</DependentUpon>
+    </Content>
+    <Content Include="app\css\Colors.css">
+      <DependentUpon>Colors.less</DependentUpon>
+    </Content>
+    <Content Include="app\css\Colors.min.css">
+      <DependentUpon>Colors.css</DependentUpon>
+    </Content>
+    <Content Include="app\css\fixes.css">
+      <DependentUpon>fixes.less</DependentUpon>
+    </Content>
+    <Content Include="app\css\fixes.min.css">
+      <DependentUpon>fixes.css</DependentUpon>
+    </Content>
+    <Content Include="app\css\navbar.css">
+      <DependentUpon>navbar.less</DependentUpon>
+    </Content>
+    <Content Include="app\css\navbar.min.css">
+      <DependentUpon>navbar.css</DependentUpon>
+    </Content>
+    <Content Include="app\css\splash.css">
+      <DependentUpon>splash.less</DependentUpon>
+    </Content>
+    <Content Include="app\css\splash.min.css">
+      <DependentUpon>splash.css</DependentUpon>
+    </Content>
+    <Content Include="app\css\toastr.css">
+      <DependentUpon>toastr.less</DependentUpon>
+    </Content>
+    <Content Include="app\css\toastr.min.css">
+      <DependentUpon>toastr.css</DependentUpon>
+    </Content>
+    <Content Include="app\l10n.js">
+      <DependentUpon>l10n.ts</DependentUpon>
+    </Content>
+    <Content Include="app\routes.js">
+      <DependentUpon>routes.ts</DependentUpon>
+    </Content>
     <Content Include="app\views\admin\admin.html" />
     <Content Include="app\common\LionSoft.Angular\html\ng-dialog.html" />
     <Content Include="app\common\LionSoft.Angular\html\ng-prompt-dialog.html" />
@@ -341,6 +415,8 @@
     <Content Include="Content\select.min.css" />
     <Content Include="Content\ui-bootstrap-csp.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="gruntfile.js" />
+    <Content Include="gulpfile.js" />
     <Content Include="Scripts\angular-aria.js" />
     <Content Include="Scripts\angular-aria.min.js" />
     <Content Include="Scripts\angular-cookies.js" />
@@ -1389,6 +1465,14 @@
     <Content Include="Content\DataTables\css\dataTables.jqueryui.scss" />
     <Content Include="app\views\dashboard\dashboard.css" />
     <Content Include="app\web.config" />
+    <Content Include="package.json" />
+    <Content Include="app\l10n.js.map">
+      <DependentUpon>l10n.ts</DependentUpon>
+    </Content>
+    <Content Include="app\routes.js.map">
+      <DependentUpon>routes.ts</DependentUpon>
+    </Content>
+    <None Include="compilerconfig.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
