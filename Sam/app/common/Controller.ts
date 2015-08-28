@@ -51,6 +51,7 @@ module App {
             super.init(false);
             var controllerAs = this.$route.current.controllerAs;
             this.ngName = this.$route.current.controller.toString();
+            $('body').attr("id", this.ngName);
             this.log = this.common.logger.getLogFn(this.ngName);
             this.$rootScope['title'] = undefined;
             var appTitle = this.$filter("translate")(Site.TITLE);

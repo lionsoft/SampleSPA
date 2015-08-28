@@ -11,9 +11,9 @@
              b = parseInt(color.substr(5, 2), 16);
 
          return '#' +
-             ((0 | (1 << 8) + r + (256 - r) * percent / 100).toString(16)).substr(1) +
-             ((0 | (1 << 8) + g + (256 - g) * percent / 100).toString(16)).substr(1) +
-             ((0 | (1 << 8) + b + (256 - b) * percent / 100).toString(16)).substr(1);
+             (((0 | (1 << 8) + r + (256 - r) * percent / 100).toString(16)) + "0").substr(1, 2) +
+             (((0 | (1 << 8) + g + (256 - g) * percent / 100).toString(16)) + "0").substr(1, 2) +
+             (((0 | (1 << 8) + b + (256 - b) * percent / 100).toString(16)) + "0").substr(1, 2);
     }
 
      export function NameToHex(color) {

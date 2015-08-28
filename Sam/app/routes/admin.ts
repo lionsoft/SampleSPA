@@ -1,6 +1,7 @@
 ﻿'use strict';
 
 module App {
+    app.config(() => {
     Routes.push(
         {
             name: 'admin',
@@ -16,4 +17,6 @@ module App {
             ]
         }
     );
+    });
+   
 }

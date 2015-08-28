@@ -1,6 +1,7 @@
 ﻿'use strict';
 
 module App {
+    app.config(() => {
     Routes.push(
         {
             name: 'login',
@@ -8,4 +9,6 @@ module App {
             url: '/login'
         }
     );
+    });
+   
 }

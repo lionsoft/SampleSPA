@@ -5,26 +5,24 @@
 'use strict';
 module App
 {
-    import ILogger = App.Shared.ILogger;
-
     // Configure by setting an optional string value for appErrorPrefix.
     // Accessible via config.appErrorPrefix (via config value).
     // Extend the $exceptionHandler service to also display a toast.
-    function extendExceptionHandler($delegate:any, config:IConfigurations, logger:ILogger)
+    function extendExceptionHandler($delegate: any, config: IConfigurations, logger: Shared.ILogger)
     {
         var appErrorPrefix = config.appErrorPrefix;
         var logError = logger.getLogFn('app', 'error');
         return (exception, cause) =>
         {
             $delegate(exception, cause);
-            if (appErrorPrefix && exception.message.indexOf(appErrorPrefix) === 0)
+            if (appErrorPrefix && (!exception || exception.message.indexOf(appErrorPrefix) === 0))
             {
                 return;
             }
 
             var errorData = { exception: exception, cause: cause };
             var msg = appErrorPrefix + exception.message;
-            logError(msg, errorData, true);
+            logError(msg, errorData, app.isDebugMode);
         };
     }
 

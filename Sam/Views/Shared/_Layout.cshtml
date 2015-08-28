@@ -55,10 +55,13 @@
     @Scripts.Render("~/bundles/LionSoftJs")
     @Scripts.Render("~/bundles/LionSoftAngular")
 
-    @Scripts.Render("~/bundles/app/routes")
-
     @Scripts.Render("~/bundles/app")
 
+    @Scripts.Render("~/bundles/app/routes")
+
+    @Scripts.Render("~/bundles/bootstrap")
+
+    
     @Scripts.Render("~/bundles/app/common")
 
     @Scripts.Render("~/bundles/app/views")
@@ -72,10 +75,11 @@
         @if (Request.IsAuthenticated)
         {
             <text>
-                app.__loggedUser = { Id: '@User.Identity.GetUserId()', Name: '@User.Identity.GetUserName()', Login: '@User.Identity.GetUserName()' };
-            </text>
+        app.__loggedUser = { Id: '@User.Identity.GetUserId()', Name: '@User.Identity.GetUserName()', Login: '@User.Identity.GetUserName()' };
+        </text>
         }
     </script>
 
 </body>
+
 </html>

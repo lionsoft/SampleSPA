@@ -10,13 +10,15 @@ module App.Services {
         /**
         .* Получение объекта по его Id с сервера.
          * @param id идентификатор объекта
+         * @param expandFields перечень $expand-полей. Массив строк или строка с разделителем ','.
          */
-        Load(id: string): IPromise<T>;
+        Load(id: string, expandFields?: string | string[]): IPromise<T>;
         /**
         .* Получение списка объектов с сервера.
          * @param query параметры запроса
          */
-        Load(query?: ODataParams | IODataParams): IPromise<T[]>;
+        Load(query?: OData | IODataParams): IPromise<T[]>;
+
         /**
          * Сохранение объекта.
          * После успешного сохранения объекта, переданного в фунцию Save от сервера приходит объект,
@@ -27,6 +29,22 @@ module App.Services {
          * @param afterSave действие выполняемое после сохранения
          */
         Save(entity: T): IPromise<T>;
+
+        /**
+         * Производит обновление текущих данных объекта данными нового объекта.
+         * Обновление происходит по глобальным правилам, заданным в сервисе.
+         * @param destination целевой объект, данные которого нужно обновить
+         * @param source объект, данными которого обновляют целевой объект.
+         */
+        Update(destination: T, source: T): T;
+        /**
+         * Производит обновление текущих данных объекта данными с сервиса.
+         * Обновление происходит по глобальным правилам, заданным в сервисе.
+         * Целевой объект получит обновлённые данные по Id.
+         * @param destination целевой объект, данные которого нужно обновить
+         */
+        Update(destination: T): IPromise<T>;
+
         /**
          * Удаляет объект из базы данных по его Id.
          * @param id Идентификатор объекта.
@@ -74,8 +92,17 @@ module App.Services {
          * Перекрыв его в классе наследнике можно глобально влиять на запросы к бекенду данного класса.
          * @param odata параметры запроса
          */
-        protected prepareQuery(odata: ODataParams) {
+        protected prepareQuery(odata: OData): void {
             
+        }
+
+        /**
+         * Этот метод вызывается ПЕРЕД отправкой запроса get на сервер.
+         * Перекрыв его в классе наследнике можно глобально влиять на запросы к бекенду данного класса.
+         * @param odata параметры запроса (поддерживается только $expand параметр)
+         */
+        protected prepareGet(odata: OData): void {
+            this.prepareQuery(odata);
         }
 
         /**
@@ -118,6 +145,16 @@ module App.Services {
          * но увеличивают рамер передаваемых данных и могут привести к циклическим ссылкам.
          */
         protected prepareSave(entity: T): void {
+            for (let key in entity) {
+                if (entity.hasOwnProperty(key)) {
+                    if (key[0] === "$")
+                    // очищаем все приватные и внутренние поля
+                        entity[key] = undefined;
+                    // очищаем все ссылочные поля, кроме полей Moment и Date
+                    else if (entity[key] !== null && typeof entity[key] === "object" && !entity[key]._isAMomentObject && !(entity[key] instanceof Date))
+                        entity[key] = undefined;
+                }
+            }
         }
 
         /**
@@ -147,8 +184,8 @@ module App.Services {
         .* Получение списка объектов с сервера.
          * @param query параметры запроса
          */
-        protected $query(query?: ODataParams | IODataParams): IPromise<T[]> {
-            var odata = query instanceof ODataParams ? query : new ODataParams(<IODataParams>query);
+        protected $query(query?: OData | IODataParams): IPromise<T[]> {
+            var odata = query instanceof OData ? query : new OData(<IODataParams>query);
             this.prepareQuery(odata);
             var res = this.afterQuery(this.ApiService.query(odata));
             if (!this.prepareResult.isEmpty()) {
@@ -164,33 +201,52 @@ module App.Services {
         /**
         .* Получение объекта по его Id с сервера.
          * @param id идентификатор объекта
+         * @param expandFields перечень $expand-полей. Массив строк или строка с разделителем ','.
          */
-        protected $get(id: string): IPromise<T> {
-            var res = this.afterGet(this.ApiService.get(id));
-            if (!this.prepareResult.isEmpty()) {
-                res = res.then((r: any) => {
-                    if (r)
-                        this.prepareResult(r);
-                    return r;
-                });
+        protected $get(id: string, expandFields: string | string[]): IPromise<T> {
+            expandFields = expandFields || "";
+            if (angular.isArray(expandFields))
+                expandFields = (<string[]>expandFields).join(',');
+            var odata = new OData(<IODataParams>{ $expand: <string>expandFields });
+            this.prepareGet(odata);
+            var res;
+            odata.$filter(undefined).$skip(undefined).$top(undefined).$orderBy(undefined);
+            if (odata.toString()) {
+                odata.$filter(`Id eq '${id}'`).$top(1);
+                res = this.ApiService.query(odata).then(r => r.firstOrDefault());
+            } else {
+                res = this.ApiService.get(id/*, odata*/);
             }
-            return res;
+            // Добавляем проверку - не возвращать результат, если он равен null (или undefined)
+            var resQ = this.defer<T>();
+            this.afterGet(res)
+                .then((r: any) => {
+                    if (r) {
+                        if (!this.prepareResult.isEmpty())
+                        this.prepareResult(r);
+                        resQ.resolve(r);
+            }
+                })
+                .catch(err => resQ.reject(err));
+            return <any>resQ.promise;
         }
 
 
         /**
         .* Получение объекта по его Id с сервера.
          * @param id идентификатор объекта
+         * @param query параметры запроса - можно передать $expand параметр
+         * @param expandFields перечень $expand-полей. Массив строк или строка с разделителем ','.
          */
-        Load(id: string): IPromise<T>;
+        Load(id: string, expandFields?: string | string[]): IPromise<T>;
         /**
         .* Получение списка объектов с сервера.
          * @param query параметры запроса
          */
-        Load(query?: ODataParams | IODataParams): IPromise<T[]>;
-        Load(p): any {
+        Load(query?: OData | IODataParams): IPromise<T[]>;
+        Load(p, p1?): any {
             if (angular.isString(p))
-                return this.$get(p);
+                return this.$get(p, p1);
             else
                 return this.$query(p);
         }

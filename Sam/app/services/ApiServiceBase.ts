@@ -168,10 +168,19 @@ module App {
                 var args = [];
                 var params = {};
 
-                // Если первым параметром передан объект ODataParams - превращаем его в строку параметров
-                if (arguments.length > 0 && arguments[0] instanceof Services.ODataParams) {
+                // Если первым параметром передан объект OData - превращаем его в строку параметров
+                if (arguments.length > 0 && arguments[0] instanceof Services.OData) {
                     arguments[0] = arguments[0].query;
                 }
+/*
+                for (let i = 0; i < arguments.length; i++) {
+                    if (arguments[i] instanceof Services.OData) {
+                        var query = arguments[i].query;
+                        if (query)
+                            arguments[i] = query.replace(/(^\?)/, "").split("&").map(function (n) { return n = n.split("="), this[n[0]] = n[1].trim(), this; }.bind({}))[0];
+                    }
+                }
+*/
 
                 // Преобразование строки параметров в объект
                 // ReSharper disable SuspiciousThisUsage
@@ -245,6 +254,7 @@ module App {
                             isArray: true,
                             transformResponse: (data, headers) => this.transformServiceResponse(data, headers) 
                         },
+                        get: { method: "GET", transformResponse: (data, headers) => this.transformServiceResponse(data, headers) },
                         create: { method: "POST", transformResponse: (data, headers) => this.transformServiceResponse(data, headers) },
                         update: { method: "PUT", transformResponse: (data, headers) => this.transformServiceResponse(data, headers) },
                         delete: { method: "DELETE", transformResponse: (data, headers) => this.transformServiceResponse(data, headers) },

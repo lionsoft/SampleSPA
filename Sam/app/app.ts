@@ -4,6 +4,8 @@
  * Интерфейс нашего приложения
  */
 interface IApp extends ng.IModule, LionSoftAngular.INgObject {
+    webConfig: any;
+    isDebugMode: boolean;
     api: App.IApiService;
     popup: LionSoftAngular.IPopupService;
     $auth: App.IAutenticationService;
@@ -41,8 +43,22 @@ module App {
         // Include $route to kick start the router.
     }]);
 
+    app.config(() => {
+        app.isDebugMode = window["__isDebugMode"];
+        app.webConfig = window["__webConfig"] || {};
+    });    
+
+    //#region - Настройка общедоступных сервисов API -
+    app.run(['ApiService', '$rootScope', 'popupService', '$q', '$injector', '$log', '$timeout', '$window',
+        (api, $rootScope, popup, $q, $injector, $log, $timeout, $window) => {
+            app.api = api;
+            app.popup = popup;
+            $rootScope.isDebugMode = app.isDebugMode;
+            $rootScope.App = App;
+            app.$injector = $injector;
+        }]);    
+    //#endregion
+
 }
 
-var app: IApp = App.app;
-
-
+var app = App.app;

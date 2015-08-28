@@ -54,7 +54,7 @@ module App {
         $httpProvider.defaults.headers.common['X-Ajax-Request'] = "1";
     }]);
     //#endregion
-
+/*
     LionSoftAngular.Services.app = app;
 
     //#region - Настройка общедоступных сервисов API -
@@ -64,7 +64,7 @@ module App {
         $rootScope.App = App;
     }]);    
     //#endregion
-
+*/
 
     //#region Configure $q to return App.IPromise with HandleError and ExtractError methods
     app.decorator("$q", ['$delegate', 

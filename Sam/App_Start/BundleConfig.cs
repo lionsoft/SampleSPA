@@ -124,6 +124,7 @@ namespace Sam
                       "~/app/l10n.js"
                     // !--Bootstrapping-- >
                     , "~/app/app.js"
+/*
                     , "~/app/config.js"
                     , "~/app/config.exceptionHandler.js"
                     , "~/app/config.l10n.js"
@@ -139,6 +140,7 @@ namespace Sam
 
                     // !--common.bootstrap Modules-- >
                     , "~/app/common/bootstrap/bootstrap.dialog.js"
+*/
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/app/routes").Include(
@@ -147,6 +149,26 @@ namespace Sam
                     , "~/app/routes/admin.js"
                     , "~/app/routes/login.js"
             ));
+
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap")
+                .Include(
+                    // !--Bootstrapping-- >
+                      "~/app/config.js"
+                    , "~/app/config.exceptionHandler.js"
+                    , "~/app/config.l10n.js"
+                    , "~/app/config.route.js"
+
+                    // !--common Modules-- >
+                    , "~/app/common/common.js"
+                    , "~/app/common/commonConfig.js"
+                    , "~/app/services/AutenticationService.js"
+                    , "~/app/common/logger.js"
+                    , "~/app/common/spinner.js"
+
+
+                    // !--common.bootstrap Modules-- >
+                    , "~/app/common/bootstrap/bootstrap.dialog.js"
+                ));
 
             bundles.Add(new ScriptBundle("~/bundles/app/common").Include(
                       "~/app/common/utils/Color.js"
@@ -182,7 +204,7 @@ namespace Sam
 
             bundles.Add(new ScriptBundle("~/bundles/app/services").Include(
                   "~/app/services/ODataFilterCreator.js"
-                , "~/app/services/ODataParams.js"
+                , "~/app/services/OData.js"
                 , "~/app/services/CRUDService.js"
                 , "~/app/services/ApiServiceBase.js"
                 , "~/app/services/ApiService.js"
