@@ -202,6 +202,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\CRUDController.cs" />
+    <Compile Include="Api\AppController.cs" />
     <Compile Include="App_Start\BreezeWebApiConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -272,13 +274,11 @@
     <Compile Include="Extensions\EntityFramework\EFHooks\IHook.cs" />
     <Compile Include="Extensions\EntityFramework\EFHooks\IHookedDbContext.cs" />
     <Compile Include="Extensions\EntityFramework\EFHooks\IPostActionHook.cs" />
-    <Compile Include="Extensions\EntityFramework\EFHooks\IPostLoadHook.cs" />
     <Compile Include="Extensions\EntityFramework\EFHooks\IPreActionHook.cs" />
     <Compile Include="Extensions\EntityFramework\EFHooks\OrderAttribute.cs" />
     <Compile Include="Extensions\EntityFramework\EFHooks\PostActionHook.cs" />
     <Compile Include="Extensions\EntityFramework\EFHooks\PostDeleteHook.cs" />
     <Compile Include="Extensions\EntityFramework\EFHooks\PostInsertHook.cs" />
-    <Compile Include="Extensions\EntityFramework\EFHooks\PostLoadHook.cs" />
     <Compile Include="Extensions\EntityFramework\EFHooks\PostUpdateHook.cs" />
     <Compile Include="Extensions\EntityFramework\EFHooks\PreActionHook.cs" />
     <Compile Include="Extensions\EntityFramework\EFHooks\PreDeleteHook.cs" />

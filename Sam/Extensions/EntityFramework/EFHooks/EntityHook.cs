@@ -2,7 +2,7 @@
 
 namespace Sam.Extensions.EntityFramework.EFHooks
 {
-    public class EntityHook<TEntity> : IPreActionHook, IPostActionHook, IPostLoadHook where TEntity : class
+    public class EntityHook<TEntity> : IPreActionHook, IPostActionHook where TEntity : class
     {
         public EntityState HookStates
         {
@@ -14,9 +14,7 @@ namespace Sam.Extensions.EntityFramework.EFHooks
             var e = entity as TEntity;
             if (e != null)
             {
-                if (metadata.HookType == HookType.Load)
-                    HookOnLoad(e, metadata);
-                else if (metadata.HookType == HookType.Pre)
+                if (metadata.HookType == HookType.Pre)
                     HookBeforeSave(e, metadata.State == EntityState.Added, metadata);
                 else if (metadata.HookType == HookType.Post)
                     HookAfterSave(e, metadata.State == EntityState.Added, metadata);

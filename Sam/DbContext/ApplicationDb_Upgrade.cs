@@ -1,4 +1,8 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Common;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure.Interception;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Sam.Models;
 
@@ -23,6 +27,12 @@ namespace Sam.DbContext
             // Creating database from scratch
             if (fromVersion == 0)
             {
+                Users.Add(new User
+                {
+                    UserName = "1",
+                    SecurityStamp = Guid.NewGuid().ToString(),
+                    PasswordHash = _userManager.PasswordHasher.HashPassword("1")
+                });
             }
             // Updating database to version 2
             else if (toVersion == 2)

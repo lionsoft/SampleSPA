@@ -32,5 +32,9 @@ namespace Sam.DbContext
             modelBuilder.Entity<User>().Property(u => u.Email).HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IDX_UserEmail", 0) { IsUnique = true }));
          }
 
+
+
+
+
     }
 }

@@ -10,7 +10,7 @@ namespace Sam.Extensions.EntityFramework.EFHooks
     /// Этот хук по умолчнию обеспечиват автоматическое сохранение дат в базе данных в UTC формате и 
     /// автоматическое их преобразование в локальную дату при чтении.
     /// </summary>
-    public class DateTimeUtcHook : IPreActionHook, IPostActionHook, IPostLoadHook
+    public class DateTimeUtcHook : IPreActionHook, IPostActionHook
     {
         #region IPreActionHook Members
 
@@ -59,32 +59,16 @@ namespace Sam.Extensions.EntityFramework.EFHooks
                     if (dt == null)
                         continue;
 
-                    switch (metadata.HookType)
+                    if (metadata.HookType == HookType.Pre)
                     {
-                        case HookType.Pre:
-                            if (dt.Value.Kind == DateTimeKind.Utc)
+                        if (dt.Value.Kind == DateTimeKind.Utc)
+                        {
+                            property.SetValue(entity, dt.Value.ToLocalTime());
+                            if (changedProperties != null)
                             {
-                                property.SetValue(entity, dt.Value.ToLocalTime());
-                                if (changedProperties != null)
-                                {
-                                    changedProperties.Add(property);
-                                }
+                                changedProperties.Add(property);
                             }
-                            break;
-/*
-                        case HookType.Post:
-                            if (dt.Value.Kind == DateTimeKind.Utc)
-                            {
-                                property.SetValue(entity, dt.Value.ToLocalTime());
-                            }
-                            break;
-*/
-                        case HookType.Load:
-                            if (dt.Value.Kind == DateTimeKind.Unspecified)
-                            {
-                                property.SetValue(entity, DateTime.SpecifyKind(dt.Value, DateTimeKind.Local));
-                            }
-                            break;
+                        }
                     }
                 }
             }

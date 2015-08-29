@@ -71,10 +71,10 @@ module App.Services {
 
 /*
         replace(find: string, replace: string): IODataTypedOperators<string>;
+*/
+        concat(value: string): IODataTypedOperators<string>;
         tolower(): IODataTypedOperators<string>;
         toupper(): IODataTypedOperators<string>;
-        concat(value: string): IODataTypedOperators<string>;
-*/
         //#endregion
 
         //#region - Date Functions -

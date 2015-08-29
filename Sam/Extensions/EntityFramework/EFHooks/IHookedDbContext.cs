@@ -17,10 +17,5 @@ namespace Sam.Extensions.EntityFramework.EFHooks
         /// </summary>
         IList<IPostActionHook> PostHooks { get; }
 
-        /// <summary>
-        /// The Post load hooks.
-        /// </summary>
-        IList<IPostLoadHook> PostLoadHooks { get; }
-
     }
 }

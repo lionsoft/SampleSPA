@@ -5,7 +5,7 @@ module App {
     Routes.push(
         {
             name: 'dashboard',
-            title: 'DDDD',
+            title: 'Dashboard',
             url: '/',
             templateUrl: '/app/views/dashboard/dashboard.html',
             settings: {

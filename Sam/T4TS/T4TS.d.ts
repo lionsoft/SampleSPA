@@ -7,6 +7,13 @@ declare module App {
     export interface IEntityObjectId {
         Id: string;
     }
+    /** Generated from Sam.DbContext.Test **/
+    export interface ITest extends App.IEntityObjectId {
+        Name: string;
+        Test1: string;
+        Test2: any;
+        Test3: any;
+    }
     /** Generated from Sam.DbContext.TypeScriptUser **/
     export interface IUser {
         Id?: string;

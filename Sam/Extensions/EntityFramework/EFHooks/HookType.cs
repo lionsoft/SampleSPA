@@ -3,7 +3,6 @@
     public enum HookType
     {
         Pre,
-        Post,
-        Load
+        Post
     }
 }

@@ -22,14 +22,14 @@ namespace Sam
         {
             get
             {
-                var isDebug = ConfigurationManager.AppSettings.Get("IsDebugMode").ToLower();
+                var isDebug = ConfigurationManager.AppSettings.Get("IsDebugMode");
                 if (isDebug.IsNullOrWhiteSpace())
                 #if DEBUG
                     return true;
                 #else
                     return false;
                 #endif
-                return isDebug == "true" || isDebug == "1";
+                return isDebug.ToLower() == "true" || isDebug == "1";
             }
         }
 

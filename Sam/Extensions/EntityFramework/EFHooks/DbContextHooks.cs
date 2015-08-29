@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Core.Objects;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Reflection;
 
 namespace Sam.Extensions.EntityFramework.EFHooks
 {
@@ -24,11 +20,6 @@ namespace Sam.Extensions.EntityFramework.EFHooks
         /// </summary>
         public List<IPostActionHook> PostHooks { get; private set;  }
 
-        /// <summary>
-        /// The Post load hooks.
-        /// </summary>
-        public List<IPostLoadHook> PostLoadHooks { get; private set;  }
-
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbContextHooks" /> class, initializing empty lists of hooks.
@@ -36,10 +27,8 @@ namespace Sam.Extensions.EntityFramework.EFHooks
         public DbContextHooks(System.Data.Entity.DbContext context)
         {
             Context = context;
-            ((IObjectContextAdapter)context).ObjectContext.ObjectMaterialized += ObjectMaterialized;
             PreHooks = new List<IPreActionHook>();
             PostHooks = new List<IPostActionHook>();
-            PostLoadHooks = new List<IPostLoadHook>();
         }
 
         /// <summary>
@@ -50,10 +39,8 @@ namespace Sam.Extensions.EntityFramework.EFHooks
         public DbContextHooks(System.Data.Entity.DbContext context, IHook[] hooks)
         {
             Context = context;
-            ((IObjectContextAdapter)context).ObjectContext.ObjectMaterialized += ObjectMaterialized;
             PreHooks = hooks.OfType<IPreActionHook>().ToList();
             PostHooks = hooks.OfType<IPostActionHook>().ToList();
-            PostLoadHooks = hooks.OfType<IPostLoadHook>().ToList();
         }
 
         /// <summary>
@@ -64,7 +51,6 @@ namespace Sam.Extensions.EntityFramework.EFHooks
         {
             RegisterHook(hook as IPreActionHook);
             RegisterHook(hook as IPostActionHook);
-            RegisterHook(hook as IPostLoadHook);
         }
 
         /// <summary>
@@ -92,18 +78,6 @@ namespace Sam.Extensions.EntityFramework.EFHooks
         }
 
         /// <summary>
-        /// Registers a hook to run after a database load occurs.
-        /// </summary>
-        /// <param name="hook">The hook to register.</param>
-        private void RegisterHook(IPostLoadHook hook)
-        {
-            if (hook != null)
-            {
-                PostLoadHooks.Add(hook);
-            }
-        }
-
-        /// <summary>
         /// Saves all changes made in this context to the underlying database.
         /// </summary>
         /// <returns>
@@ -116,26 +90,6 @@ namespace Sam.Extensions.EntityFramework.EFHooks
             var result = saveChanges();
             hookExecution.RunPostActionHooks();
             return result;
-        }
-
-        public void ObjectMaterialized(object sender, ObjectMaterializedEventArgs e)
-        {
-            try
-            {
-                var metadata = new HookEntityMetadata(HookType.Load, null, EntityState.Unchanged, Context);
-                var hookedEntity = e.Entity as IPostLoadHook;
-                if (hookedEntity != null)
-                    hookedEntity.HookObject(e.Entity, metadata);
-                foreach (var postLoadHook in PostLoadHooks)
-                {
-                    postLoadHook.HookObject(e.Entity, metadata);
-                }
-            }
-            catch (Exception err)
-            {
-//                throw err.Error();
-                throw;
-            }
         }
     }
 }

@@ -4,8 +4,8 @@ module App.Controllers {
 
     export class Login extends Controller {
 
-        public login: string = "eleybov@gmail.com";
-        public password: string = "P@ssw0rd";
+        public login: string = "1";
+        public password: string = "1";
         public textError: string;
         public inputType = "password";
         public rememberMe: boolean;

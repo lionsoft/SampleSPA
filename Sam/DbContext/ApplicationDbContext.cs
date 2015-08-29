@@ -45,17 +45,25 @@ namespace Sam.DbContext
 
         #region - Constructors -
 
+//        private static int _cnt = 0;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Sam.DbContext.ApplicationDbContext"/> class.
         /// </summary>
-        public ApplicationDbContext()
-            : base(NameOrConnectionString, throwIfV1Schema: false)
+        public ApplicationDbContext() : base(NameOrConnectionString, throwIfV1Schema: false)
         {
-            Configuration.LazyLoadingEnabled = true;
-            Configuration.ProxyCreationEnabled = true;
+            Configuration.LazyLoadingEnabled = false;
+            Configuration.ProxyCreationEnabled = false;
             Initialize();
+//            Debug.WriteLine("Created: " + Interlocked.Increment(ref _cnt));
         }
-        
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+//            Debug.WriteLine("Disposed: " + Interlocked.Decrement(ref _cnt));
+        }
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
@@ -164,5 +172,7 @@ namespace Sam.DbContext
 
         [Browsable(false)]
         public IDbSet<DbInfo> Infos { get; set; }
+
+
     }
 }

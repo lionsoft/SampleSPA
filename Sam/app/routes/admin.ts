@@ -5,7 +5,7 @@ module App {
     Routes.push(
         {
             name: 'admin',
-            title: 'АДМИН',
+            title: 'Admin',
             url: '/admin',
             auth: true,
             templateUrl: '/app/views/admin/admin.html', // this is default value

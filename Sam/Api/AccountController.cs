@@ -21,7 +21,7 @@ namespace Sam.Api
 {
     [Authorize]
     [RoutePrefix("api/Account")]
-    public class AccountController : ApiController
+    public class AccountController : AppController
     {
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
