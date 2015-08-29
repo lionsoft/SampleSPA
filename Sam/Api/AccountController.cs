@@ -12,11 +12,12 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
+using Sam.DbContext;
 using Sam.Models;
 using Sam.Providers;
 using Sam.Results;
 
-namespace Sam.Controllers
+namespace Sam.Api
 {
     [Authorize]
     [RoutePrefix("api/Account")]
@@ -55,7 +56,7 @@ namespace Sam.Controllers
         [Route("Register")]
         public async Task<IHttpActionResult> Register(RegisterBindingModel model)
         {
-            var user = new ApplicationUser { UserName = model.Login, Email = model.Login };
+            var user = new User { UserName = model.Login, Email = model.Login };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 
@@ -291,7 +292,7 @@ namespace Sam.Controllers
                 return new ChallengeResult(provider, this);
             }
 
-            ApplicationUser user = await UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider,
+            User user = await UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider,
                 externalLogin.ProviderKey));
 
             bool hasRegistered = user != null;
@@ -377,7 +378,7 @@ namespace Sam.Controllers
                 return InternalServerError();
             }
 
-            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+            var user = new User { UserName = model.Email, Email = model.Email };
 
             IdentityResult result = await UserManager.CreateAsync(user);
             if (!result.Succeeded)

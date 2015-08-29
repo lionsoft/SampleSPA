@@ -1,5 +1,6 @@
 using System.Web.Http;
 using System.Web.Mvc;
+using Sam.Areas.HelpPage.App_Start;
 
 namespace Sam.Areas.HelpPage
 {
