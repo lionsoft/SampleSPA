@@ -244,14 +244,51 @@
     <Compile Include="DbContext\ApplicationDb_Upgrade.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DbContext\Hooks\FillWithCurrentUserHook.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DbContext\Hooks\KeyValueHook.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DbContext\Migrations\ApplicationDbConfiguration.cs" />
     <Compile Include="DbContext\Migrations\Configuration.cs" />
     <Compile Include="DbContext\ApplicationDbContext.cs" />
     <Compile Include="DbContext\Models\Common\EntityObjectId.cs" />
     <Compile Include="DbContext\Models\Common\IEntityObjectId.cs" />
+    <Compile Include="DbContext\Models\Users\TypeScriptUser.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DbContext\Models\Users\User.cs" />
     <Compile Include="DbContext\Migrations\ApplicationDbInitializer.cs" />
-    <Compile Include="Extensions\EntityExtensions.cs" />
+    <Compile Include="Extensions\EntityFramework\DateTimeKindAttribute.cs" />
+    <Compile Include="Extensions\EntityFramework\EFHooks\DateTimeUtcHook.cs" />
+    <Compile Include="Extensions\EntityFramework\EFHooks\DbContextHooks.cs" />
+    <Compile Include="Extensions\EntityFramework\EFHooks\DbContextHooksAsync.cs" />
+    <Compile Include="Extensions\EntityFramework\EFHooks\EntityHook.cs" />
+    <Compile Include="Extensions\EntityFramework\EFHooks\HookedEntityEntry.cs" />
+    <Compile Include="Extensions\EntityFramework\EFHooks\HookEntityMetadata.cs" />
+    <Compile Include="Extensions\EntityFramework\EFHooks\HookRunner.cs" />
+    <Compile Include="Extensions\EntityFramework\EFHooks\HookType.cs" />
+    <Compile Include="Extensions\EntityFramework\EFHooks\IHook.cs" />
+    <Compile Include="Extensions\EntityFramework\EFHooks\IHookedDbContext.cs" />
+    <Compile Include="Extensions\EntityFramework\EFHooks\IPostActionHook.cs" />
+    <Compile Include="Extensions\EntityFramework\EFHooks\IPostLoadHook.cs" />
+    <Compile Include="Extensions\EntityFramework\EFHooks\IPreActionHook.cs" />
+    <Compile Include="Extensions\EntityFramework\EFHooks\OrderAttribute.cs" />
+    <Compile Include="Extensions\EntityFramework\EFHooks\PostActionHook.cs" />
+    <Compile Include="Extensions\EntityFramework\EFHooks\PostDeleteHook.cs" />
+    <Compile Include="Extensions\EntityFramework\EFHooks\PostInsertHook.cs" />
+    <Compile Include="Extensions\EntityFramework\EFHooks\PostLoadHook.cs" />
+    <Compile Include="Extensions\EntityFramework\EFHooks\PostUpdateHook.cs" />
+    <Compile Include="Extensions\EntityFramework\EFHooks\PreActionHook.cs" />
+    <Compile Include="Extensions\EntityFramework\EFHooks\PreDeleteHook.cs" />
+    <Compile Include="Extensions\EntityFramework\EFHooks\PreInsertHook.cs" />
+    <Compile Include="Extensions\EntityFramework\EFHooks\PreUpdateHook.cs" />
+    <Compile Include="Extensions\EntityFramework\EntityExtensions.cs" />
+    <Compile Include="Extensions\SequentialGuid.cs" />
+    <Compile Include="T4TS\TypeScriptEnumAttribute.cs" />
+    <Compile Include="T4TS\TypeScriptInterfaceAttribute.cs" />
+    <Compile Include="T4TS\TypeScriptMemberAttribute.cs" />
     <Compile Include="Views\Home\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -1720,7 +1757,15 @@
     <Content Include="app\views\login\login.js.map">
       <DependentUpon>login.ts</DependentUpon>
     </Content>
+    <Content Include="T4TS\T4TS.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>T4TS.d.ts</LastGenOutput>
+    </Content>
+    <Content Include="T4TS\T4TS.tt.settings.t4">
+      <DependentUpon>T4TS.tt</DependentUpon>
+    </Content>
     <None Include="compilerconfig.json" />
+    <Content Include="Sam.csproj.DotSettings" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
@@ -1771,6 +1816,11 @@
     <TypeScriptCompile Include="app\services\ApiServiceBase.ts" />
     <TypeScriptCompile Include="app\services\OData.ts" />
     <TypeScriptCompile Include="app\services\ODataFilterCreator.ts" />
+    <TypeScriptCompile Include="T4TS\T4TS.d.ts">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>T4TS.tt</DependentUpon>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="app\views\admin\admin.ts" />
     <TypeScriptCompile Include="app\app.ts" />
     <TypeScriptCompile Include="app\services\AutenticationService.ts" />
@@ -1834,6 +1884,7 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,4 +1,6 @@
-﻿namespace Sam.DbContext
+﻿using T4TS;
+
+namespace Sam.DbContext
 {
     /// <summary>
     /// Базовый класс для всех сущностей БД, имеющих не строковое ключевое поле Id.
@@ -17,7 +19,7 @@
     /// <summary>
     /// Базовый класс для всех сущностей БД, имеющих строковое ключевое поле Id.
     /// </summary>
-    //[TypeScriptInterface]
+    [TypeScriptInterface]
     public class EntityObjectId : IEntityObjectId
     {
         /// <summary>

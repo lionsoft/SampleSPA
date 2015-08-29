@@ -3,12 +3,6 @@
 // ReSharper disable InconsistentNaming
 module App {
 
-    export interface IUser {
-        Id: string;
-        Login: string;
-        Name: string;
-    }
-
     export interface IAutenticationService {
 
         IsLoggedIn: boolean;

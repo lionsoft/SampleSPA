@@ -3,10 +3,13 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web.WebPages;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Sam.Extensions;
-using Sam.Models;
+using Sam.DbContext.Hooks;
+using Sam.Extensions.EntityFramework;
+using Sam.Extensions.EntityFramework.EFHooks;
 
 namespace Sam.DbContext
 {
@@ -98,7 +101,6 @@ namespace Sam.DbContext
             set { Configuration.LazyLoadingEnabled = value; }
         }
 
-/*
         public DbContextHooks _hooks;
         public DbContextHooks Hooks
         {
@@ -106,9 +108,10 @@ namespace Sam.DbContext
             {
                 if (_hooks == null)
                 {
-                    var hooks = IoC.GetAllInstances(typeof(IHook)).OfType<IHook>().ToArray();
-                    _hooks = new DbContextHooks(this, hooks);
+                    _hooks = new DbContextHooks(this);
                     _hooks.Add(new DateTimeUtcHook());
+                    _hooks.Add(new KeyValueHook());
+                    _hooks.Add(new FillWithCurrentUserHook());
                 }
                 return _hooks;
             }
@@ -129,7 +132,6 @@ namespace Sam.DbContext
                 ? Hooks.SaveChangesAsync(base.SaveChangesAsync, cancellationToken)
                 : base.SaveChangesAsync(cancellationToken);
         }
-*/
 
         #endregion
 
