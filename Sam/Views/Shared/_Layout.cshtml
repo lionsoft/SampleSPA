@@ -56,13 +56,15 @@
     @Scripts.Render("~/bundles/LionSoftJs")
     @Scripts.Render("~/bundles/LionSoftAngular")
 
+
+
     @Scripts.Render("~/bundles/app")
 
     @Scripts.Render("~/bundles/app/routes")
 
     @Scripts.Render("~/bundles/bootstrap")
 
-    
+
     @Scripts.Render("~/bundles/app/common")
 
     @Scripts.Render("~/bundles/app/views")
@@ -76,25 +78,27 @@
         @if (Request.IsAuthenticated)
         {
         <text>
-            app.__loggedUser = { Id: '@User.Identity.GetUserId()', Name: '@User.Identity.GetUserName()', Login: '@User.Identity.GetUserName()' };
+        app.__loggedUser = { Id: '@User.Identity.GetUserId()', Name: '@User.Identity.GetUserName()', Login: '@User.Identity.GetUserName()' };
         </text>
         }
-        
+
         window.__isDebugMode = @(Startup.IsDebugMode ? "true" : "false");
         window.__webConfig = {};
 
-    @{
+        @{
         foreach (var key in ConfigurationManager.AppSettings.AllKeys.Where(k => k.StartsWith("config.")))
         {
             var value = "'" + ConfigurationManager.AppSettings.Get(key).Replace("'", "''") + "'";
             var k = key.Substring("config.".Length);
             <text>
-                window.__webConfig['@k'] = @Html.Raw(value);
-            </text>
+        window.__webConfig['@k'] = @Html.Raw(value);
+        </text>
         }
     }
     </script>
 
 </body>
+
+
 
 </html>

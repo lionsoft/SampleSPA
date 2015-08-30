@@ -1520,6 +1520,8 @@
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\ocLazyLoad.js" />
+    <Content Include="Scripts\r.js" />
+    <Content Include="Scripts\require.js" />
     <Content Include="Scripts\ResizeSensor\ElementQueries.js" />
     <Content Include="Scripts\ResizeSensor\ResizeSensor.js" />
     <Content Include="Scripts\select.js" />
@@ -1816,6 +1818,7 @@
     <TypeScriptCompile Include="app\services\ApiServiceBase.ts" />
     <TypeScriptCompile Include="app\services\OData.ts" />
     <TypeScriptCompile Include="app\services\ODataFilterCreator.ts" />
+    <TypeScriptCompile Include="Scripts\typings\requirejs\require.d.ts" />
     <TypeScriptCompile Include="T4TS\T4TS.d.ts">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1904,6 +1907,10 @@
     <TypeScriptSourceMap>True</TypeScriptSourceMap>
     <TypeScriptMapRoot />
     <TypeScriptSourceRoot />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptModuleKind>amd</TypeScriptModuleKind>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
