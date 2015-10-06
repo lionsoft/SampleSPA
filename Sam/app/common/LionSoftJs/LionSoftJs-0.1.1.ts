@@ -76,6 +76,15 @@ interface String {
     ExtractFileExt(separator?: string);
 
     /**
+        Changes file extension from path.
+         for 'fileName.ext' { '' -> returns 'fileName'
+         for 'fileName.ext' { '.newExt' or 'newExt' -> returns 'fileName.newExt'
+         for 'fileName.' { '.newExt' or 'newExt' -> returns 'fileName.newExt'
+         for 'fileName' { '.newExt' or 'newExt' -> returns 'fileName.newExt'
+    */
+    ChangeFileExt(newExt: string, separator?: string);
+
+    /**
         Expand filename with the passed base path.
 
         If the base path is empty the filename will be expanded from site root origin (if filename starts with '/') 
@@ -178,6 +187,10 @@ interface Array<T> {
         Removes the first occurrence of specific elements from the array.
     */
     Remove(...elements: T[]): Array<T>;
+    /**
+        Removes specific elements matched specified condition from the array.
+    */
+    Remove(condition: (el: T) => boolean): Array<T>;
 
     /**
         Creates a shallow copy of a range of elements in the source array. If count is not specified returns the rest of the array from specified index.

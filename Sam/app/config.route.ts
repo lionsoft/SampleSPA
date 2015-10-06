@@ -2,19 +2,17 @@
 module App {
     export class RouteConfigurator {
 
-        constructor($routeProvider: ng.route.IRouteProvider, routes: IAppRoute[]) {
-//            var user: IUser = app['__loggedUser'];
+        static IsRouteGranted(route: IAppRoute, inTopMenuOnly: boolean = false): boolean {
+            var res = route && !route.isInvisible && (!route.auth || !angular.isArray(route.roles) || (app.$auth && app.$auth.LoggedUser && route.roles.contains(app.$auth.LoggedUser.UserRole)));
+            if (app.$rootScope.$selectedMenuItem && res && inTopMenuOnly && route.settings && route.settings.topMenu)
+                res = app.$rootScope.$selectedMenuItem === route.settings.topMenu;
+            return res;
+        };
+
+        private _routes: IAppRoute[] = [];
+
+        constructor(private $routeProvider: ng.route.IRouteProvider, public routes: IAppRoute[]) {
             routes.forEach(r => {
-
-/*
-                if (r.roles !== undefined) {
-                    if (!user || r.roles.indexOf(user.UserRole) === -1) {
-                        r.isInvisible = true;
-                        r = null;
-                    }
-                }
-*/
-
                 if (r) {
                     var template = "";
                     if (!r.templateUrl)
@@ -36,7 +34,7 @@ module App {
                         var scriptFileName = path + '/' + name + '.js';
                         var styleFileName = path + '/' + name + '.css';
                         if (!r.files) r.files = [];
-                        r.files = r.files.select(f => {
+                        r.files = r.files.selectMany(f => f.split(',')).select(f => {
                             if (!f.StartsWith('/'))
                                 f = path + '/' + f;
                             if (!f.EndsWith('.js'))
@@ -61,11 +59,36 @@ module App {
                         r.controller = r.controller || name;
                         r.controllerAs = r.controllerAs || "$";
                     }
+                    r.redirectTo = ($routeParams, $locationPath, $locationSearch) => this.redirectToDefault($routeParams, $locationPath, $locationSearch);
                     $routeProvider.when(r.url, r);
+                    this._routes.push(r)
                 }
             });
-            $routeProvider.otherwise({ redirectTo: '/' });
+
+            //$routeProvider.otherwise({ redirectTo: '/' });
+            $routeProvider.otherwise({ redirectTo: ($routeParams, $locationPath, $locationSearch) => this.redirectToDefault($routeParams, $locationPath, $locationSearch) });
         }
+
+        redirectToDefault($routeParams?: angular.route.IRouteParamsService, $locationPath?: string, $locationSearch?: any): string {
+            var route = this._routes.firstOrDefault(r => r.url === $locationPath);
+            if (RouteConfigurator.IsRouteGranted(route)) {
+                if (route.settings && route.settings.topMenu)
+                    app.$rootScope.$selectedMenuItem = route.settings.topMenu;
+                return $locationPath;
+            }
+            // try to find route enabled route
+            route = this._routes.firstOrDefault(r => r.url === "/");
+            if (!RouteConfigurator.IsRouteGranted(route, true)) {
+                route = this._routes.where(r => r.settings && r.url && !r.url.StartsWith("/login") && RouteConfigurator.IsRouteGranted(r, true)).orderBy(x => x.settings.topMenu).thenBy(x => x.settings.nav).firstOrDefault();
+            }
+            if (route) {
+                if (route.settings && route.settings.topMenu)
+                    app.$rootScope.$selectedMenuItem = route.settings.topMenu;
+                return route.url;
+            }
+            return "/login";
+        }
+
     }
 
     // Define the routes - since this goes right to an app.constant, no use for a class
@@ -104,21 +127,29 @@ module App {
             } else
                 $rootScope.$redirectToLogin = undefined;
 
-            var nextRoute = $route.routes[$location.path()];
+            var path = $location.path();
+            if (path !== "/" && path.EndsWith("/")) {
+                path = path.substring(0, path.length - 1);
+            }
+
+            var nextRoute = $route.routes[path];
             if (nextRoute) {
-                if (nextRoute.originalPath === "") {
-                    $location.path("/");
-                    $rootScope.$broadcast(config.events.controllerActivateSuccess);
-                }
-                else if (nextRoute.auth && !$auth.IsLoggedIn) {
-                    if (current.Contains("/#/login")) {
-                        evt.preventDefault();
-                    } else {
-                        $rootScope.$priorLocation = $location.path();
-                        $rootScope.$redirectToLogin = true;
-                        $location.path("/login");
-                        $rootScope.$broadcast(config.events.controllerActivateSuccess);
-                    }
+                if (nextRoute.auth) {
+                    if (!$auth.IsLoggedIn) {
+                        // if page requires authorization but user is not logged in
+                        if (current.Contains("/#/login")) {
+                            // ignore login page
+                            evt.preventDefault();
+                            $rootScope.$broadcast(config.events.controllerActivateSuccess);
+                        } else {
+                            // redirect to login page
+                            $rootScope.$priorLocation = path;
+                            $rootScope.$redirectToLogin = true;
+                            $location.path("/login");
+                            $rootScope.$broadcast(config.events.controllerActivateSuccess);
+                            evt.preventDefault();
+                        }
+                    } 
                 }
             }
         });

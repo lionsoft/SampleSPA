@@ -1,4 +1,6 @@
-﻿/*
+﻿@import 'consts';
+
+/*
     Стили главного меню
 */
 .navbar-menuitem {
@@ -35,13 +37,15 @@
     margin-right: 1em;
 }
 
-
-/*#region Override background color theme */
-
-body {
-    background-color: #FFF;
+.sidebar .navi > li > a {
+    font-size: @menu-font-size;
 }
 
+.navbar .navbar-menu .nav > li > a {
+    font-size: @menu-font-size!important;
+}
+
+/*#region Override background color theme */
 
 /*For Bootstrap 3*/
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
@@ -52,7 +56,7 @@ body {
 }
 
 .sidebar-widget form {
-    margin: 0em -1em;
+    margin: 0 -1em;
 }
 
 .sidebar .navi > li > a {
@@ -81,6 +85,7 @@ body {
 
 .sidebar {
     margin-top: -2px;
+    width: @sidebar-width;
 }
 
     .sidebar .sidebar-inner {
@@ -94,8 +99,13 @@ body {
     left: 0;
     height: 100%;
     background-color: #333;
-    width: 230px;
+    width: @sidebar-width;
 }
+
+.mainbar {
+    margin-left: @sidebar-width;
+}
+
 
 
 .navbar .navbar-brand {
@@ -184,6 +194,11 @@ body {
     .sidebar .sidebar-inner {
         height: inherit;
     }
+
+.mainbar {
+    margin-left: 0;
+}
+
 }
 
 @media (max-width: 320px) {

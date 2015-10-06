@@ -226,4 +226,5 @@
             return $('<div/>').html(this).text();
         };
     }
+
 }());

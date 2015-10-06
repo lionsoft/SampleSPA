@@ -22,6 +22,7 @@ module App {
         "pascalprecht.translate",  // translate provider
 
         'angular-loading-bar',
+        'angularFileUpload',
 
         // Custom modules 
         'common',                  // common functions, logger, spinner
@@ -32,9 +33,9 @@ module App {
         "LionSoftAngular",
         "ui",
         "ui.select",
-        "datatables",
-        "datatables.factory",
-        "datatables.bootstrap",
+
+        "smart-table",
+
         "oc.lazyLoad"
     ]);
 
@@ -56,6 +57,18 @@ module App {
             $rootScope.isDebugMode = app.isDebugMode;
             $rootScope.App = App;
             app.$injector = $injector;
+            app.$q = $q;
+            app.$log = $log;
+            app.$timeout = $timeout;
+            app.$window = $window;
+            app.$rootScope = $rootScope;
+            app.get = (name) => $injector.get(name);
+            app.defer = () => $q.defer();
+            app.promiseFromResult = (res) => {
+                var d = $q.defer();
+                d.resolve(res);
+                return d.promise;
+            }
         }]);    
     //#endregion
 

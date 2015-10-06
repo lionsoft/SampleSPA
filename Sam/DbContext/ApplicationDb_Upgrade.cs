@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Data.Common;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure.Interception;
-using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Sam.Models;
+using Sam.DbContext.Hooks;
+using Sam.Extensions;
 
 #pragma warning disable 4014
 
@@ -13,8 +10,8 @@ namespace Sam.DbContext
     partial class ApplicationDbContext
     {
         /// <summary>
-        /// Актуальная версия базы данных.
-        /// Если <see cref="ActualDbVersion"/> больше <see cref="CurrentDbVersion"/> вызывается метод <see cref="UpgradeDatabase"/>
+        /// Database actual version.
+        /// If <see cref="ActualDbVersion"/> great than <see cref="CurrentDbVersion"/> the method <see cref="UpgradeDatabase"/> will be executed.
         /// </summary>
         public const int ActualDbVersion = 1;
 
@@ -27,9 +24,13 @@ namespace Sam.DbContext
             // Creating database from scratch
             if (fromVersion == 0)
             {
+//                SequentialIdProvider.Create(Card.NumberSeq);
+                FillWithCurrentUserHook.DefaultUserId = SequentialGuid.NewGuid().ToString();
                 Users.Add(new User
                 {
+                    Id = FillWithCurrentUserHook.DefaultUserId,
                     UserName = "1",
+                    Email = "user0@mail.com",
                     SecurityStamp = Guid.NewGuid().ToString(),
                     PasswordHash = _userManager.PasswordHasher.HashPassword("1")
                 });

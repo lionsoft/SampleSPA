@@ -8,10 +8,12 @@ module App {
             title: 'Admin',
             url: '/admin',
             auth: true,
-            templateUrl: '/app/views/admin/admin.html', // this is default value
+            roles: [UserRole.Admin],
+            templateUrl: '/app/views/Admin/admin.html',
             settings: {
-                nav: 2,
-                content: '<i class="fa fa-lock"></i> Admin'
+                topMenu: 'MENU.20.ADMIN',
+                nav: 1,
+                content: 'MENU.ADMIN | Admin'
             },
             files: [
             ]

@@ -1,4 +1,6 @@
-﻿/*#region Splash */
+﻿@import 'consts';
+
+/*#region Splash */
 #splash-page {
     z-index: 99999 !important;
 }
@@ -10,10 +12,10 @@
 .page-splash {
     z-index: 99999 !important;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: @top-nav-height;
+    left: @sidebar-width;
+    right: 0;
+    bottom: 0;
     background-color: #333;
     opacity: .9;
     pointer-events: auto;

@@ -1,8 +1,13 @@
-﻿/*
+/*
     Глобальная настройка стилей кнопок и ссылок кнопочного типа
 */
 .panel a.btn,
 .panel button.btn {
   min-width: 90px;
   margin-left: 4px;
+}
+.panel a.btn.btn-icon,
+.panel button.btn.btn-icon {
+  min-width: 0;
+  margin-left: 0;
 }

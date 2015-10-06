@@ -1,0 +1,17 @@
+﻿<div class="st-paging" ng-class="{'has-content': stShowPageSizes || numPages && pages.length >= 2, 'has-page-sizes': stShowPageSizes, 'has-pages': numPages && pages.length >= 2 }">
+    <div ng-show="stShowPageSizes" class="st-paging-count">
+        <span class="st-paging-label" translate="TablePaginationShowEntriesPrefix"></span>
+        <select class="st-paging-listbox" ng-model="stItemsByPage" ng-options="x for x in stGetPageSizes(stItemsByPage)"></select>
+        <span class="st-paging-label" translate="TablePaginationShowEntriesPostfix"></span>
+    </div>
+    <nav ng-if="numPages && pages.length >= 2">
+        <ul class="pagination">
+            <li ng-class="{disabled: currentPage==1}"><a ng-click="selectPage(1)"><i class="fa fa-fast-backward"></i></a></li>
+            <li ng-class="{disabled: currentPage==1}"><a ng-click="selectPage(currentPage - 1)"><i class="fa fa-caret-left fa-lg"></i></a></li>
+            <li><a ng-click="selectPage(currentPage)">{{currentPage}} {{'TablePaginationShowOf' | translate}} {{numPages}}</a></li>
+
+            <li ng-class="{disabled: currentPage==numPages}"><a ng-click="selectPage(currentPage + 1)"><i class="fa fa-caret-right fa-lg"></i></a></li>
+            <li ng-class="{disabled: currentPage==numPages}"><a ng-click="selectPage(numPages)"><i class="fa fa-fast-forward"></i></a></li>
+        </ul>
+    </nav>
+</div>

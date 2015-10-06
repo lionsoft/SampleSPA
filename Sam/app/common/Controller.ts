@@ -5,10 +5,8 @@ module App {
      *
      * Наследуйте все ангуляр контроллеры от этого класса.
      * Вам будут доступны основные сервисы ангуляра, как свойства этого класса.
-     */ 
+     */
     export class Controller extends LionSoftAngular.Controller {
-
-        private _activateCalled: boolean;
 
         common: Shared.ICommon;
 
@@ -25,9 +23,10 @@ module App {
 
         $route: ng.route.IRouteService;
 
-        $location: ng.ILocationService;
-
-        $routeParams: any;
+        /**
+         * Каталог из которого был загружен контроллер
+         */
+        $currentDirectory: string;
 
         log: (msg: string, data?: any, showToast?: boolean) => void;
 
@@ -36,25 +35,57 @@ module App {
          */
         protected static addFactoryInjections(injects: string[]) {
             LionSoftAngular.Controller.addFactoryInjections(injects);
-            this.addInjection(injects, "common", "$scope", "$route", "$routeParams", "$translate", "$filter", "$location");
+            this.addInjection(injects, "$route", "common", "$translate", "$filter");
         }
 
         Translate(langKey: string): string {
             return this.$filter("translate")(langKey);
         }
 
+        init(callInit: boolean) {
+            this.$currentDirectory = this.$route.current['loadedTemplateUrl'].ExtractDirectory();
+            if (LionSoftAngular.popupDefaults) {
+                LionSoftAngular.popupDefaults.templateUrlBase = this.$currentDirectory;
+            }
+            super.init(false);
+            this.ngName = this.$route.current.controller.toString();
+            this.log = this.common.logger.getLogFn(this.ngName);
+            if (callInit)
+                this.Init();
+        }
+    }
+
+    /**
+     * Все angular-контроллеры реализуют этот интерфейс
+     *
+     * Наследуйте все ангуляр контроллеры от этого класса.
+     * Вам будут доступны основные сервисы ангуляра, как свойства этого класса.
+     */ 
+    export class PageController extends Controller {
+
+        private _activateCalled: boolean;
+
+        $location: ng.ILocationService;
+
+        $routeParams: any;
+
+        /**
+         * Добавление дополнительных зависимостей, нужных для работы
+         */
+        protected static addFactoryInjections(injects: string[]) {
+            Controller.addFactoryInjections(injects);
+            this.addInjection(injects, "$routeParams", "$location");
+        }
 
         // ReSharper disable once InconsistentNaming
         init(callInit: boolean) {
             this.loading = true;
-            this.title = this.$route.current['title'];
             super.init(false);
+            this.title = this.$route.current['title'];
             var controllerAs = this.$route.current.controllerAs;
-            this.ngName = this.$route.current.controller.toString();
             $('body').attr("id", this.ngName);
-            this.log = this.common.logger.getLogFn(this.ngName);
             this.$rootScope['title'] = undefined;
-            var appTitle = this.$filter("translate")(Site.TITLE);
+            var appTitle = this.Translate(Site.TITLE);
             this.$scope.$watch((controllerAs ? controllerAs + "." : "") + "title", (newVal: string) => {
                 if (newVal)
                     this.$rootScope['title'] = this.Translate(newVal) + " - " + appTitle;
@@ -76,15 +107,54 @@ module App {
         protected activate(...promises: Array<ng.IPromise<any>>): ng.IPromise<any> {
             this._activateCalled = true;
             return this.common.activateController(promises, this.ngName)
-                .then(() => this.Activated())
-                .finally(() => this.loading = false);
+                .then(() => {
+                    this.Activated();
+                    this.$$updateWatchersCount();
+                    if (this.$rootScope['currentController'] && this.$rootScope['currentController'] !== this && this.$rootScope['currentController'].deactivate)
+                        this.$rootScope['currentController'].deactivate(this);
+                    this.$rootScope['currentController'] = this;
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
+        }
+
+        /**
+         * Выполняет деактивизацию контроллера страницы. 
+         * Вызывается после активизации нового контроллера страницы.
+         * @param newController Ссылка на новый контроллер страницы. 
+         */
+        protected deactivate(newController: Controller) {
+            this.Deactivated(newController);
+        }
+
+        // ReSharper disable once InconsistentNaming
+        /**
+         * Обновляет количество всех текущих вотчеров приложения.
+         * @returns {} 
+         */
+        protected $$updateWatchersCount()
+        {
+            if (!app.isDebugMode)
+                return;
+            this.$timeout(() => {
+                this.$rootScope['$$warchersCount'] = this.common.currentWatchersCount();
+            });
+            setTimeout(() => this.$$updateWatchersCount(), 1000);
         }
 
         /**
          * Вызывается когда контроллер проинициализирован.
          */
         Activated() {
-
         }
+
+
+        /**
+         * Вызывается после деинициализации контроллера.
+         */
+        Deactivated(newController: Controller) {
+        }
+
     }
 }

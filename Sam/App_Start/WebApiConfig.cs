@@ -34,9 +34,7 @@ namespace Sam
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
 
             // Web API routes
-//            config.MapHttpAttributeRoutes();
             config.MapHttpAttributeRoutes(new CustomDirectRouteProvider());
-
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
@@ -49,8 +47,8 @@ namespace Sam
         {
             public BrowserJsonFormatter()
             {
-                this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
-                this.SerializerSettings.Formatting = Formatting.Indented;
+                SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
+                SerializerSettings.Formatting = Formatting.Indented;
             }
 
             public override void SetDefaultContentHeaders(Type type, HttpContentHeaders headers, MediaTypeHeaderValue mediaType)
@@ -67,6 +65,6 @@ namespace Sam
                 return actionDescriptor.GetCustomAttributes<IDirectRouteFactory>(inherit: true);
             }
         }
-
     }
 }
+

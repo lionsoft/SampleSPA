@@ -13,9 +13,11 @@ namespace Sam.DbContext.Hooks
     {
         private static readonly ConcurrentDictionary<Type, Tuple<PropertyInfo, bool>[]> _cache = new ConcurrentDictionary<Type, Tuple<PropertyInfo, bool>[]>();
 
+        public static string DefaultUserId { get; set; }
+
         public void HookObject(object entity, HookEntityMetadata metadata)
         {
-            var currentUserId = Thread.CurrentPrincipal.Identity.GetUserId();
+            var currentUserId = Thread.CurrentPrincipal.Identity.GetUserId() ?? DefaultUserId;
             if (currentUserId != null)
             {
                 var entityType = entity.GetType();

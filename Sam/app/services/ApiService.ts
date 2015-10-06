@@ -3,16 +3,16 @@
 // ReSharper disable InconsistentNaming
 module App {
 
-    export interface IApiService {
-
-        Account: IAccountApi;
-    }
-
-    export interface IAccountApi {
+    export interface IAccountApi extends IResourceClass<IUser>  {
         Register(login: string, password: string): IPromise<IUser>;
         Login(login: string, password: string, rememberMe?: boolean): IPromise<IUser>;
         Logout(): IPromise<void>;
     }
+
+    export interface IApiService {
+
+        Account: IAccountApi;
+    }                                                 
 
     export class ApiService extends ApiServiceBase implements IApiService {
 

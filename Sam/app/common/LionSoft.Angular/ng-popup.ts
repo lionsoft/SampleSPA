@@ -85,13 +85,8 @@ declare module angular {
 module LionSoftAngular {
 
     LionSoftAngular.Module
-        /**
-        * Регистрирует сервис ангуляра для вызова Popup-окон.
-        * Пример:
-        *     popupService.info('Info message');
-        */
-        .service("popupService", ["$modal", "$q", function($modal, $q) {
-
+        .config(["popupServiceProvider", 
+            (p) => {
                 LionSoftAngular.popupDefaults = {
                     backdrop: true,
                     keyboard: true,
@@ -99,29 +94,50 @@ module LionSoftAngular {
                     templateUrlBase: LionSoftJs.appFolder,
                     defaultDialogTemplateUrl: LionSoftAngular.rootFolder + 'html/ng-dialog.html'
                 };
+            }
+        ])
 
-                this.popupModal = (templateUrl: string, scope?: any, popupDefaults?: LionSoftAngular.IPopupDefaults): ng.IPromise<any> => {
+        /**
+        * Регистрирует сервис ангуляра для вызова Popup-окон.
+        * Пример:
+        *     popupService.info('Info message');
+        */
+        .service("popupService", ["$modal", "$q", function($modal, $q) {
+
+                // ReSharper disable once InconsistentNaming
+                var __loadedCss = [];
+                var loadCss = (cssPath: string) => {
+                    if (!__loadedCss.contains(cssPath)) {
+                        $('head').append($('<link rel="stylesheet" type="text/css" />').attr('href', cssPath.ExpandPath(LionSoftAngular.rootFolder)));
+                        __loadedCss.push(cssPath);
+                    }
+                        
+                }
+
+
+
+                this.popupModal = (templateUrl: string, scope?: any, popupDefaults?: IPopupDefaults): ng.IPromise<any> => {
                     popupDefaults = popupDefaults || {};
                     popupDefaults.backdrop = 'static';
                     return this.showDialog({ templateUrl: templateUrl, scope: scope }, popupDefaults);
                 };
 
-                this.popup = (templateUrl: string, scope?: any, popupDefaults?: LionSoftAngular.IPopupDefaults): ng.IPromise<any> => {
+                this.popup = (templateUrl: string, scope?: any, popupDefaults?: IPopupDefaults): ng.IPromise<any> => {
                     popupDefaults = popupDefaults || {};
                     popupDefaults.backdrop = LionSoftAngular.popupDefaults.backdrop;
                     return this.showDialog({ templateUrl: templateUrl, scope: scope }, popupDefaults);
                 };
 
-                this.showDialog = (dialogOptions: LionSoftAngular.IPopupDialogOptions, popupDefaults?: LionSoftAngular.IPopupDefaults): ng.IPromise<boolean> => {
+                this.showDialog = (dialogOptions: IPopupDialogOptions, popupDefaults?: IPopupDefaults): ng.IPromise<boolean> => {
 
                     popupDefaults = popupDefaults || {};
 
                     //Create temp objects to work with since we're in a singleton service
-                    var tempPopupDefaults: LionSoftAngular.IPopupDefaults = {};
+                    var tempPopupDefaults: IPopupDefaults = {};
 
                     angular.extend(tempPopupDefaults, LionSoftAngular.popupDefaults, popupDefaults);
 
-                    var tempDialogOptions: LionSoftAngular.IPopupDialogOptions = dialogOptions || {};
+                    var tempDialogOptions: IPopupDialogOptions = dialogOptions || {};
                     tempDialogOptions.templateUrl = tempDialogOptions.templateUrl || LionSoftAngular.popupDefaults.defaultDialogTemplateUrl;
                     if (!tempDialogOptions.yesButtonContent && !tempDialogOptions.noButtonContent && !tempDialogOptions.cancelButtonContent)
                         tempDialogOptions.yesButtonContent = "OK";
@@ -129,16 +145,69 @@ module LionSoftAngular {
                     if (tempDialogOptions.yesButtonContent && (tempDialogOptions.noButtonContent || tempDialogOptions.cancelButtonContent)) {
                         tempPopupDefaults.backdrop = 'static';
                         tempPopupDefaults.keyboard = false;
-                    } else if (tempPopupDefaults.noCancelPromise === undefined) {
+                    }
+/*
+                    else if (tempPopupDefaults.noCancelPromise === undefined) {
                         tempPopupDefaults.noCancelPromise = true;
                     }
+*/
 
                     (<any>tempPopupDefaults).templateUrl = tempDialogOptions.templateUrl.ExpandPath(tempPopupDefaults.templateUrlBase) + "?" + Math.random();
 
+                    loadCss("css/ng-dialog.css");
+                    if (tempDialogOptions.templateUrl.ExtractOnlyFileName() !== 'ng-dialog')
+                        loadCss(tempDialogOptions.templateUrl.ExpandPath(tempPopupDefaults.templateUrlBase).ChangeFileExt('css'));
+
+                    
+
                     (<any>tempPopupDefaults).controller = ["$scope", "$modalInstance", ($scope, $modalInstance: LionSoftAngular.IModalInstance) => {
                         angular.extend($scope, tempDialogOptions);
+                        tempDialogOptions.scope = tempDialogOptions.scope || {};
+                        $scope.$scope = tempDialogOptions.scope;
+                        $scope.$ = tempDialogOptions.scope.$;
+                        for (var prop in tempDialogOptions.scope) {
+                            if (tempDialogOptions.scope.hasOwnProperty(prop)) {
+                                if (prop[0] === "$" && prop[1] !== "$" && $scope[prop] === undefined)
+                                    $scope[prop] = tempDialogOptions.scope[prop];
+                            }
+                        }
+                        if ($scope.$templateUrl) {
+                            var css = $scope.$templateUrl.ChangeFileExt('css');
+                            loadCss(css);
+                        }
+                            
+
                         $scope.$modalInstance = $modalInstance;
-                        $scope.ok = result => { $modalInstance.close(result); };
+                        $scope.submit = (form : ng.INgModelController) => {
+                            if (LionSoftAngular.ValidateForm(form)) {
+                                var submit = tempDialogOptions.scope.$submit || $scope.$submit;
+                                if (typeof submit === "function") {
+                                    submit($scope.$item)
+                                        .then(res => {
+                                            if (res || res === undefined)
+                                                $modalInstance.close(res || false);
+                                        })
+                                        .catch(e => {
+                                            if (e) alert(e);
+                                        });
+                                    
+                                }
+                                else
+                                    $modalInstance.close(true);
+                            }
+                        };
+                        $scope.ok = result => {
+                            if (angular.isObject(result))
+                                $scope.submit(result);
+                            else
+                                $modalInstance.close(result === undefined ? true : result);
+/*
+                            if (result && result.$invalid)
+                                $scope.submit(result);
+                            else
+                                $modalInstance.close(result === undefined ? true : result);
+*/
+                        };
                         $scope.cancel = result => { $modalInstance.dismiss(result); };
                         $scope.close = () => { $modalInstance.close(undefined); };
                         $scope.hasYesButtonContent = isAssigned(tempDialogOptions.yesButtonContent);
@@ -150,7 +219,6 @@ module LionSoftAngular {
 
                     var res = $modal.open(tempPopupDefaults).result;
                     if (tempPopupDefaults.noCancelPromise) {
-                        //var resDeffered = App.defer<boolean>();
                         var resDeffered = $q.defer();
                         res.then(r => resDeffered.resolve(r)).catch(r => resDeffered.resolve(r));
                         return resDeffered.promise;

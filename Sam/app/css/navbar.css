@@ -1,4 +1,4 @@
-﻿/*
+/*
     Стили главного меню
 */
 .navbar-menuitem {
@@ -33,10 +33,13 @@
 .nav.navbar-nav.navbar-right {
   margin-right: 1em;
 }
-/*#region Override background color theme */
-body {
-  background-color: #FFF;
+.sidebar .navi > li > a {
+  font-size: 15px;
 }
+.navbar .navbar-menu .nav > li > a {
+  font-size: 15px !important;
+}
+/*#region Override background color theme */
 /*For Bootstrap 3*/
 .nav,
 .pagination,
@@ -48,7 +51,7 @@ body {
   background-color: #333;
 }
 .sidebar-widget form {
-  margin: 0em -1em;
+  margin: 0 -1em;
 }
 .sidebar .navi > li > a {
   background-color: #333 !important;
@@ -70,6 +73,7 @@ body {
 }
 .sidebar {
   margin-top: -2px;
+  width: 180px;
 }
 .sidebar .sidebar-inner {
   background-color: #333;
@@ -81,7 +85,10 @@ body {
   left: 0;
   height: 100%;
   background-color: #333;
-  width: 230px;
+  width: 180px;
+}
+.mainbar {
+  margin-left: 180px;
 }
 .navbar .navbar-brand {
   background: url(/content/images/icon.png) no-repeat left center !important;
@@ -149,6 +156,9 @@ body {
   }
   .sidebar .sidebar-inner {
     height: inherit;
+  }
+  .mainbar {
+    margin-left: 0;
   }
 }
 @media (max-width: 320px) {

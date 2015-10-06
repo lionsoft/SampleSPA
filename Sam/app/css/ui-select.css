@@ -1,0 +1,22 @@
+.dropdown-menu li .ui-select-choices-row a:focus,
+.dropdown-menu li .ui-select-choices-row a:hover {
+  background: #428bca !important;
+}
+.form-control.ui-select-bootstrap.ui-select-container {
+  padding: 0;
+  border-width: 0;
+}
+.form-control.ui-select-multiple.ui-select-bootstrap {
+  min-height: 34px;
+}
+.form-control.ui-select-multiple.ui-select-bootstrap.ui-select-container {
+  padding: 3px 3px 3px 10px;
+  border-width: 1px;
+}
+.form-control.ui-select-multiple.ui-select-bootstrap.ui-select-container > div {
+  margin-top: 1px;
+  margin-left: -4px;
+}
+.form-control.ui-select-multiple.ui-select-bootstrap.ui-select-container > div span.close {
+  margin-top: 2px;
+}

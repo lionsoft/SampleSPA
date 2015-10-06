@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
@@ -17,7 +18,8 @@ namespace Sam
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
-            var manager = new ApplicationUserManager(new UserStore<User>(context.Get<ApplicationDbContext>()));
+            var manager = new ApplicationUserManager(new ApplicationUserStore(context.Get<ApplicationDbContext>()));
+
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<User>(manager)
             {
@@ -27,11 +29,11 @@ namespace Sam
             // Configure validation logic for passwords
             manager.PasswordValidator = new PasswordValidator
             {
-                RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
-                RequireDigit = true,
-                RequireLowercase = true,
-                RequireUppercase = true,
+//                RequiredLength = 6,
+//                RequireNonLetterOrDigit = true,
+//                RequireDigit = true,
+//                RequireLowercase = true,
+//                RequireUppercase = true,
             };
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
@@ -39,6 +41,23 @@ namespace Sam
                 manager.UserTokenProvider = new DataProtectorTokenProvider<User>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
             return manager;
+        }
+    }
+
+    public class ApplicationUserStore : UserStore<User>
+    {
+        public ApplicationUserStore(ApplicationDbContext dbContext) : base(dbContext)
+        {
+            
+        }
+        public override Task<User> FindByNameAsync(string userName)
+        {
+            return base.FindByNameAsync(userName);
+        }
+
+        public override Task<User> FindByIdAsync(string id)
+        {
+            return base.FindByIdAsync(id);
         }
     }
 }

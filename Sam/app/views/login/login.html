@@ -5,11 +5,11 @@
         <div class="row">
             <div class="form-container">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Логин" name="Email" ng-model="$.login">
+                    <input type="text" class="form-control" placeholder="Login" name="Email" ng-model="$.login">
                 </div>
 
                 <div class="form-group">
-                    <input type="{{$.inputType}}" class="form-control" id="inputPassword" placeholder="Пароль" name="Password" ng-model="$.password">
+                    <input type="{{$.inputType}}" class="form-control" id="inputPassword" placeholder="Password" name="Password" ng-model="$.password">
                 </div>
 
                 <div class="form-group">
@@ -17,12 +17,12 @@
                         <label class="pull-left">
                             <input type="checkbox" ng-click="$.HideShowPassword()">
                             <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
-                            <span>Показать пароль</span>
+                            <span translate>Show password</span>
                         </label>
                         <label class="pull-right">
                             <input type="checkbox" value="{{$.rememberMe}}" name="RememberMe" ng-model="$.rememberMe">
                             <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
-                            <span>Запомнить</span>
+                            <span translate>Remember me</span>
                         </label>
                     </div>
                     <div class="clearfix"></div>
@@ -38,199 +38,10 @@
                 </div>
 
                 <div class="form-group">
-                    <button class="btn btn-default" ng-disabled1="!form.$valid" ng-click="$.DoLogin()">Войти</button>
+                    <button class="btn btn-default" ng-disabled1="!form.$valid" ng-click="$.DoLogin()">Log In</button>
                 </div>
 
             </div>
         </div>
     </div>
 </div>
-
-<!--Prev version-->
-<!--<form class="form-horizontal" role="form" name="form" method="post">
-            $1$@Html.AntiForgeryToken()#1#
-
-            <div class="row">
-                <div class="col-md-offset-3 col-xs-offset-1">
-                    <h1>Sign In / Register</h1>
-                    <hr/>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-offset-3 col-xs-offset-1 text-current">
-                    <h4>Sign In using your account with</h4>
-                </div>
-            </div>
-
-            <div class="row">
-                <div style="height: 1em"></div>
-            </div>
-
-            $1$ social buttons #1#
-            <div class="row">
-                <div class="omb_login">
-                    <div class="omb_socialButtons">
-                        <div class="col-md-offset-3 col-md-2 col-sm-3 col-xs-offset-1 col-xs-3">
-                            <a href="#" class="btn btn-primary btn-block">
-                                <i class="fa fa-facebook visible-xs"></i>
-                                <span class="hidden-xs">Facebook</span>
-                            </a>
-                        </div>
-                        <div class="col-md-2 col-sm-3 col-xs-3">
-                            <a href="#" class="btn btn-info  btn-block">
-                                <i class="fa fa-twitter visible-xs"></i>
-                                <span class="hidden-xs">Twitter</span>
-                            </a>
-                        </div>
-                        <div class="col-md-2 col-sm-3 col-xs-3">
-                            <a href="#" class="btn btn-danger  btn-block">
-                                <i class="fa fa-google-plus visible-xs"></i>
-                                <span class="hidden-xs">Google+</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            $1$or line#1#
-            <div class="row">
-                <div class="col-md-7 col-md-offset-3 login-or hidden-xs hidden-md hidden-sm">
-                    <hr class="hr-or">
-                </div>
-            </div>
-
-            <div class="row hidden-lg">
-                <div style="height: 1em"></div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-offset-3 col-xs-offset-1 text-current">
-                    <h4>Sign In using Navis3 account</h4>
-                </div>
-            </div>
-
-            <div class="row">
-                <div style="height: 1em"></div>
-            </div>
-
-            $1$email#1#
-            <div class="row">
-                <label class="col-md-offset-3 col-md-2 col-sm-offset-1 col-sm-3 col-xs-offset-1 col-xs-3 control-label">
-                    E-mail Address
-                </label>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" ng-class="{ 'has-error' : form.Email.$invalid }">
-                    <input ng-model="$.Email" type="text" class="form-control pull-right" id="inputUsernameEmail" name="Email" maxlength="256" placeholder="name@example.com">
-                </div>
-            </div>
-
-            <div class="row">
-                <div style="height: 1em"></div>
-            </div>
-
-            $1$password#1#
-            <div class="row">
-                <label class="col-md-offset-3 col-md-2 col-sm-offset-1 col-sm-3 col-xs-offset-1 col-xs-3 control-label">
-                    Password
-                </label>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" ng-class="{ 'has-error' : form.Password.$required }">
-                    <input ng-model="$.Password" type="{{$.InputType}}" class="form-control pull-right" name="Password" maxlength="256" id="inputPassword" required>
-                </div>
-            </div>
-
-            <div class="row">
-                <div style="height: 1em"></div>
-            </div>
-
-            $1$show password#1#
-            <div class="row">
-                <div class="col-md-offset-5 col-sm-offset-4 col-xs-offset-4 col-md-4 col-xs-6">
-                    <div class="checkbox">
-                        <label class="animated-checkbox">
-                            <input ng-click="$.HideShowPassword()" ng-model="passwordCheckbox" type="checkbox" value=""><span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
-                            Show password
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            $1$error info window#1#
-            $1$
-            @{
-            if (TextError != "")
-            {
-            <div class="row">
-                <div style="height: 1em"></div>
-            </div>
-            <div class="row">
-                <div class="col-md-offset-3 col-md-6 col-sm-offset-1 col-sm-9 col-xs-offset-1 col-xs-9">
-                    <div class="alert alert-danger current-alert-danger">
-                        <span class=" glyphicon glyphicon-exclamation-sign" aria-hidden="true">
-                        </span>
-                        <span class="sr-only"></span>
-                        @Html.Raw(TextError)
-                        @*{{$.TextError}}*@
-                    </div>
-                </div>
-            </div>
-            }
-            }
-            #1#
-            <div class="row">
-                <div style="height: 1em"></div>
-            </div>
-
-            $1$actions#1#
-            <div class="row">
-                <div class="col-md-offset-3 col-md-2 col-sm-offset-1 col-sm-3 col-xs-offset-1 col-xs-3">
-                    <button ng-disabled="!form.$valid" class="btn btn-primary btn-block" ng-click="$.Submit(false)">Sign in</button>
-                </div>
-
-                <div class="col-md-2 col-sm-3 col-xs-3"></div>
-
-                $1$new button#1#
-
-                <div class="col-md-2 col-sm-3 col-xs-3">
-                    <button ng-disabled="!form.$valid" class="btn btn-success btn-block" ng-click="$.Submit(true)">Register</button>
-                </div>
-                $1$
-                <div class="col-md-2 col-sm-3 col-xs-3 hidden-sm hidden-md hidden-lg">
-                    <button ng-disabled="!form.$valid" class="btn btn-success btn-block" ng-click="$.Submit(true)">New</button>
-                </div>
-                #1#
-            </div>
-
-            <div class="row">
-                <div style="height: 1em"></div>
-            </div>
-
-            $1$Remember me#1#
-            <div class="row">
-                <div class="col-md-3 col-md-offset-3 col-sm-offset-1 col-xs-offset-1">
-                    <div class="checkbox">
-                        <label class="animated-checkbox checkbox_margin">
-                            <input type="checkbox" value="{{$.RememberMe}}" name="RememberMe" ng-model="$.RememberMe">
-                            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
-                            Remember me
-                        </label>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-9 col-xs-9">
-                    <div class="pull-right">
-                        <a href="#">Forgot password?</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-7 col-md-offset-3 login-or hidden-xs hidden-md hidden-sm">
-                    <hr class="hr-or">
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-offset-3 col-md-2 col-sm-offset-1 col-sm-3 col-xs-offset-1 col-xs-3">
-                    <h5><a class="demo" href="#">Demo tour</a></h5>
-                </div>
-            </div>
-        </form>-->

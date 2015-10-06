@@ -3,40 +3,29 @@ module App.Shared {
 
     export interface ICommon {
         throttles: Object;
-        activateController(promises: Array<ng.IPromise<any>>, controllerId: string)
+        activateController(promises: Array<ng.IPromise<any>>, controllerId: string);
         $broadcast(event: string, data: any);
         createSearchThrottle(viewmodel: any, list: string, filteredList: string, filter: string, delay: number): Function;
-        debouncedThrottle(key: string, callback: Function, delay: number, immediate: boolean): void;
+        debouncedThrottle(callback: Function, delay?: number, immediate?: boolean): void;
+        debouncedThrottle(key: string, callback: Function, delay?: number, immediate?: boolean): void;
         isNumber(val: any): boolean;
-        textContains(text: string, searchText: string): boolean
+        textContains(text: string, searchText: string): boolean;
         $q: ng.IQService;
         $rootScope: ng.IRootScopeService;
         $timeout: ng.ITimeoutService;
         commonConfig: any;
-        logger:ILogger;
-    }
+        logger: ILogger;
 
-    export class Common implements ICommon {
-        public static serviceId: string = 'common';
+        currentWatchersCount(): number;
+    }
+    export class Common extends LionSoftAngular.Factory implements ICommon {
 
         //#region variables
         commonConfig: ICommonConfig;
         logger: ILogger;
-        throttles : Object;
-        $rootScope: ng.IRootScopeService;
-        $timeout: ng.ITimeoutService;
-        $q: ng.IQService;
-       
-        //#endregion
 
-        constructor($q, $rootScope, $timeout, commonConfig, logger) {
-            this.commonConfig = commonConfig;
-            this.logger = logger;
-            this.throttles = {};
-            this.$rootScope = $rootScope;
-            this.$timeout = $timeout;
-            this.$q = $q;
-        }
+        throttles: Object;
+        //#endregion
 
         //#region public methods
         activateController(promises: Array<ng.IPromise<any>>, controllerId: string) {
@@ -98,8 +87,8 @@ module App.Shared {
             })();
         }
 
-        public debouncedThrottle(callback: Function, delay: number, immediate?: boolean): void;
-        public debouncedThrottle(key: string, callback: Function, delay: number, immediate?: boolean): void;
+        public debouncedThrottle(callback: Function, delay?: number, immediate?: boolean): void;
+        public debouncedThrottle(key: string, callback: Function, delay?: number, immediate?: boolean): void;
         public debouncedThrottle(p1, p2, p3?, p4?): void {
             var key: string;
             var callback: Function;
@@ -146,6 +135,38 @@ module App.Shared {
         //#endregion
 
 
+        currentWatchersCount(): number {
+            var root = angular.element(document.getElementsByTagName('body'));
+
+            var watchers = [];
+
+            var f = element => {
+                angular.forEach(['$scope', '$isolateScope'], scopeProperty => {
+                    if (element.data() && element.data().hasOwnProperty(scopeProperty)) {
+                        angular.forEach(element.data()[scopeProperty].$$watchers, watcher => {
+                            watchers.push(watcher);
+                        });
+                    }
+                });
+
+                angular.forEach(element.children(), childElement => {
+                    f(angular.element(childElement));
+                });
+            };
+
+            f(root);
+
+            // Remove duplicate watchers
+            var watchersWithoutDuplicates = [];
+            angular.forEach(watchers, item => {
+                if (watchersWithoutDuplicates.indexOf(item) < 0) {
+                    watchersWithoutDuplicates.push(item);
+                }
+            });
+
+            return watchersWithoutDuplicates.length;
+        }
+
     }
 
     //#region explanation
@@ -162,10 +183,6 @@ module App.Shared {
     export var commonModule: ng.IModule = angular.module('common', []); 
         
     // Creates "common" service
-    commonModule.factory(Common.serviceId, [
-        '$q', '$rootScope', '$timeout', 'commonConfig', 'logger',
-        ($q, $rS, $to, cC, l) => new Common($q, $rS, $to, cC, l)
-    ]);
-        
+    commonModule.factory("common", Common.Factory('commonConfig', 'logger'));
 
 }

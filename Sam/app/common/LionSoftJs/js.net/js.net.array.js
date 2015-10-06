@@ -74,10 +74,18 @@
     }
     if (typeof Array.prototype.Remove != 'function') {
         Array.prototype.Remove = function () {
-            for (var index in arguments) {
-                var element = arguments[index];
-                var idx = this.indexOf(element);
-                this.RemoveAt(idx);
+            if (arguments.length === 1 && typeof arguments[0] === "function") {
+                for (var index = this.length - 1; index >= 0; index--) {
+                    var el = this[index];
+                    if (arguments[0](el))
+                        this.RemoveAt(index);
+                }
+            } else {
+                for (var i = 0; i < arguments.length; i++) {
+                    var element = arguments[i];
+                    var idx = this.indexOf(element);
+                    this.RemoveAt(idx);
+                }
             }
             return this;
         };

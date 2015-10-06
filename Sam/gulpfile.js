@@ -12,6 +12,11 @@ var less = require('gulp-less');
 var path = require('path');
 var plumber = require('gulp-plumber');
 
+gulp.task('default', function () {
+    gulp.start('less');
+//    gulp.start('watch');
+});
+
 gulp.task('less', function () {
     return gulp.src('./app/**/*.less')
         .pipe(plumber())

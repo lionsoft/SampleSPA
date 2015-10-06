@@ -33,8 +33,5 @@ namespace Sam.DbContext
          }
 
 
-
-
-
     }
 }

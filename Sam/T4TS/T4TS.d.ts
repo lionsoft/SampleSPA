@@ -3,22 +3,30 @@
 ****************************************************************************/
 
 declare module App {
+    /** Generated from Sam.DbContext.UserRole **/
+    const enum UserRole {
+        User = 0,
+        Admin = 1,
+    }
+    /** Generated from Sam.DbContext.EntityObjectId<TKey> **/
+    export interface IEntityObjectBaseId {
+        Id: any;
+        CreatedDate: string;
+        CreatedById: string;
+        JsonCreatedBy: App.IUser;
+        ModifiedDate: string;
+        ModifiedById: string;
+        JsonModifiedBy: App.IUser;
+    }
     /** Generated from Sam.DbContext.EntityObjectId **/
-    export interface IEntityObjectId {
-        Id: string;
+    export interface IEntityObjectId extends App.IEntityObjectBaseId {
     }
-    /** Generated from Sam.DbContext.Test **/
-    export interface ITest extends App.IEntityObjectId {
-        Name: string;
-        Test1: string;
-        Test2: any;
-        Test3: any;
-    }
-    /** Generated from Sam.DbContext.TypeScriptUser **/
+    /** Generated from Sam.DbContext.JsonUser **/
     export interface IUser {
-        Id?: string;
+        Id: string;
         UserName?: string;
-        PasswordHash?: string;
         Email?: string;
+        UserRole: App.UserRole;
+        PasswordHash?: string;
     }
 }

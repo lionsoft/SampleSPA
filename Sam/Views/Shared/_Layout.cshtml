@@ -1,5 +1,7 @@
 ﻿@using System.Configuration
 @using Microsoft.AspNet.Identity
+@using Sam.Extensions
+
 <!DOCTYPE html>
 <html data-ng-app="app">
 <head>
@@ -40,14 +42,15 @@
         </script>
     <![endif]-->
 
-    @Styles.Render("~/Content/css")
+    @Styles.Render("~/styles/css")
+
 
 </head>
 <body>
 
     @RenderBody()
 
-    @Styles.Render("~/app/css")
+    @Styles.Render("~/appstyles/css")
 
 
     <!-- Vendor Scripts -->
@@ -55,8 +58,6 @@
 
     @Scripts.Render("~/bundles/LionSoftJs")
     @Scripts.Render("~/bundles/LionSoftAngular")
-
-
 
     @Scripts.Render("~/bundles/app")
 
@@ -67,35 +68,36 @@
 
     @Scripts.Render("~/bundles/app/common")
 
-    @Scripts.Render("~/bundles/app/views")
-
+    @Scripts.Render("~/bundles/app/services")
+    
     @Scripts.Render("~/bundles/app/directives")
 
-    @Scripts.Render("~/bundles/app/services")
+    @Scripts.Render("~/bundles/app/views")
+
 
     <script>
-        app._loggedUser = undefined;
-        @if (Request.IsAuthenticated)
+    app._loggedUser = undefined;
+    @if (Request.IsAuthenticated)
         {
         <text>
-        app.__loggedUser = { Id: '@User.Identity.GetUserId()', Name: '@User.Identity.GetUserName()', Login: '@User.Identity.GetUserName()' };
+            app.__loggedUser = { Id: '@User.Identity.GetUserId()', UserName: '@User.Identity.GetUserName()', UserRole: @User.Identity.GetClaimValue("Role") };
         </text>
         }
 
-        window.__isDebugMode = @(Startup.IsDebugMode ? "true" : "false");
-        window.__webConfig = {};
+    window.__isDebugMode = @(Startup.IsDebugMode ? "true" : "false");
+    window.__webConfig = {};
 
-        @{
+    @{
         foreach (var key in ConfigurationManager.AppSettings.AllKeys.Where(k => k.StartsWith("config.")))
         {
             var value = "'" + ConfigurationManager.AppSettings.Get(key).Replace("'", "''") + "'";
             var k = key.Substring("config.".Length);
             <text>
-        window.__webConfig['@k'] = @Html.Raw(value);
-        </text>
+            window.__webConfig['@k'] = @Html.Raw(value);
+            </text>
         }
     }
-    </script>
+</script>
 
 </body>
 

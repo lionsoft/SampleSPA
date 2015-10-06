@@ -5,7 +5,7 @@ module App {
     Routes.push(
         {
             name: 'login',
-            title: 'MENU.SignIn | Sign In',
+            title: 'MENU.SignIn',
             url: '/login'
         }
     );

@@ -1,9 +1,33 @@
 ﻿{
-    "APP_TITLE": "SAM System",
+    "APP_TITLE": "Sample Web App",
+
+    "SaveChanges": "Save Changes",
+    "Cancel": "Cancel",
+    "AskDelete": "{1}: Delete {0}?",
+
+    "Name": "Name",
+
+    "NoTableData": "No data available in table",
+    "LoadingTable": "Loading ...",
+    "Search...": "Search...",
+    "TablePaginationShowEntriesPrefix": "Show ",
+    "TablePaginationShowEntriesPostfix": " entries",
+    "TablePaginationShowOf": " of ",
+
+    "required": "required",
+    "MustBeSet": "Field must be set",
+    "PasswordsDoNotMatch": "Password doesn't match",
+
+    "Submit": "Submit",
+    "Name": "Name",
+    "CreatedBy": "Created By",
+    "CreatedDate": "Created Date",
 
     "MENU": {
-        "SignIn": "Sign In",
-        "SignOut": "Sign Out"    
-    }
+        "10.USER": "<i class='fa fa-user'></i> User Area",
+        "20.ADMIN": "<i class='fa fa-cog'></i> Admin Area",
 
+        "SignIn": "Sign In",
+        "SignOut": "Sign Out"
+    }
 }

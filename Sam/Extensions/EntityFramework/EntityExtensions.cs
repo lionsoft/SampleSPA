@@ -10,7 +10,16 @@ namespace Sam.Extensions.EntityFramework
     {
         public static TEntity Attach<TEntity>(this System.Data.Entity.DbContext dbContext, TEntity entity, bool isNew) where TEntity : class
         {
-            dbContext.Entry(entity).State = isNew ? EntityState.Added : EntityState.Modified;
+            if (isNew)
+            {
+                entity = dbContext.Set<TEntity>().Add(entity);
+                dbContext.Entry(entity).State = EntityState.Added;
+            }
+            else
+            {
+                entity = dbContext.Set<TEntity>().Attach(entity);
+                dbContext.Entry(entity).State = EntityState.Modified;
+            }
             return entity;
         }
 

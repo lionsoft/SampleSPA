@@ -1,0 +1,57 @@
+﻿/*
+    Настройки для растягивания контента на всю доступную высоту окна браузера
+*/
+
+// Растягиваем body на всю высоту браузера
+html, body { 
+    height: 100%;
+}
+body { 
+    padding-top: 50px;
+}
+
+// Прокидываем высоту body на все внутренние контейнеры, чтобы можно было использовать nv-fill-container 
+body>div#main-layout, 
+body>div#main-layout>div[data-ng-include], 
+body>div#main-layout>div[data-ng-include]>div,
+#content,
+#content>div[data-ng-view],
+.matter,
+.container,
+.container-fluid,
+.row[nv-fill-container],
+.mainbar
+{
+    height: 100%;
+}
+
+// класс, указывающий, что элемент должен иметь высоту 100%
+.nv-height100 {
+    height: 100%;
+}
+
+// все вложенные элементы (колонки) в row c классом nv-height100 должны также иметь высоту 100%
+.row.nv-height100>div{
+    height: 100%;
+}
+
+// Убираем min-height у .mainbar, который там стоит по умолчанию
+.mainbar {
+    min-height: 0;
+
+    .matter {
+        overflow: auto;
+        padding: 0;
+    }
+
+    .matter > .container, .matter > .container-fluid {
+        padding: 15px 15px 0;
+        margin: 0;
+    }
+
+    .matter > .container {
+        margin: 0 auto;
+    }
+
+}
+

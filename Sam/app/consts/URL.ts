@@ -9,12 +9,12 @@ module App.URL {
     /**
      * Базовый адрес приложения
      */
-    export const APP_ROOT = '/app/';
+    export const APP_ROOT = '/app';
 
     /**
      * Базовый адрес размещения всех директив
      */
-    export const DIRECTIVES_ROOT = APP_ROOT + 'directives/';
+    export const DIRECTIVES_ROOT = 'directives/'.ExpandPath(APP_ROOT);
 };
 
  

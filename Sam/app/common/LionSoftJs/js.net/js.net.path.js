@@ -57,6 +57,29 @@
         };
     }
 
+    /**
+        Changes file extension from path.
+         for 'fileName.ext' { '' -> returns 'fileName'
+         for 'fileName.ext' { '.newExt' or 'newExt' -> returns 'fileName.newExt'
+         for 'fileName.' { '.newExt' or 'newExt' -> returns 'fileName.newExt'
+         for 'fileName' { '.newExt' or 'newExt' -> returns 'fileName.newExt'
+    */
+    if (typeof String.prototype.ChangeFileExt != 'function') {
+        String.prototype.ChangeFileExt = function (newExt, separator) {
+            newExt = newExt || "";
+            if (newExt !== "" && newExt[0] !== '.')
+                newExt = '.' + newExt;
+            var oldExt = this.ExtractFileExt(separator);
+            if (oldExt === undefined)
+                oldExt = '';
+            else
+                oldExt = '.' + oldExt;
+            var res = this.substr(0, this.length - oldExt.length) + newExt;
+            return res;
+        };
+    }
+
+
 
     if (typeof String.prototype.ExpandPath != 'function') {
         String.prototype.ExpandPath = function (basePath, separator) {

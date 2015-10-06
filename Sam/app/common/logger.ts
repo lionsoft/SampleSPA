@@ -1,4 +1,17 @@
 ﻿'use strict';
+
+interface Window {
+    info(message: any): void;
+    success(message: any): void;
+    error(message: any): void;
+    warning(message: any): void;
+}
+declare function info(message): void;
+declare function success(message): void;
+declare function error(message): void;
+declare function warning(message): void;
+
+
 module App.Shared{
 
     export interface ILogger {
@@ -13,7 +26,6 @@ module App.Shared{
     export class Logger implements ILogger {
 
         //#region Variables
-        $log: ng.ILogService;
         logFn: (msg: string, data?: any, moduleId?: any, showToast?: boolean) => void;
         service = {
             getLogFn: this.getLogFn,
@@ -23,10 +35,18 @@ module App.Shared{
             logWarning: this.logWarning
         };
         //#endregion
+
+        Translate(langKey: string): string {
+            return this.$filter("translate")(langKey);
+        }
         
-        constructor($log) {
+        constructor(private $log: ng.ILogService, private $filter: ng.IFilterService) {
             this.$log = $log;
-            window.alert = (msg) => this.getLogFn("")(msg, "", true);
+            window.alert = (msg) => this.getLogFn("")(this.Translate(msg), "", true);
+            window.info = window.alert;
+            window.success = (msg) => this.getLogFn("", "success")(this.Translate(msg), "", true);
+            window.error = (msg) => this.getLogFn("", "error")(this.Translate(msg), "", true);
+            window.warning = (msg) => this.getLogFn("", "warning")(this.Translate(msg), "", true);
         }
         
         //#region Public Methods
@@ -91,5 +111,5 @@ module App.Shared{
     }
 
     // Register with angular
-    commonModule.factory('logger', ['$log', ($log) => new Logger($log)]);
+    commonModule.factory('logger', ['$log', '$filter', ($log, $filter) => new Logger($log, $filter)]);
 }

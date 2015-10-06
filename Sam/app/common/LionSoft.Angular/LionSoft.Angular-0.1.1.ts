@@ -13,7 +13,17 @@ declare module angular
     interface IWindowService {
         navigate: (url: string) => void;
     }
+
+    interface IFilterFunc {
+        (value: any, ...params: any[]): any;
+    }
 }
+
+interface IKeyValue {
+    Key: any;
+    Value: any;
+}
+
 
 module LionSoftAngular {
     "use strict";
@@ -37,6 +47,21 @@ module LionSoftAngular {
         return Module;
     }
 
+    export function ValidateForm(form: ng.INgModelController): boolean {
+        if (form.$invalid) {
+            for (var errorName in form.$error) {
+                if (form.$error.hasOwnProperty(errorName)) {
+                    var errors = form.$error[errorName];
+                    for (var control of errors) {
+                        // ReSharper disable once QualifiedExpressionIsNull
+                        control.$setTouched();
+                    }
+                }
+            }
+        }
+        return !form.$invalid;
+    }
+
     angular.module("LionSoftAngular", ["ng-lionsoft"]);
 
     if (!window["$"])
@@ -52,6 +77,11 @@ module LionSoftAngular {
         $log: ng.ILogService;
         $timeout: ng.ITimeoutService;
         $window: ng.IWindowService;
+
+        /**
+         * Ссылка на глобальный скоуп.
+         */
+        $rootScope: ng.IRootScopeService | any;
 
         /**
          * Возвращает ссылку на зависимость по её имени.
@@ -76,11 +106,6 @@ module LionSoftAngular {
      * Все angular-контроллеры реализуют этот интерфейс
      */
     export interface IController extends INgObject {
-
-        /**
-         * Ссылка на глобальный скоуп.
-         */
-        $rootScope: ng.IRootScopeService;
 
         /**
          * Ссылка на текущий скоуп контроллера.
@@ -110,91 +135,6 @@ module LionSoftAngular {
      */
     export interface IFactory extends IService {
         
-    }
-
-
-    /**
-     * Статическая сборка основных сервисов ангуляра.
-     * Если каког-то сервиса не хватает - просто добавьте его сюда.
-     */
-    export class Services {
-        private static _app;
-
-        /**
-         * Ссылка на angular-приложение. Должно быть ОБЯЗАТЕЛЬНО установлено при инициализации приложения.
-         */
-        static get app(): ng.IModule {
-            return Services._app;
-        }
-
-        static set app(app: ng.IModule) {
-            if (Services._app === app) return;
-            Services._ = {};
-            Services._injector = undefined;
-            Services._app = app;
-            app.run(["$injector", ($injector) => {
-                Services._injector = $injector;
-                if (!Services._app.Injector) {
-                    var props = Object.getOwnPropertyNames(this).where(s => s[0] === '$').toArray();
-                    props.push("PopupService", "RootScope", "Injector");
-                    props.forEach(s => {
-                        var conf: any = {
-                            get: () => Services[s],
-                            enumerable: false,
-                            configurable: false
-                        };
-                        if (s === "Injector")
-                            conf.set = value => Services.Injector = value;
-
-                        Object.defineProperty(Services._app, s, conf);
-                    });
-                    Services._app.get = Services.get;
-                    Services._app.defer = Services.defer;
-                    Services._app.promiseFromResult = Services.promiseFromResult;
-                }
-            }]);
-        }
-
-        /**
-         * Ссылка на инжектор angular-приложения.
-         */
-        private static _injector: ng.auto.IInjectorService;
-
-        private static _ = {};
-
-        private static getService(serviceName: string, checkAppInjector: boolean = false): any {
-            if (checkAppInjector && !Services._injector)
-                return null;
-            var res = this._[serviceName] || (this._[serviceName] = this.get(serviceName));
-            return res;
-        }
-
-        static get(serviceName: string) { return this.Injector.get(serviceName); }
-
-        static defer<T>(): ng.IDeferred<T> { return this.$q.defer(); }
-
-        static promiseFromResult<T>(res: T): ng.IPromise<T> {
-            var d = this.defer<T>();
-            d.resolve(res);
-            return d.promise;
-        }
-
-        static get Injector(): ng.auto.IInjectorService { return Services._injector || (Services._injector = angular.injector(["ng", "ng-lionsoft", "ui.bootstrap"])); }
-        static set Injector(value: ng.auto.IInjectorService) { Services._injector = value; Services._ = {}; }
-
-        static get RootScope(): ng.IRootScopeService { return this.getService("$rootScope", true); }
-        static get PopupService(): IPopupService { return this.getService("popupService"); }
-        static get $sce(): ng.ISCEService { return this.getService("$sce"); }
-        static get $q(): ng.IQService { return this.getService("$q"); }
-        static get $http(): ng.IHttpService { return this.getService("$http", true); }
-        static get $log(): ng.ILogService { return this.getService("$log"); }
-        static get $timeout(): ng.ITimeoutService { return this.getService("$timeout"); }
-        static get $parse(): ng.IParseService { return this.getService("$parse"); }
-        static get $resource(): ng.resource.IResourceService { return this.getService("$resource"); }
-        static get $window(): ng.IWindowService { return this.getService("$window"); }
-        static get $sanitize(): (html: string) => string { return this.getService("$sanitize"); }
-        static get $location(): ng.ILocationService { return this.getService("$location"); }
-        static get $compile(): ng.ICompileService { return this.getService("$compile"); }
     }
 
     /**
@@ -231,6 +171,11 @@ module LionSoftAngular {
         $log: ng.ILogService;
         $timeout: ng.ITimeoutService;
         $window: ng.IWindowService;
+
+        /**
+         * Ссылка на глобальный скоуп.
+         */
+        $rootScope: ng.IRootScopeService;
 
         constructor(...injections: any[]) {
             if (injections && injections.length > 0)
@@ -272,10 +217,10 @@ module LionSoftAngular {
         }
 
         /**
-         * Добавление дополнительных зависимостей, нужных для работы - "$injector", "$q", "$log", "$timeout", "$window"
+         * Добавление дополнительных зависимостей, нужных для работы - "$injector", "$q", "$log", "$timeout", "$window", "$rootScope"
          */
         protected static addFactoryInjections(injects: string[]) {
-            NgObject.addInjection(injects, "$injector", "$q", "$log", "$timeout", "$window");
+            NgObject.addInjection(injects, "$injector", "$q", "$log", "$timeout", "$window", "$rootScope");
         }
 
         public static Factory(...injects: string[]): any {
@@ -355,7 +300,7 @@ module LionSoftAngular {
 
     /**
      * Наследуйте все ангуляр контроллеры от этого класса.
-     * По умолчанию доступны сервисы NgObject плюс $rootScope и $scope.
+     * По умолчанию доступны сервисы NgObject плюс $scope и popupService.
      * 
      * Пример инициализации:
      * app.controller('myController', MyController.Factory('svc1', 'svc2'));
@@ -363,14 +308,12 @@ module LionSoftAngular {
     export class Controller extends NgObject implements IController {
 
         /**
-         * Ссылка на глобальный скоуп.
-         */
-        $rootScope: ng.IRootScopeService;
-
-        /**
          * Ссылка на текущий скоуп контроллера.
          */
         $scope: ng.IScope;
+
+        popupService: IPopupService;
+
 
         /**
          * Можно использовать для индикации процесса загрузки.
@@ -389,7 +332,7 @@ module LionSoftAngular {
          */
         protected static addFactoryInjections(injects: string[]) {
             NgObject.addFactoryInjections(injects);
-            this.addInjection(injects, "$scope", "$rootScope");
+            this.addInjection(injects, "$scope", "popupService");
         }
 
         /**
@@ -452,13 +395,14 @@ module LionSoftAngular {
     export class Filter extends NgObject {
 
         protected getFactoryResult(): any {
-            return value => this.Execute(value);
+            return (value, ...params) => this.Execute(value, ...params);
         }
 
-        public Execute(value: string, params?: any): string {
+        public Execute(value: any[]|any, ...params): any[]|any {
             return value;
         }
     }
+
 
     /**
      * Наследуйте все директивы не имеющие html-темплейта от этого класса.
@@ -507,12 +451,9 @@ module LionSoftAngular {
          * Do not override this method. Use methods this.PreLink, this.Link, this.Compile instead.
          */
         compile = (element, attrs, transclude) => {
-            this.$element = element;
-            this.$attrs = attrs;
             this.Compile(element, attrs, transclude);
             return {
                 pre: (scope, element, attrs, controller, transclude) => {
-                    this.$scope = scope;
                     this.PreLink(scope, element, attrs, controller, transclude);
                 },
                 post: (scope, element, attrs, controller, transclude) => this.Link(scope, element, attrs, controller, transclude)
@@ -523,21 +464,6 @@ module LionSoftAngular {
          * Название директивы в camelCase нотации
          */
         name: string;
-
-        /**
-         * Скоуп директивы
-         */
-        $scope: ng.IScope;
-
-        /**
-         * DOM-элемент директивы
-         */
-        $element: ng.IAugmentedJQuery;
-
-        /**
-         * Атрибуты директивы
-         */
-        $attrs: ng.IAttributes;
 
         $compile: ng.ICompileService;
 
@@ -595,6 +521,92 @@ module LionSoftAngular {
             return "html/{0}.html".format(this.getName(false));
         }
     }
+
+    /**
+     * Наследуйте все декораторы сервисов от этого класса.
+     * По умолчанию доступны сервисы Service + $delegate.
+     * В наследнике следует переопределить метод Decorate($delegate)
+     * 
+     * Пример инициализации:
+     * app.decorator('myService', MyServiceDecorator.Factory());
+     */
+    export class ServiceDecorator extends Service {
+        $delegate: any;
+
+        public static addFactoryInjections(injects: string[]) {
+            NgObject.addFactoryInjections(injects);
+            this.addInjection(injects, "$delegate");
+        }
+
+        protected getFactoryResult(): any {
+            return this.Decorate(this.$delegate) || this.$delegate;
+        }
+
+        protected Decorate($delegate: any): any {
+            return $delegate;
+        }
+    }
+
+    /**
+     * Наследуйте все декораторы директив от этого класса.
+     * По умолчанию доступны сервисы Directive + $delegate.
+     * В наследнике следует переопределить методы Compile, PreLink, Link
+     * Вызовы super.Compile(...), super.PreLink(...), super.Link(...) будут равносильны оригинальным вызовам 
+     * 
+     * Пример инициализации:
+     * app.decorator('mySuperDirective', MySuperDirectiveDecorator.Factory());
+     */
+    export class DirectiveDecorator extends Directive {
+
+        $delegate: any;
+
+        private _oldCompile: Function;
+        private _pre: Function;
+        private _post: Function;
+
+        public static addFactoryInjections(injects: string[]) {
+            NgObject.addFactoryInjections(injects);
+            this.addInjection(injects, "$delegate");
+        }
+
+        Compile(element: ng.IAugmentedJQuery, attrs: ng.IAttributes, transclude: ng.ITranscludeFunction) {
+            var pre_post = this._oldCompile(element, attrs, transclude);
+            if (pre_post) {
+                if (typeof pre_post === "function") {
+                    this._post = pre_post;
+                } else {
+                    this._pre = pre_post.pre;
+                    this._post = pre_post.post;
+                }
+            }
+        }
+
+        PreLink(scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes, controllers: any, transclude: ng.ITranscludeFunction) {
+            if (this._pre)
+                this._pre(scope, element, attrs, controllers, transclude);
+        }
+
+
+        Link(scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes, controllers: any, transclude: ng.ITranscludeFunction) {
+            if (this._post)
+                this._post(scope, element, attrs, controllers, transclude);
+        }
+
+        protected getFactoryResult(): any {
+            var directive = this.$delegate[0];
+            this._oldCompile = directive.compile;
+
+            directive.compile = (element, attrs, transclude) => {
+                this.Compile(element, attrs, transclude);
+                return {
+                    pre: (scope, element, attrs, controllers, transcludeFn) => this.PreLink(scope, element, attrs, controllers, transcludeFn),
+                    post: (scope, element, attrs, controllers, transcludeFn) => this.Link(scope, element, attrs, controllers, transcludeFn)
+                };
+            }
+            return this.$delegate;
+        }
+    }
+
 }
 
 

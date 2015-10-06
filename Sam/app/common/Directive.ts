@@ -19,12 +19,9 @@ module App {
         compile = (element, attrs, transclude) => {
             this.ngName = this.name || this.ngName;
             this.rootFolder = URL.DIRECTIVES_ROOT + this.getName(false) + "/";
-            this.$element = element;
-            this.$attrs = attrs;
             this.Compile(element, attrs, transclude);
             return {
                 pre: (scope, element, attrs, controller, transclude) => {
-                    this.$scope = scope;
                     this.PreLink(scope, element, attrs, controller, transclude);
                 },
                 post: (scope, element, attrs, controller, transclude) => this.Link(scope, element, attrs, controller, transclude)

@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.WebPages;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Sam.Api;
 using Sam.DbContext.Hooks;
 using Sam.Extensions.EntityFramework;
 using Sam.Extensions.EntityFramework.EFHooks;
@@ -24,14 +25,7 @@ namespace Sam.DbContext
         [Table("DbInfo")]
         public class DbInfo
         {
-            /// <summary>
-            /// Максимальная длина текстового поля в БД
-            /// </summary>
-            //public const int StringMaxLength = int.MaxValue;
-            //public const int StringMaxLength = 4000;         // Ограничение для SQL CE
-            //public const int StringMaxLength = 10485760;     // Ограничение PostgreSQL
-
-            public const int MaxLength = -1; // Признак мемо поля
+            public const int MaxLength = -1; // For memo field
 
             public const string DbVersionParam = "DbVersion";
 
@@ -47,6 +41,8 @@ namespace Sam.DbContext
 
 //        private static int _cnt = 0;
 
+        public SequentialIdProvider SequentialIdProvider;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Sam.DbContext.ApplicationDbContext"/> class.
         /// </summary>
@@ -54,6 +50,7 @@ namespace Sam.DbContext
         {
             Configuration.LazyLoadingEnabled = false;
             Configuration.ProxyCreationEnabled = false;
+            SequentialIdProvider = new SequentialIdProvider(this);
             Initialize();
 //            Debug.WriteLine("Created: " + Interlocked.Increment(ref _cnt));
         }
@@ -89,10 +86,10 @@ namespace Sam.DbContext
             WasInitialized = true;
             if (ActualDbVersion > CurrentDbVersion)
             {
-                // Обновление базы данных необходимо делать в другом подключении,
-                // иначе добавленные объекты при первом обращении к БД возвращаются не из базы и не проксированные.
-                // В частности это приводит к тому, что в первый раз вычислимые атрибуты этих объектов могут быть не заполнены,
-                // а при LazyLoading = false могут быть возвращены объекты полностью.
+                // Updating of the database must be done in another connection,
+                // otherwise the added entities first time will be retrieved from cache but not from the database.
+                // It can lead to a state when calculated fields are not filled first time,
+                // and when LazyLoading = false the entities will be full retrieved.
                 // 
                 using (var db = Create())
                 {
@@ -120,6 +117,7 @@ namespace Sam.DbContext
                     _hooks.Add(new DateTimeUtcHook());
                     _hooks.Add(new KeyValueHook());
                     _hooks.Add(new FillWithCurrentUserHook());
+                    _hooks.Add(new FillWithCurrentDateHook());
                 }
                 return _hooks;
             }

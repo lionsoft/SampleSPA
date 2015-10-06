@@ -5,5 +5,5 @@ module App.Site {
     /**
      * Web Application title
      */
-    export const TITLE = "APP_TITLE | SAM System";
+    export const TITLE = "APP_TITLE";
 }
