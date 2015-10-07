@@ -1,5 +1,6 @@
 ﻿{
-    "APP_TITLE": "Sample Web App",
+    "APP-TITLE": "Sample Web App",
+    "BUSY-MESSAGE": "Please wait...",
 
     "SaveChanges": "Save Changes",
     "Cancel": "Cancel",
@@ -16,6 +17,7 @@
 
     "required": "required",
     "MustBeSet": "Field must be set",
+    "InvalidEmail": "Email is invalid ",
     "PasswordsDoNotMatch": "Password doesn't match",
 
     "Submit": "Submit",

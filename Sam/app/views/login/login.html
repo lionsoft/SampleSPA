@@ -1,47 +1,45 @@
-﻿<div class="container-fluid">
+﻿<div class="row">
+    <h1 class="text-center">{{App.Site.TITLE | translate}}</h1>
+    <hr />
     <div class="row">
-        <h1 class="text-center">{{App.Site.TITLE | translate}}</h1>
-        <hr />
-        <div class="row">
-            <div class="form-container">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Login" name="Email" ng-model="$.login">
-                </div>
-
-                <div class="form-group">
-                    <input type="{{$.inputType}}" class="form-control" id="inputPassword" placeholder="Password" name="Password" ng-model="$.password">
-                </div>
-
-                <div class="form-group">
-                    <div class="checkbox">
-                        <label class="pull-left">
-                            <input type="checkbox" ng-click="$.HideShowPassword()">
-                            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
-                            <span translate>Show password</span>
-                        </label>
-                        <label class="pull-right">
-                            <input type="checkbox" value="{{$.rememberMe}}" name="RememberMe" ng-model="$.rememberMe">
-                            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
-                            <span translate>Remember me</span>
-                        </label>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-
-                <div class="form-group" ng-show="$.textError">
-                    <div class="alert alert-danger current-alert-danger">
-                        <span class=" glyphicon glyphicon-exclamation-sign" aria-hidden="true">
-                        </span>
-                        <span class="sr-only"></span>
-                        <span ng-bind="$.textError"></span>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <button class="btn btn-default" ng-disabled1="!form.$valid" ng-click="$.DoLogin()">Log In</button>
-                </div>
-
+        <div class="form-container">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Login" name="Email" ng-model="$.login">
             </div>
+
+            <div class="form-group">
+                <input type="{{$.inputType}}" class="form-control" id="inputPassword" placeholder="Password" name="Password" ng-model="$.password">
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox">
+                    <label class="pull-left">
+                        <input type="checkbox" ng-click="$.HideShowPassword()">
+                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                        <span translate>Show password</span>
+                    </label>
+                    <label class="pull-right">
+                        <input type="checkbox" value="{{$.rememberMe}}" name="RememberMe" ng-model="$.rememberMe">
+                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                        <span translate>Remember me</span>
+                    </label>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="form-group" ng-show="$.textError">
+                <div class="alert alert-danger current-alert-danger">
+                    <span class=" glyphicon glyphicon-exclamation-sign" aria-hidden="true">
+                    </span>
+                    <span class="sr-only"></span>
+                    <span ng-bind="$.textError"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-default" ng-disabled1="!form.$valid" ng-click="$.DoLogin()">Log In</button>
+            </div>
+
         </div>
     </div>
 </div>

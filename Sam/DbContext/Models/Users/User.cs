@@ -16,7 +16,7 @@ namespace Sam.DbContext
             var userIdentity = await manager.CreateIdentityAsync(this, authenticationType);
             // Add custom user claims here
             userIdentity.SetClaimValue("Email", Email);
-            userIdentity.SetClaimValue("Role", UserRole.ToString());
+            userIdentity.SetClaimValue("Role", ((int)UserRole).ToString());
 
             return userIdentity;
         }

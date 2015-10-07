@@ -6,11 +6,15 @@
 
         <div data-ng-show="vm.isBusy" class="page-splash dissolve-animation">
             <div data-cc-spinner="vm.spinnerOptions"></div>
-            <div class="page-splash-message page-splash-message-subtle">{{vm.busyMessage}}</div>
+            <div class="page-splash-message page-splash-message-subtle">{{vm.busyMessage | translate}}</div>
         </div>
 
         <div data-ng-include="'/app/layout/sidebar.html'"></div>
 
-        <div id="{{$.ngName}}" data-ng-view class="shuffle-animation"></div>
+        <section class="mainbar">
+            <section class="matter">
+                <div class="container shuffle-animation" id="{{$.ngName}}" data-ng-view></div>
+            </section>
+        </section>
     </section>
 </div>

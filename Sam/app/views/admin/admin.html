@@ -1,7 +1,43 @@
-﻿<section class="mainbar">
-    <section class="matter">
-        <div class="container">
-            <h1 translate>Page2</h1>
+﻿<div class="row">
+
+    <div st-table
+            st-items-by-page="20"
+            sam-st-table="{service: 'samUsers', editTemplate: 'editUser.html', prepareQuery: $.prepareQuery, prepareEdit: $.prepareEdit}">
+
+        <!-- #region - Title / Search - -->
+        <div class="st-table-search">
+            <h3>
+                <button ng-click="$edit()" class="btn btn-success btn-icon"><i class="fa fa-plus fa-lg nv-l-col"></i></button>
+                <span>Users</span>
+            </h3>
+            <input st-search="UserName" class="form-control" translate translate-attr-placeholder="Search..." />
         </div>
-    </section>
-</section>
+        <!-- #endregion -->
+
+        <table>
+            <!-- #region - Columns - -->
+            <thead>
+                <tr>
+                    <th class="st-action-buttons"><i class="fa fa-cogs fa-lg"></i></th>
+                    <th translate st-sort-default st-sort="UserName">Login</th>
+                    <th translate st-sort="UserRole">Role</th>
+                    <th translate auto-size st-sort="Email">Email</th>
+                </tr>
+            </thead>
+            <!-- #endregion -->
+            <!-- #region - Rows - -->
+            <tbody>
+                <tr ng-repeat="user in $items track by user.Id">
+                    <td class="st-action-buttons">
+                        <button ng-click="$edit(user)" class="btn btn-icon"><i class="fa fa-edit fa-lg blue"></i></button>
+                        <button ng-click="$delete(user)" class="btn btn-icon"><i class="fa fa-trash-o fa-lg red"></i></button>
+                    </td>
+                    <td>{{user.UserName}}</td>
+                    <td>{{user.UserRole | UserRole}}</td>
+                    <td>{{user.Email}}</td>
+                </tr>
+            </tbody>
+            <!-- #endregion -->
+        </table>
+    </div>
+</div>

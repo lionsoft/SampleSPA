@@ -553,10 +553,6 @@
     <Content Include="app\css\smart-tables.css">
       <DependentUpon>smart-tables.less</DependentUpon>
     </Content>
-    <Content Include="app\css\tables.css">
-      <DependentUpon>tables.less</DependentUpon>
-    </Content>
-    <Content Include="app\css\tables.less" />
     <Content Include="app\css\smart-tables.less" />
     <None Include="app\css\toastr.less" />
     <Content Include="app\config.route.js">
@@ -702,6 +698,10 @@
     <Content Include="app\images\background.jpg" />
     <Content Include="app\images\ic_settings_white.png" />
     <Content Include="app\images\logo.png" />
+    <Content Include="app\views\admin\editUser.css">
+      <DependentUpon>editUser.less</DependentUpon>
+    </Content>
+    <Content Include="app\views\admin\editUser.html" />
     <Content Include="app\views\home\home.js">
       <DependentUpon>home.ts</DependentUpon>
     </Content>
@@ -1955,6 +1955,7 @@
     <Content Include="app\views\admin\admin.js.map">
       <DependentUpon>admin.ts</DependentUpon>
     </Content>
+    <Content Include="app\views\admin\editUser.less" />
     <None Include="compilerconfig.json" />
     <Content Include="Sam.csproj.DotSettings" />
     <Content Include="fonts\fontawesome-webfont.woff2" />

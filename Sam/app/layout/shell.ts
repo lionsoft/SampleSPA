@@ -25,7 +25,7 @@ module App.Controllers
         public static controllerId = 'shell';
         
         //#region Variables
-        busyMessage = 'Please wait...';
+        busyMessage = Site.BUSY_MESSAGE;
         controllerId = Shell.controllerId;
         isBusy= true;
         spinnerOperations = {
@@ -55,7 +55,7 @@ module App.Controllers
             var logger = this.common.logger.getLogFn(this.controllerId, 'success');
             //logger('Hot Towel Angular loaded!', null, true);
             this.common.activateController([], this.controllerId);
-            this.$scope.$watch("vm.IsSidebarVisible", x => this.updateNavRoutes());
+            this.$scope.$watch("$auth.LoggedUser", x => this.updateNavRoutes());
         }
 
         private registerEvents()
@@ -112,7 +112,7 @@ module App.Controllers
 
         public isCurrent(route: IAppRoute) {
             this.IsTopNavVisible = this.$route.current.name !== "login";
-            this.IsSidebarVisible = this.IsTopNavVisible && (this.topNavMenuItems.length === 0 || this.selectedMenuItem && this.sideBarMenuItems.length > 1);
+            this.IsSidebarVisible = this.IsTopNavVisible && this.sideBarMenuItems.length > 0 && (this.topNavMenuItems.length === 0 || this.selectedMenuItem && this.sideBarMenuItems.length > 1);
             if (this.IsSidebarVisible)
                 $('.mainbar').removeClass("no-h-margins");
             else

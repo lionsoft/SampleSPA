@@ -1,0 +1,43 @@
+﻿<!-- Need to disable password autocomplete in the Chrome -->
+<input type="password" style="display: none">
+<input type="email" style="display: none">
+<!--------------------------------------------------------->
+
+<!-- #region - Login - -->
+<div class="form-group has-warning" ng-class="{ 'has-error' : form.login.$invalid && form.login.$touched }">
+    <label class="control-label" translate>Login</label>
+    <input class="form-control" type="text" translate translate-attr-placeholder="required" autofocus required ng-model="$item.UserName" name="login" />
+    <span ng-show="form.login.$invalid && form.login.$touched" class="red" translate>MustBeSet</span>
+</div>
+<!-- #endregion -->
+
+<!-- #region - Role - -->
+<div class="form-group">
+    <label class="control-label" translate>Role</label>
+    <ui-select class="form-control" ng-model="$item.UserRole">
+        <ui-select-match allow-clear="false">
+            {{$select.selected | UserRole}}
+        </ui-select-match>
+        <ui-select-choices repeat="$item in [] | UserRole">
+            {{::$item | UserRole}}
+        </ui-select-choices>
+    </ui-select>
+</div>
+<!-- #endregion -->
+
+<!-- #region - Email - -->
+<div class="form-group has-warning" ng-class="{ 'has-error' : form.Email.$invalid && form.Email.$touched }">
+    <label class="control-label" translate>Email</label>
+    <input class="form-control" autocomplete="off" type="email" translate translate-attr-placeholder="required" required ng-model="$item.Email" name="Email" />
+    <span ng-show="form.Email.$error.email && form.Email.$touched" class="red" translate>InavlidEmail</span>
+    <span ng-show="form.Email.$error.required && form.Email.$touched" class="red" translate>MustBeSet</span>
+</div>
+<!-- #endregion -->
+
+<!-- #region - Password - -->
+<div class="form-group has-warning" ng-class="{ 'has-error' : form.password.$invalid && form.password.$touched }" ng-hide="$item.Id">
+    <label class="control-label" translate>Password</label>
+    <input class="form-control" autocomplete="off" type="password" translate translate-attr-placeholder="required" required ng-model="$item.PasswordHash" name="password" />
+    <span ng-show="form.password.$invalid && form.password.$touched" class="red" translate>MustBeSet</span>
+</div>
+<!-- #endregion -->
