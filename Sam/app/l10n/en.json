@@ -1,6 +1,7 @@
 ﻿{
     "APP-TITLE": "Sample Web App",
     "BUSY-MESSAGE": "Please wait...",
+    "SEARCH": "Search...",
 
     "SaveChanges": "Save Changes",
     "Cancel": "Cancel",

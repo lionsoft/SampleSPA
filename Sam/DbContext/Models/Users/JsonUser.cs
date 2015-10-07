@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using T4TS;
 
 namespace Sam.DbContext
@@ -27,6 +28,11 @@ namespace Sam.DbContext
         public static JsonUser Create(User user)
         {
             return user == null ? null : new JsonUser(user);
+        }
+
+        public User ToUser()
+        {
+            return new User { Id = Id, UserName = UserName, Email = Email, UserRole = UserRole }; 
         }
     }
 }

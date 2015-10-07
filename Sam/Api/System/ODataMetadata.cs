@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Http.Controllers;
 using Sam.DbContext;
 
 namespace Sam.Api
@@ -29,37 +30,23 @@ namespace Sam.Api
             return result.Select(x =>
             {
                 var pi = x is T ? null : x.GetType().GetProperty("Instance");
-                var item = PrepareResultEntity((T)(pi == null ? x : pi.GetValue(x)));
-
+                var item = PrepareResultEntity<T>(pi == null ? x : pi.GetValue(x));
                 return item;
             });
         }
 
-        private TEntity PrepareResultEntity<TEntity>(TEntity p)
+        private TEntity PrepareResultEntity<TEntity>(object p)
         {
-/*
-            var card = p as Card;
-            if (card != null)
-            {
-                AccountController.ClearUserEmployeeFields(card.Employee);
-            }
-            var cardAccess = p as CardAccess;
-            if (cardAccess != null)
-            {
-                PrepareResultEntity(cardAccess.Card);
-            }
-            var e = p as Employee;
-            if (e != null)
-            {
-                AccountController.ClearUserEmployeeFields(e, false);
-            }
-*/
             var u = p as User;
             if (u != null)
             {
-                AccountController.ClearUserFields(u);
+                var jsonUser = JsonUser.Create(u);
+                if (typeof (TEntity) == typeof (JsonUser))
+                    p = jsonUser;
+                else
+                    p = jsonUser.ToUser();
             }
-            return p;
+            return (TEntity)p;
         }
 
 

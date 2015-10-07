@@ -56,6 +56,7 @@ namespace Sam.Api
 
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
 
+/*
         public static User ClearUserFields(User u)
         {
             u.PasswordHash = null;
@@ -63,19 +64,20 @@ namespace Sam.Api
             u.SecurityStamp = null;
             return u;
         }
+*/
 
         [HttpGet]
         public async Task<object> Get(ODataQueryOptions<User> queryOptions)
         {
-            var res = await CRUDController.CreateODataResponse(Db.Users, Request, queryOptions);
+            var res = await CRUDController.CreateODataResponse<JsonUser, User>(Db.Users, Request, queryOptions);
             return res;
         }
 
         [HttpGet, Route("{id}")]
-        public async Task<User> GetAsync(string id)
+        public async Task<JsonUser> GetAsync(string id)
         {
             var res = await Db.Set<User>().FirstOrDefaultAsync(u => u.Id == id);
-            return ClearUserFields(res);
+            return JsonUser.Create(res);
         }
 
         public virtual async Task<IHttpActionResult> SaveAsync(User user, bool isNew)
@@ -93,14 +95,14 @@ namespace Sam.Api
             }
             else
             {
-                // ToDo: PasswordHash must be equal current password hash value for checking access. (not implemented yet)
-                // This method doesn't change user password. Use ChangePassword instead.
-                var currentUserPasswordHash = Db.Users.Where(x => x.Id == user.Id).Select(x => x.PasswordHash).FirstOrDefault();
-                user.PasswordHash = user.PasswordHash ?? currentUserPasswordHash;
-                Db.Attach(user, false);
+                var currentUser = Db.Users.First(x => x.Id == user.Id);
+                currentUser.UserName = user.UserName;
+                currentUser.UserRole = user.UserRole;
+                currentUser.Email = user.Email;
+                currentUser.PasswordHash = user.PasswordHash ?? currentUser.PasswordHash;
                 await Db.SaveChangesAsync();
             }
-            return Ok(user);
+            return Ok(JsonUser.Create(user));
         }
 
         [HttpPatch]
@@ -124,7 +126,7 @@ namespace Sam.Api
         [HttpDelete, Route("{id}")]
         public virtual async Task<IHttpActionResult> DeleteAsync(string id)
         {
-            var e = await GetAsync(id);
+            var e = await Db.Set<User>().FirstOrDefaultAsync(u => u.Id == id);
             if (e != null)
             {
                 var result = await UserManager.DeleteAsync(e);
@@ -175,7 +177,7 @@ namespace Sam.Api
             properties.IsPersistent = model.RememberMe;
             Authentication.SignIn(properties, cookieIdentity);
 
-            return Ok(new { user.Id, user.UserName/*, Name = user.UserName, Login = user.UserName*/, user.UserRole });
+            return Ok(JsonUser.Create(user));
         }
 
         // GET api/Account/Logout

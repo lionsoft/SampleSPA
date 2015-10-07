@@ -27,6 +27,20 @@ namespace Sam.Api
                 return new ODataMetadata<TEntity>(res, 0).Results;
             }
         }
+        public static async Task<object> CreateODataResponse<TResultEntity, TEntity>(IQueryable<TEntity> query, HttpRequestMessage request, ODataQueryOptions<TEntity> queryOptions) where TEntity : class where TResultEntity: class
+        {
+            var results = queryOptions.ApplyTo(query);
+            var res = await results.ToListAsync();
+            if (queryOptions.InlineCount != null && queryOptions.InlineCount.Value == InlineCountValue.AllPages)
+            {
+                var odataProperties = request.ODataProperties();
+                return new[] { new ODataMetadata<TResultEntity>(res, odataProperties.TotalCount) };
+            }
+            else
+            {
+                return new ODataMetadata<TResultEntity>(res, 0).Results;
+            }
+        }
     }
 
 

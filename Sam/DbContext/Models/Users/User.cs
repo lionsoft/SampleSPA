@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Newtonsoft.Json;
 using Sam.Extensions;
+using T4TS;
 
 namespace Sam.DbContext
 {
@@ -23,14 +26,46 @@ namespace Sam.DbContext
 
 
         public UserRole UserRole { get; set; }
+
+        [JsonIgnore]
+        public override bool EmailConfirmed { get; set; }
+
+        [JsonIgnore]
+        public override bool PhoneNumberConfirmed { get; set; }
+
+        [JsonIgnore]
+        public override bool TwoFactorEnabled { get; set; }
+
+        [JsonIgnore]
+        public override bool LockoutEnabled { get; set; }
+
+        [JsonIgnore]
+        public override int AccessFailedCount { get; set; }
+
+        [JsonIgnore]
+        public override ICollection<IdentityUserRole> Roles { get { return base.Roles; } }
+
+        [JsonIgnore]
+        public override ICollection<IdentityUserClaim> Claims { get { return base.Claims; } }
+
+        [JsonIgnore]
+        public override ICollection<IdentityUserLogin> Logins { get { return base.Logins; } }
+
         public User() : base()
         {
-          this.Id = null;
+          Id = null;
         }
 
         public User(string userName) : base(userName)
         {
-          this.Id = Guid.NewGuid().ToString();
+          Id = Guid.NewGuid().ToString();
         }
+
+        internal User Sanitize()
+        {
+            return JsonUser.Create(this).ToUser();
+        }
+
+
     }
 }

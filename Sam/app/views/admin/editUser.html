@@ -35,9 +35,9 @@
 <!-- #endregion -->
 
 <!-- #region - Password - -->
-<div class="form-group has-warning" ng-class="{ 'has-error' : form.password.$invalid && form.password.$touched }" ng-hide="$item.Id">
+<div class="form-group" ng-class="{ 'has-warning': !$item.Id, 'has-error' : form.password.$invalid && form.password.$touched }">
     <label class="control-label" translate>Password</label>
-    <input class="form-control" autocomplete="off" type="password" translate translate-attr-placeholder="required" required ng-model="$item.PasswordHash" name="password" />
+    <input class="form-control" autocomplete="off" type="password" translate translate-attr-placeholder="{{$item.Id ? '* current password *' : 'required'}}" ng-required="!$item.Id" ng-model="$item.PasswordHash" name="password" />
     <span ng-show="form.password.$invalid && form.password.$touched" class="red" translate>MustBeSet</span>
 </div>
 <!-- #endregion -->
