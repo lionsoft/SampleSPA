@@ -76,7 +76,7 @@ module App.Services {
             if (this.$empty) return "$top=0&$filter=1 eq 0";
             var resArray = [];
             if (angular.isArray(this._expands) && this._expands.length > 0)
-                resArray.push(`$expand=${this._expands.distinct().toJoinedString(',')}`);
+                resArray.push(`$expand=${this._expands.distinct().select(x => x.trim().replace(/\./g, '/')).toJoinedString(',')}`);
             if (this._filter) resArray.push(`$filter=${this._filter}`);
             if (angular.isArray(this._orderBy) && this._orderBy.length > 0)
                 resArray.push(`$orderby=${this._orderBy.distinct().toJoinedString(',')}`);

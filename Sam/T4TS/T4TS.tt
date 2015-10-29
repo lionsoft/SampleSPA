@@ -1468,7 +1468,7 @@ Project GetProjectContainingT4File(DTE dte) {
     {
         public override string Name
         {
-            get { return "Date"; }
+            get { return "Date | moment.Moment | string"; }
         }
     }
 

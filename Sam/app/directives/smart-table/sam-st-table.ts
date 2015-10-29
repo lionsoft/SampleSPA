@@ -199,12 +199,8 @@ module App.Directives {
                     expr = "$." + expr;
                 scope['__watchers'] = scope['__watchers'] || [];
                 if (!scope['__watchers'].Contains(expr)) {
-                    var skipFirstTime = `__watchers${expr}`;
-                    scope[skipFirstTime] = true;
-                    scope.$watch(expr, () => {
-                        if (scope[skipFirstTime])
-                            scope[skipFirstTime] = undefined;
-                        else
+                    scope.$watch(expr, (newVal, oldVal) => {
+                        if (newVal !== oldVal)
                             scope.$table.pipe();
                     });
                     scope['__watchers'].push(expr);

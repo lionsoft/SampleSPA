@@ -188,7 +188,7 @@ module LionSoftAngular {
                                                 $modalInstance.close(res || false);
                                         })
                                         .catch(e => {
-                                            if (e) alert(e);
+                                            if (angular.isString(e)) alert(e);
                                         });
                                     
                                 }

@@ -4,7 +4,11 @@ declare module BootstrapV3DatetimePicker {
     interface DatetimepickerOptions {
         widgetPositioning?: { horizontal: string; vertical: string };
         format?: string;
-        samInline?: boolean;
+        locale?: string;
+        inline?: boolean;
+        showTodayButton?: boolean;
+        showClear?: boolean;
+        keyBinds?: any;
     }
 }
 

@@ -101,6 +101,7 @@ namespace Sam.Api
                 currentUser.Email = user.Email;
                 currentUser.PasswordHash = user.PasswordHash ?? currentUser.PasswordHash;
                 await Db.SaveChangesAsync();
+                user = currentUser;
             }
             return Ok(JsonUser.Create(user));
         }

@@ -21,7 +21,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
-    <TypeScriptToolsVersion>1.5</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.7</TypeScriptToolsVersion>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -301,6 +301,7 @@
     <Compile Include="Extensions\ErrorManager\StringExtension.cs" />
     <Compile Include="Extensions\MailService.cs" />
     <Compile Include="Extensions\SequentialGuid.cs" />
+    <Compile Include="Extensions\SimplifyExpression.cs" />
     <Compile Include="T4TS\TypeScriptEnumAttribute.cs" />
     <Compile Include="T4TS\TypeScriptInterfaceAttribute.cs" />
     <Compile Include="T4TS\TypeScriptMemberAttribute.cs" />

@@ -48,6 +48,23 @@
                     // else we have to make it lazy:
                     refs.push([parent, prop, ref]);
                     return undefined;
+                } else {
+                    var id = obj.$id;
+                    if (id) {
+                        delete obj.$id;
+                        byid[id] = obj;
+                    }
+
+                    if ("$values" in obj) // an array
+                        obj = obj.$values.map(recurse);
+                    else { // a plain object
+                        for (var p in obj) {
+                            if (obj.hasOwnProperty(p))
+                                obj[p] = recurse(obj[p], p, obj);
+                        }
+                    }
+                }
+/*
                 } else if ("$id" in obj) {
                     var id = obj.$id;
                     delete obj.$id;
@@ -64,6 +81,7 @@
                     }
 //                    byid[id] = obj;
                 }
+*/
                 return obj;
             })(source); // run it!
 
