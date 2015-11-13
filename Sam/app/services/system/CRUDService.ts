@@ -3,7 +3,7 @@
 module App.Services {
 
     export interface IEntityObjectId {
-        Id: string;
+        Id: string | any;
     }
 
     export interface ICRUDService<T extends IEntityObjectId> {
@@ -156,7 +156,8 @@ module App.Services {
          * @param odata параметры запроса
          */
         protected prepareQuery(odata: OData, isSmartLoad?: boolean): void {
-            odata.$expand("CreatedBy");
+//            odata.$expand("CreatedBy, CreatedBy.Employees");
+//            odata.$expand("CreatedBy");
             if (!isSmartLoad)
                 odata.$orderBy("Name");
         }
@@ -189,6 +190,18 @@ module App.Services {
          * @param query промис запроса
          */
         protected afterGet(query: IPromise<T>): IPromise<T> {
+/*
+            this._samUsers = this._samUsers || this.get("samUsers");
+            return query.then(r => {
+                if (r) {
+                    var d = this.defer();
+                    this._samUsers.UpdateEmployee(r["CreatedBy"]).finally(() => d.resolve(r));
+                    return d.promise;
+                } else
+                    return r;
+            });
+*/
+
             return query;
         }
 
@@ -267,6 +280,15 @@ module App.Services {
                         var results : any = r;
                         if (angular.isArray(results[0].Results))
                             results = results[0].Results;
+                        if (odata.$translateResult) {
+                            results = odata.$translateResult(results);
+                            if (angular.isArray(results[0].Results)) {
+                                if (angular.isArray(results))
+                                    results[0].Count = results.length;
+                                else
+                                    results[0].Count = 0;
+                            }
+                        }
                         results.forEach((x: any) => this.prepareResult(x));
                     }
                         
@@ -369,6 +391,7 @@ module App.Services {
 
         SmartLoad(tableState: st.ITableState, dataSource?: T[], odata?: OData): IPromise<T[]> {
             odata = (odata || OData.create).$inlinecount();
+
             if (tableState.sort && angular.isString(tableState.sort.predicate)) {
                 odata.$orderBy(tableState.sort.predicate + (tableState.sort.reverse ? " desc" : ""));
             }
@@ -390,7 +413,24 @@ module App.Services {
                 }
             }
             return this.$query(odata, true).then(res => {
-                var result: IODataMetadata<T> = <any>res[0];
+                var result: IODataMetadata<T> = null;
+                if (angular.isArray(res)) {
+                    result = (<any>res[0]) || [];
+                    if (!angular.isArray(result.Results)) {
+                        result.Results = res;
+                        result.Count = 0;
+                    }
+
+                    if (odata.$translateResult) {
+                        result.Results = odata.$translateResult(result.Results);
+                        if (angular.isArray(result.Results)) 
+                            result.Count = result.Results.length;
+                        else
+                            result.Count = 0;
+                    }
+                }
+
+
                 if (result && angular.isArray(result.Results)) {
                     tableState.pagination.numberOfPages = Math.ceil(result.Count / tableState.pagination.number);//set the number of pages so the pagination can update
                     if (dataSource && angular.isArray(dataSource)) {
@@ -509,7 +549,7 @@ module App.Services {
         EditModal(entity: T, editTemplateUrl: string, scope?: ng.IScope | any, updateAfterSave?: boolean): IPromise<T> {
             entity = entity || <any>{};
             scope = scope || app.$rootScope;
-            if (scope.__customController) {
+            if (scope && scope.__customController) {
                 scope.$item = angular.copy(<any>entity);
                 scope.$.$item = scope.$item;
                 if (!scope.$templateUrl)
@@ -526,24 +566,24 @@ module App.Services {
 
             if (!scope.$submit) {
                 scope.$submit = (item) => {
-                var needSave = true;
+                    var needSave = true;
                     if (typeof scope.$.PrepareSave === "function")
                         needSave = scope.$.PrepareSave(item);
-                if (needSave === undefined)
-                    needSave = true;
-                if (needSave) {
-                    return this.Save(item).then(res => {
+                    if (needSave === undefined)
+                        needSave = true;
+                    if (needSave) {
+                        return this.Save(item).then(res => {
                             scope.$item = res;
-                        return true;
-                    });
-                } else {
+                            return true;
+                        });
+                    } else {
                         scope.$item = item;
-                }
-                return this.promiseFromResult(true);
-            };
+                    }
+                    return this.promiseFromResult(true);
+                };
             }
             var res = app.popup.popupModal("html/edit-form.html".ExpandPath(LionSoftAngular.rootFolder), scope)
-                .then(r => scope.$item);
+                .then(() => scope.$item);
 /*
                 .then(() => {
                     var needSave = true;

@@ -11,6 +11,8 @@ interface IApp extends ng.IModule, LionSoftAngular.INgObject {
     $auth: App.IAutenticationService;
 }
 
+type DateTime = Date | moment.Moment | string;
+
 module App {
 
     export var app: IApp = <IApp>angular.module('app', [

@@ -209,7 +209,7 @@ module App.Directives {
         }
 
         Load(scope: ISamStTableScope<IEntityObjectId>) {
-            if (scope.$loading) return;
+            if (scope.$loading) return undefined;
             scope.$loading = true;
             var tableState = scope.$table.tableState();
             tableState.pagination.start = tableState.pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.

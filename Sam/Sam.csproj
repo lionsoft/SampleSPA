@@ -629,6 +629,12 @@
     <Content Include="app\filters\ExceptOfFilter.js">
       <DependentUpon>ExceptOfFilter.ts</DependentUpon>
     </Content>
+    <Content Include="app\filters\FilterOr.js">
+      <DependentUpon>FilterOr.ts</DependentUpon>
+    </Content>
+    <Content Include="app\filters\FilterProps.js">
+      <DependentUpon>FilterProps.ts</DependentUpon>
+    </Content>
     <Content Include="app\filters\NumberFilter.js">
       <DependentUpon>NumberFilter.ts</DependentUpon>
     </Content>
@@ -756,7 +762,6 @@
     <Content Include="Content\toastr.min.css" />
     <Content Include="Content\ui-bootstrap-csp.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
-    <Content Include="gruntfile.js" />
     <Content Include="gulpfile.js" />
     <Content Include="Scripts\angular-aria.js" />
     <Content Include="Scripts\angular-aria.min.js" />
@@ -1638,6 +1643,8 @@
     <TypeScriptCompile Include="app\directives\smart-table\smart-table.d.ts" />
     <TypeScriptCompile Include="app\directives\smart-table\sam-st-table.ts" />
     <TypeScriptCompile Include="app\filters\ExceptOfFilter.ts" />
+    <TypeScriptCompile Include="app\filters\FilterOr.ts" />
+    <TypeScriptCompile Include="app\filters\FilterProps.ts" />
     <TypeScriptCompile Include="app\filters\PropsFilter.ts" />
     <TypeScriptCompile Include="app\filters\YesNoFilter.ts" />
     <TypeScriptCompile Include="app\filters\NumberFilter.ts" />
@@ -1957,6 +1964,12 @@
       <DependentUpon>admin.ts</DependentUpon>
     </Content>
     <Content Include="app\views\admin\editUser.less" />
+    <Content Include="app\filters\FilterOr.js.map">
+      <DependentUpon>FilterOr.js</DependentUpon>
+    </Content>
+    <Content Include="app\filters\FilterProps.js.map">
+      <DependentUpon>FilterProps.js</DependentUpon>
+    </Content>
     <None Include="compilerconfig.json" />
     <Content Include="Sam.csproj.DotSettings" />
     <Content Include="fonts\fontawesome-webfont.woff2" />

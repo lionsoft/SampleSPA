@@ -584,6 +584,9 @@ module LionSoftJs {
     require(scriptFolder + "js.net-{version}/js.net.array.js");
 */
 
+    if (!window.console.debug)
+        window.console.debug = window.console.log;
+
     // Set window.location.appFolder
     var idx = scriptFolder.EndsWith("/Scripts/LionSoft.Js/", true) ? scriptFolder.toLowerCase().lastIndexOf("/scripts/lionsoft.js/") : -1;
     if (idx === -1) idx = scriptFolder.toLowerCase().indexOf("/scripts/");
@@ -596,8 +599,6 @@ module LionSoftJs {
 
     appFolder = window.location.appFolder;
 
-    if (!window.console.debug)
-        window.console.debug = window.console.log;
 
 //    require(scriptFolder + "js.net-{version}/js.net.path.js");
 }

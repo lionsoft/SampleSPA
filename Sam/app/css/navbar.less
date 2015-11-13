@@ -3,6 +3,10 @@
 /*
     Стили главного меню
 */
+.navbar {
+    border: none;
+}
+
 .navbar-menuitem {
   font-size: 100%;
   margin-left: 0 !important;
@@ -11,7 +15,7 @@
 .navbar-inverse .navbar-header > a.active:hover,
 .navbar-inverse .navbar-header > a.active:focus {
   color: white;
-  background-color: #080808;
+  //background-color: #080808;
 }
 .navbar-brand span {
   font-size: 150%;
@@ -37,8 +41,9 @@
     margin-right: 1em;
 }
 
-.sidebar .navi > li > a {
+.sidebar .navi > li > a, .sidebar .navi > li > a:hover, .sidebar .navi > li > a:focus {
     font-size: @menu-font-size;
+    border: none;
 }
 
 .navbar .navbar-menu .nav > li > a {
@@ -52,7 +57,7 @@
 
 
 .navbar-inverse {
-    background-color: #333;
+    background-color: @def-background-color;
 }
 
 .sidebar-widget form {
@@ -60,7 +65,7 @@
 }
 
 .sidebar .navi > li > a {
-    background-color: #333 !important;
+    background-color: @def-background-color !important;
 }
 
 .sidebar .navi li ul li a {
@@ -76,11 +81,11 @@
     }
 
 .navbar-inverse .btn-navbar {
-    background-color: #333;
+    background-color: @def-background-color;
 }
 
     .navbar-inverse .btn-navbar:hover {
-        background-color: #333;
+        background-color: @def-background-color;
     }
 
 .sidebar {
@@ -89,7 +94,7 @@
 }
 
     .sidebar .sidebar-inner {
-        background-color: #333;
+        background-color: @def-background-color;
     }
 
 .sidebar-filler {
@@ -98,7 +103,7 @@
     top: 0;
     left: 0;
     height: 100%;
-    background-color: #333;
+    background-color: @def-background-color;
     width: @sidebar-width;
 }
 

@@ -10,7 +10,7 @@
 .modal-content .panel-title {
   font-weight: bold;
 }
-.modal-content button {
+.modal-content button.btn-dialog {
   min-width: 90px;
   margin-left: 4px;
 }

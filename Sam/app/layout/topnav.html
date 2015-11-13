@@ -9,8 +9,8 @@
     </div>
     <div class="navbar-collapse collapse">
         <div class="navbar-menu">
-            <ul class="nav navbar-nav navi" ng-show="vm.IsTopNavVisible">
-                <li data-ng-class="{'current' : menuItem === vm.selectedMenuItem}" data-ng-repeat="menuItem in vm.topNavMenuItems">
+            <ul class="nav navbar-nav navi" ng-show="vm.IsSidebarVisible">
+                <li data-ng-class="{'current' : menuItem === vm.selectedMenuItem}" data-ng-repeat="menuItem in vm.GetNavMenuItems()">
                     <a ng-click="vm.selectMenuItem(menuItem)" data-ng-bind-html="menuItem | translate" data-cc-menu-item-rendered></a>
                 </li>
             </ul>

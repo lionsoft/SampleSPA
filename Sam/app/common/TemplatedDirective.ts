@@ -2,7 +2,7 @@ module App {
 
     /**
      * Наследуйте все директивы, имеющие html-темплейт от этого класса.
-     * Темплейты и стили будут загружаться относительно папки URL.NAVIS_DIRECTIVES_ROOT/<имя-директивы>. 
+     * Темплейты и стили будут загружаться относительно папки URL.DIRECTIVES_ROOT/<имя-директивы>. 
      */
     export class TemplatedDirective extends LionSoftAngular.TemplatedDirective {
 

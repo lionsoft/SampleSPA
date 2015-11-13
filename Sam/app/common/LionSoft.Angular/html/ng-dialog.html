@@ -6,21 +6,21 @@
     <div class="panel-body modal-body" ng-bind-html="bodyContent | translate"></div>
 
     <div class="panel-footer modal-footer">
-        <button type="button" class="btn"
+        <button type="button" class="btn btn-dialog"
                 data-ng-click="ok(true)"
                 ng-class="yesButtonClass || (hasNoButtonContent || isConfirmDialog || isAskDialog ? 'btn-success' : 'btn-default')"
                 ng-show="hasYesButtonContent"
                 ng-bind-html="yesButtonContent | translate">
         </button>
         <button type="button"
-                class="btn"
+                class="btn btn-dialog"
                 ng-class="noButtonClass || 'btn-danger'"
                 data-ng-click="ok(false)"
                 ng-show="hasNoButtonContent"
                 ng-bind-html="noButtonContent | translate">
         </button>
         <button type="button"
-                class="btn"
+                class="btn btn-dialog"
                 data-ng-click="cancel(false)"
                 ng-class="cancelButtonClass || (isConfirmDialog ? 'btn-danger' : 'btn-default')"
                 ng-show="hasCancelButtonContent"

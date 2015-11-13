@@ -1065,7 +1065,7 @@ Project GetProjectContainingT4File(DTE dte) {
         /// <summary>
         ///     If true translates System.DateTime to native date
         /// </summary>
-        public bool UseNativeDates { get; set; }
+        public string UseNativeDates { get; set; }
 
         /// <summary>
         ///     List of the project names to process. If null - all the projects will be processed.
@@ -1112,7 +1112,7 @@ Project GetProjectContainingT4File(DTE dte) {
                 DefaultCamelCaseMemberNames = ParseSettingNullableType(settingsValues, "DefaultCamelCaseMemberNames", false),
                 DefaultInterfaceNamePrefix = ParseSettingReferenceType(settingsValues, "DefaultInterfaceNamePrefix", s => s as string, string.Empty),
                 CompatibilityVersion = ParseSettingReferenceType(settingsValues, "CompatibilityVersion", v => v as Version, new Version(0, 9, 1, 1)),
-                UseNativeDates = ParseSettingNullableType(settingsValues, "UseNativeDates", false),
+                UseNativeDates = ParseSettingReferenceType(settingsValues, "UseNativeDates", s => s as string, ""),
                 ProjectNamesToProcess = ParseSettingReferenceType(settingsValues, "ProjectNamesToProcess", s => s == null ? null : s.ToString().Replace(" ", "").Split(','), null),
                 ProcessDataContracts = ParseSettingNullableType(settingsValues, "ProcessDataContracts", false),
                 ProcessParentClasses = ParseSettingNullableType(settingsValues, "ProcessParentClasses", false),
@@ -1466,9 +1466,18 @@ Project GetProjectContainingT4File(DTE dte) {
 
     public class DateTimeType : TypescriptType
     {
+        private string _dateTypeTypeName;
+
+        public DateTimeType(string dateTypeTypeName) {
+            if (dateTypeTypeName == "true")
+                dateTypeTypeName = null;
+            _dateTypeTypeName = dateTypeTypeName ?? "Date | moment.Moment | string"; 
+        }
+
         public override string Name
         {
-            get { return "Date | moment.Moment | string"; }
+//            get { return "Date | moment.Moment | string"; }
+            get { return _dateTypeTypeName; }
         }
     }
 
@@ -1622,8 +1631,9 @@ Project GetProjectContainingT4File(DTE dte) {
                     return new StringType();
 
                 case "System.DateTime":
-                    if (Settings.UseNativeDates)
-                        return new DateTimeType();
+                case "System.TimeSpan":
+                    if (Settings.UseNativeDates != "false" && Settings.UseNativeDates != null && Settings.UseNativeDates != "")
+                        return new DateTimeType(Settings.UseNativeDates);
                     return new StringType();
 
                 case "System.Boolean":

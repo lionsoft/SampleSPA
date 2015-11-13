@@ -55,7 +55,7 @@ module App.Controllers
             var logger = this.common.logger.getLogFn(this.controllerId, 'success');
             //logger('Hot Towel Angular loaded!', null, true);
             this.common.activateController([], this.controllerId);
-            this.$scope.$watch("$auth.LoggedUser", x => this.updateNavRoutes());
+            this.$scope.$watch("vm.IsSidebarVisible", x => this.updateNavRoutes());
         }
 
         private registerEvents()
@@ -85,22 +85,12 @@ module App.Controllers
 
 
         public IsSidebarVisible: boolean;
-        public IsTopNavVisible: boolean;
         public allRoutes: IAppRoute[];
-        public sideBarMenuItems: IAppRoute[];
-        public topNavMenuItems: string[];
 
         public get selectedMenuItem(): string {
-            // Check the case when home page is not in menus
-            if (this.$route.current.url === '/' && (!this.$route.current.settings || !this.$route.current.settings.nav))
-                return undefined;
             var res = this.$rootScope.$selectedMenuItem;
-
             if (!res) {
-                res = this.topNavMenuItems.firstOrDefault();
-                // Check the case when home page is not in menus
-//                if (this.$route.current.url === '/' && this.$route.current.settings && this.$route.current.settings.topMenu !== res)
-//                    res = undefined;
+                res = this.GetNavMenuItems().firstOrDefault();
                 this.selectedMenuItem = res;
             }
             return res;
@@ -111,13 +101,7 @@ module App.Controllers
 
 
         public isCurrent(route: IAppRoute) {
-            this.IsTopNavVisible = this.$route.current.name !== "login";
-            this.IsSidebarVisible = this.IsTopNavVisible && this.sideBarMenuItems.length > 0 && (this.topNavMenuItems.length === 0 || this.selectedMenuItem && this.sideBarMenuItems.length > 1);
-            if (this.IsSidebarVisible)
-                $('.mainbar').removeClass("no-h-margins");
-            else
-                $('.mainbar').addClass("no-h-margins");
-            
+            this.IsSidebarVisible = this.$route.current.name !== "login";
             var res = "";
             if (this.$route.current && this.$route.current.name) {
                 if (route && route.name) {
@@ -129,19 +113,21 @@ module App.Controllers
         }
 
         private updateNavRoutes() {
-            this.allRoutes = Enumerable.from(this.$routes).where(r => r.settings && (r.settings.nav > 0 || r.settings.topMenu) && RouteConfigurator.IsRouteGranted(r)).orderBy(r => r.settings.nav).toArray(); 
-            this.topNavMenuItems = this.allRoutes.where(x => !!x.settings.topMenu).select(x => x.settings.topMenu).distinct().orderBy(x => x).toArray();
-            this.sideBarMenuItems = this.allRoutes.where(r => r.settings.nav > 0 && r.settings.topMenu === this.selectedMenuItem).toArray();
+            this.allRoutes = Enumerable.from(this.$routes).where(r => r.settings && r.settings.nav > 0 && RouteConfigurator.IsRouteGranted(r)).orderBy(r => r.settings.nav).toArray(); 
         }
 
         public selectMenuItem(menuItem) {
             if (this.selectedMenuItem === menuItem) return;
             this.selectedMenuItem = menuItem;
-            this.sideBarMenuItems = this.allRoutes.where(r => r.settings.topMenu === menuItem).toArray();
-            if (this.sideBarMenuItems.length > 0) 
-                this.$location.path(this.sideBarMenuItems[0].url);
-            else 
                 this.$location.path("/");
+        }
+
+        public GetSideBarMenuItems(): IAppRoute[] {
+            return this.allRoutes.where(r => !r.settings || !r.settings.topMenu || r.settings.topMenu === this.selectedMenuItem).toArray();
+        }
+
+        public GetNavMenuItems(): string[] {
+            return this.allRoutes.where(x => !!x.settings.topMenu).select(x => x.settings.topMenu).distinct().orderBy(x => x).toArray();
         }
     }
 

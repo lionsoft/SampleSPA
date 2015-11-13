@@ -1,6 +1,6 @@
-﻿[st-table] table.table-striped tbody tr:nth-of-type(even),
+[st-table] table.table-striped tbody tr:nth-of-type(even),
 table[st-table].table-striped tbody tr:nth-of-type(even) {
-  background: #ffffff;
+  background: #fff;
 }
 [st-table] table.table-striped tbody tr:nth-of-type(odd),
 table[st-table].table-striped tbody tr:nth-of-type(odd) {
@@ -21,7 +21,7 @@ table[st-table] th.st-action-buttons {
 table[st-table] td.st-action-buttons {
   white-space: nowrap;
   margin: 0!important;
-  padding: 0!important;
+  padding: 0 2px!important;
   width: 52px;
 }
 table[st-table] td.st-action-buttons button {
@@ -47,13 +47,13 @@ table[st-table] .col-created-date {
 table[st-table] thead th {
   font-size: 14px;
   vertical-align: middle;
-  border-right: 1px solid #0b4665;
-  border-bottom: 1px solid #0b4665;
-  border-top: 1px solid #0b4665;
+  border-right: 1px solid #0B4665;
+  border-bottom: 1px solid #0B4665;
+  border-top: 1px solid #0B4665;
   line-height: 1.3;
   cursor: default;
   padding: 0.5em 12px;
-  color: #ffffff;
+  color: #fff;
   background: #1171a3;
   width: 1px;
 }
@@ -73,10 +73,10 @@ table[st-table] thead th[st-sort].st-sort-ascent {
   background: #1171a3 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAIdJREFUeNpi/P//PwO1ABMDFQFWwxgZGeEYCLiAeAIQs6GJYwKQN9ExmnwpEP8C4myC+vAZBmRrAfHj/xBwG4iVyTIMSDMC8dz/qGAiSJwcwxyB+B2aYZ+A2IYkw4CYF4j3/ccOdgAxOymGJQLxTyD+jgWDxCOx6WMcWol21LBRw6hsGECAAQA1Sk4XsEYr/wAAAABJRU5ErkJggg==') /*../../Content/DataTables/images/sort_asc.png*/ no-repeat left center;
 }
 table[st-table] thead th:last-child {
-  border-right: 1px solid #0b4665;
+  border-right: 1px solid #0B4665;
 }
 table[st-table] thead th:first-child {
-  border-left: 1px solid #0b4665;
+  border-left: 1px solid #0B4665;
 }
 table[st-table] thead .st-table-search h3 {
   display: inline-block;
@@ -102,22 +102,22 @@ table[st-table] tbody td .form-control {
   height: 26px;
 }
 table[st-table] tbody td:first-child {
-  border-left: 1px solid #0b4665;
+  border-left: 1px solid #0B4665;
 }
 table[st-table] tbody td:last-child {
-  border-right: 1px solid #0b4665;
+  border-right: 1px solid #0B4665;
 }
 table[st-table] tbody tr.active {
   background: #81dff6 !important;
 }
 table[st-table] tbody tr:last-child {
-  border-bottom: 1px solid #0b4665;
+  border-bottom: 1px solid #0B4665;
 }
 table[st-table] tbody tr:last-child td {
   border-bottom: none;
 }
 table[st-table] tbody tr:nth-of-type(even) {
-  background: #ffffff;
+  background: #fff;
 }
 table[st-table] tbody tr:nth-of-type(odd) {
   background: #ecf5fe;
@@ -127,7 +127,7 @@ table[st-table] tbody tr:hover {
 }
 table[st-table] tfoot {
   background: #1171a3;
-  border: 1px solid #0b4665;
+  border: 1px solid #0B4665;
   border-top: none;
   border-bottom: none;
 }
@@ -179,7 +179,7 @@ table[st-table] tfoot .st-show-page-sizes .pagination {
 [st-table] table td.st-action-buttons {
   white-space: nowrap;
   margin: 0!important;
-  padding: 0!important;
+  padding: 0 2px!important;
   width: 52px;
 }
 [st-table] table td.st-action-buttons button {
@@ -205,13 +205,13 @@ table[st-table] tfoot .st-show-page-sizes .pagination {
 [st-table] table thead th {
   font-size: 14px;
   vertical-align: middle;
-  border-right: 1px solid #0b4665;
-  border-bottom: 1px solid #0b4665;
-  border-top: 1px solid #0b4665;
+  border-right: 1px solid #0B4665;
+  border-bottom: 1px solid #0B4665;
+  border-top: 1px solid #0B4665;
   line-height: 1.3;
   cursor: default;
   padding: 0.5em 12px;
-  color: #ffffff;
+  color: #fff;
   background: #1171a3;
   width: 1px;
 }
@@ -231,10 +231,10 @@ table[st-table] tfoot .st-show-page-sizes .pagination {
   background: #1171a3 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAIdJREFUeNpi/P//PwO1ABMDFQFWwxgZGeEYCLiAeAIQs6GJYwKQN9ExmnwpEP8C4myC+vAZBmRrAfHj/xBwG4iVyTIMSDMC8dz/qGAiSJwcwxyB+B2aYZ+A2IYkw4CYF4j3/ccOdgAxOymGJQLxTyD+jgWDxCOx6WMcWol21LBRw6hsGECAAQA1Sk4XsEYr/wAAAABJRU5ErkJggg==') /*../../Content/DataTables/images/sort_asc.png*/ no-repeat left center;
 }
 [st-table] table thead th:last-child {
-  border-right: 1px solid #0b4665;
+  border-right: 1px solid #0B4665;
 }
 [st-table] table thead th:first-child {
-  border-left: 1px solid #0b4665;
+  border-left: 1px solid #0B4665;
 }
 [st-table] table thead .st-table-search h3 {
   display: inline-block;
@@ -260,22 +260,22 @@ table[st-table] tfoot .st-show-page-sizes .pagination {
   height: 26px;
 }
 [st-table] table tbody td:first-child {
-  border-left: 1px solid #0b4665;
+  border-left: 1px solid #0B4665;
 }
 [st-table] table tbody td:last-child {
-  border-right: 1px solid #0b4665;
+  border-right: 1px solid #0B4665;
 }
 [st-table] table tbody tr.active {
   background: #81dff6 !important;
 }
 [st-table] table tbody tr:last-child {
-  border-bottom: 1px solid #0b4665;
+  border-bottom: 1px solid #0B4665;
 }
 [st-table] table tbody tr:last-child td {
   border-bottom: none;
 }
 [st-table] table tbody tr:nth-of-type(even) {
-  background: #ffffff;
+  background: #fff;
 }
 [st-table] table tbody tr:nth-of-type(odd) {
   background: #ecf5fe;
@@ -285,7 +285,7 @@ table[st-table] tfoot .st-show-page-sizes .pagination {
 }
 [st-table] table tfoot {
   background: #1171a3;
-  border: 1px solid #0b4665;
+  border: 1px solid #0B4665;
   border-top: none;
   border-bottom: none;
 }
@@ -375,7 +375,7 @@ table[st-table] tfoot .st-show-page-sizes .pagination {
 [st-table] div[st-pagination].st-show-page-sizes,
 [st-table] div[st-pagination].st-hide-page-sizes {
   background: #1171a3;
-  border: 1px solid #0b4665;
+  border: 1px solid #0B4665;
   border-top: none;
   border-bottom: none;
   text-align: right;
@@ -431,7 +431,7 @@ table[st-table] tfoot .st-show-page-sizes .pagination {
 }
 [st-table] div[st-pagination].st-show-page-sizes .st-paging.has-content,
 [st-table] div[st-pagination].st-hide-page-sizes .st-paging.has-content {
-  border-bottom: 1px solid #0b4665;
+  border-bottom: 1px solid #0B4665;
 }
 [st-table] div[st-pagination].st-show-page-sizes .st-paging-label,
 [st-table] div[st-pagination].st-hide-page-sizes .st-paging-label {
@@ -448,7 +448,7 @@ table[st-table] tfoot .st-show-page-sizes .pagination {
 }
 [st-table] .st-table-wrapper {
   position: relative;
-  border: 1px solid #0b4665;
+  border: 1px solid #0B4665;
 }
 [st-table] .st-table-wrapper th {
   border-top: none;

@@ -4,7 +4,7 @@
     <div class="sidebar-inner">
         <div class="sidebar-widget"></div>
         <ul class="navi" data-ng-class="vm.isCurrent()">
-            <li class="nlightblue fade-selection-animation" data-ng-class="vm.isCurrent(r)" data-ng-repeat="r in vm.sideBarMenuItems">
+            <li class="nlightblue fade-selection-animation" data-ng-class="vm.isCurrent(r)" data-ng-repeat="r in vm.GetSideBarMenuItems()">
                 <a href="#{{r.url}}" data-ng-bind-html="r.settings.content | translate" data-cc-menu-item-rendered></a>
             </li>
         </ul>

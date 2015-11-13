@@ -59,7 +59,7 @@ module App.Directives {
                 locale: 'en',
                 showTodayButton: !(scope.samShowTodayButton === false),
                 inline: scope.samInline,
-                //showClear: true,
+                showClear: true,
                 keyBinds: null,
                 widgetPositioning: {
                     horizontal: 'right',
@@ -85,7 +85,7 @@ module App.Directives {
                     if (!date.isValid() || date.year() < 1950)
                         date = moment(controller.$modelValue, config.format);
                     var res = (date && date.isValid() && date.year() > 1950) ? date.toDate() : undefined;
-                    return res;
+                    return res || null;
 
                 });
 

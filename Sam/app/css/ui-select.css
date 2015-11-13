@@ -20,3 +20,6 @@
 .form-control.ui-select-multiple.ui-select-bootstrap.ui-select-container > div span.close {
   margin-top: 2px;
 }
+span.ui-select-placeholder {
+  padding-right: 10px;
+}
