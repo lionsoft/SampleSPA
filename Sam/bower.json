@@ -1,23 +1,24 @@
 {
   "name": "Sam",
   "version": "0.1.0",
-  "dependencies": {
-    "bootstrap": "~3.3.5",
-    "eonasdan-bootstrap-datetimepicker": "~4.17.37",
-    "font-awesome": "fontawesome#~4.5.0",
-    "DefinitelyTyped": "*",
-    "linqjs": "~3.0.5",
-    "toastr": "~2.1.2",
-    "angular": "~1.4.8",
-    "angular-bootstrap": "~0.14.3",
-    "angular-file-upload": "~2.2.0",
-    "angular-loading-bar": "~0.8.0",
-    "angular-route": "~1.4.8",
-    "angular-smart-table": "~2.1.5",
-    "oclazyload": "~1.0.9",
-    "angular-resource": "~1.4.8",
-    "angular-animate": "~1.4.8",
-    "angular-sanitize": "~1.4.8",
-    "ui-select": "angular-ui-select#~0.13.2"
-  }
+    "dependencies": {
+        "bootstrap": "~3.3.5",
+        "eonasdan-bootstrap-datetimepicker": "~4.17.37",
+        "font-awesome": "fontawesome#~4.5.0",
+        "DefinitelyTyped": "*",
+        "linqjs": "~3.0.5",
+        "toastr": "~2.1.2",
+        "angular": "~1.4.8",
+        "angular-bootstrap": "~0.14.3",
+        "angular-file-upload": "~2.2.0",
+        "angular-loading-bar": "~0.8.0",
+        "angular-route": "~1.4.8",
+        "angular-smart-table": "~2.1.5",
+        "angular-i18n": "~1.4.8",
+        "oclazyload": "~1.0.9",
+        "angular-resource": "~1.4.8",
+        "angular-animate": "~1.4.8",
+        "angular-sanitize": "~1.4.8",
+        "ui-select": "angular-ui-select#~0.13.2"
+    }
 }

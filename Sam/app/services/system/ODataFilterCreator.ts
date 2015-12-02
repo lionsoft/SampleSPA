@@ -157,7 +157,7 @@ module App.Services {
 
         protected child: ODataFilterCreator;
         protected get lastChild(): ODataFilterCreator {
-            var res = this;
+            var res: ODataFilterCreator = this;
             while (res.child) {
                 res = res.child;
             }
@@ -165,7 +165,7 @@ module App.Services {
         }
 
         protected getPropName() {
-            var res = this;
+            var res: ODataFilterCreator = this;
             while (res && !res.propName) {
                 res = res.parent;
             }

@@ -3,10 +3,12 @@
 
 /sam/app/**/*.js
 *.map
-!/sam/app/common/LionSoftJs/js.net/*.js
 !/sam/Scripts/*.js.map
 !/sam/Scripts/*.min.js.map
 
+bower_components/
+node_modules/
+dist/
 
 # User-specific files
 *.suo
