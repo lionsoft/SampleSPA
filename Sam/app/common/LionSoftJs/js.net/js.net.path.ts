@@ -1,5 +1,6 @@
-(function () {
+(function() {
     'use strict';
+
     if (typeof String.prototype.ExtractDirectory != 'function') {
         String.prototype.ExtractDirectory = function (separator) {
             separator = separator || '/';
@@ -9,6 +10,7 @@
             return path;
         };
     }
+
     if (typeof String.prototype.ExtractFileName != 'function') {
         String.prototype.ExtractFileName = function (separator) {
             separator = separator || '/';
@@ -17,6 +19,7 @@
             return path;
         };
     }
+
     /**
         Extracts file name without extension from path.
          for 'fileName.ext' -> returns 'fileName'
@@ -34,6 +37,7 @@
             return res;
         };
     }
+
     /**
         Extracts file extension from path.
          for 'fileName.ext' -> returns 'ext'
@@ -46,13 +50,13 @@
             var path = res.split('.');
             if (path.length > 1) {
                 res = path[path.length - 1];
-            }
-            else {
+            } else {
                 res = undefined;
             }
             return res;
         };
     }
+
     /**
         Changes file extension from path.
          for 'fileName.ext' { '' -> returns 'fileName'
@@ -74,6 +78,9 @@
             return res;
         };
     }
+
+
+
     if (typeof String.prototype.ExpandPath != 'function') {
         String.prototype.ExpandPath = function (basePath, separator) {
             if (this.StartsWith(/https?:\/\//i)) {
@@ -85,8 +92,7 @@
                 if (path.StartsWith(separator)) {
                     //basePath = window.location.appFolder;
                     basePath = window.location.origin;
-                }
-                else {
+                } else {
                     basePath = window.location.href;
                     // Do the assumption if href is not ends with separator and the last part of the path contains an extension - 
                     // it's href to file name and we have to extract its folder.
@@ -98,10 +104,10 @@
                 path = path.substr(1, path.length - 1);
                 basePath = window.location.origin;
             }
+
             if (!basePath.EndsWith(separator))
                 basePath = basePath + separator;
             return basePath + path;
         };
     }
 }());
-//# sourceMappingURL=js.net.path.js.map
