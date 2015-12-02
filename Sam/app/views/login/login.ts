@@ -2,7 +2,7 @@
 
 module App.Controllers {
 
-    export class Login extends PageController {
+    class Login extends PageController {
 
         public login: string = "1";
         public password: string = "1";

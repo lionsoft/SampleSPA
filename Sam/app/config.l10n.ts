@@ -39,7 +39,7 @@ module App {
             ;
 
                 if (location.pathname.Trim('/'))
-                    $l10n.$defaultLanguage = location.pathname.Trim('/');
+                $l10n.$defaultLanguage = location.pathname.Trim('/');
                 $l10n.$defaultLanguage = $l10n.$defaultLanguage || "ru";
                 $l10n.$languages = $l10n.$languages || <any>{};
                 var defLangName = $l10n.$defaultLanguage;
@@ -59,8 +59,6 @@ module App {
                         $.getScript("/Scripts/i18n/angular-locale_{0}.js".format(defLang.value.angular));
                     if (defLang.value.momentjs)
                         moment.locale(defLang.value.momentjs);
-                    if (defLang.value.select2)
-                        $.getScript("/Scripts/i18n/{0}.js".format(defLang.value.select2));
                 }
 
         }])

@@ -7,7 +7,7 @@ module App {
             if (app.$rootScope.$selectedMenuItem && res && inTopMenuOnly && route.settings && route.settings.topMenu)
                 res = app.$rootScope.$selectedMenuItem === route.settings.topMenu;
             return res;
-        };
+        }
 
         private _routes: IAppRoute[] = [];
 
@@ -31,6 +31,8 @@ module App {
                     if (template) {
                         var path = template.ExtractDirectory();
                         var name = template.ExtractOnlyFileName();
+                        r.files = [];
+/*
                         var scriptFileName = path + '/' + name + '.js';
                         var styleFileName = path + '/' + name + '.css';
                         if (!r.files) r.files = [];
@@ -45,6 +47,7 @@ module App {
                             r.files.push(scriptFileName);
                         if (!r.files.Contains(styleFileName))
                             r.files.push(styleFileName);
+*/
 
                         if (r.files && r.files.length > 0) {
                             r.resolve = r.resolve || {};
@@ -61,7 +64,7 @@ module App {
                     }
                     r.redirectTo = ($routeParams, $locationPath, $locationSearch) => this.redirectToDefault($routeParams, $locationPath, $locationSearch);
                     $routeProvider.when(r.url, r);
-                    this._routes.push(r)
+                    this._routes.push(r);
                 }
             });
 

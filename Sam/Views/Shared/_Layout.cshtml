@@ -1,4 +1,4 @@
-﻿@using System.Configuration
+@using System.Configuration
 @using Microsoft.AspNet.Identity
 @using Sam.Extensions
 
@@ -42,65 +42,68 @@
         </script>
     <![endif]-->
 
-    @Styles.Render("~/styles/css")
-
+    <!-- build:css ../../dist/css/styles.min.css -->
+    <link rel="stylesheet" href="../../dist/css/vendor.css" />
+    <link rel="stylesheet" href="../../dist/css/styles.css"/>
+    <!-- endbuild -->
 
 </head>
 <body>
 
+    <!-- build:js ../../dist/js/scripts.min.js -->
+    <!-- bower:js -->
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="../../bower_components/moment/moment.js"></script>
+    <script src="../../bower_components/moment-timezone/builds/moment-timezone-with-data-2010-2020.js"></script>
+    <script src="../../bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="../../bower_components/linqjs/linq.js"></script>
+    <script src="../../bower_components/toastr/toastr.js"></script>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script src="../../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="../../bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
+    <script src="../../bower_components/angular-loading-bar/build/loading-bar.js"></script>
+    <script src="../../bower_components/angular-route/angular-route.js"></script>
+    <script src="../../bower_components/angular-smart-table/dist/smart-table.js"></script>
+    <script src="../../bower_components/oclazyload/dist/ocLazyLoad.js"></script>
+    <script src="../../bower_components/angular-resource/angular-resource.js"></script>
+    <script src="../../bower_components/angular-animate/angular-animate.js"></script>
+    <script src="../../bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="../../bower_components/ui-select/dist/select.js"></script>
+    <!-- endbower -->
+    
+    <script src="../../Scripts/angular-translate.js"></script>
+    <script src="../../Scripts/angular-translate-loader-static-files.js"></script>
+    <script src="../../Scripts/linq.array.js"></script>
+    <script src="../../Scripts/linq.jquery.js"></script>
+
+    <script src="../../dist/js/app.js"></script>
+    <!-- endbuild -->
+
     @RenderBody()
 
-    @Styles.Render("~/appstyles/css")
-
-
-    <!-- Vendor Scripts -->
-    @Scripts.Render("~/bundles/vendor")
-
-    @Scripts.Render("~/bundles/LionSoftJs")
-    @Scripts.Render("~/bundles/LionSoftAngular")
-
-    @Scripts.Render("~/bundles/app")
-
-    @Scripts.Render("~/bundles/app/routes")
-
-    @Scripts.Render("~/bundles/bootstrap")
-
-
-    @Scripts.Render("~/bundles/app/common")
-
-    @Scripts.Render("~/bundles/app/services")
-    
-    @Scripts.Render("~/bundles/app/directives")
-
-    @Scripts.Render("~/bundles/app/views")
-
-
     <script>
-    app._loggedUser = undefined;
-    @if (Request.IsAuthenticated)
-        {
+        app._loggedUser = undefined;
+        @if (Request.IsAuthenticated)
+    {
         <text>
-            app.__loggedUser = { Id: '@User.Identity.GetUserId()', UserName: '@User.Identity.GetUserName()', UserRole: @User.Identity.GetClaimValue("Role") };
+        app.__loggedUser = { Id: '@User.Identity.GetUserId()', UserName: '@User.Identity.GetUserName()', UserRole: @User.Identity.GetClaimValue("Role") };
         </text>
-        }
+    }
 
-    window.__isDebugMode = @(Startup.IsDebugMode ? "true" : "false");
-    window.__webConfig = {};
+        window.__isDebugMode = @(Startup.IsDebugMode ? "true" : "false");
+        window.__webConfig = {};
 
-    @{
+        @{
         foreach (var key in ConfigurationManager.AppSettings.AllKeys.Where(k => k.StartsWith("config.")))
         {
             var value = "'" + ConfigurationManager.AppSettings.Get(key).Replace("'", "''") + "'";
             var k = key.Substring("config.".Length);
             <text>
-            window.__webConfig['@k'] = @Html.Raw(value);
-            </text>
+        window.__webConfig['@k'] = @Html.Raw(value);
+        </text>
         }
     }
-</script>
-
+    </script>
 </body>
-
-
-
 </html>

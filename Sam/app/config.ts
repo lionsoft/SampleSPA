@@ -67,6 +67,3 @@ module App {
     }]);
     //#endregion
 }
-
-
- 

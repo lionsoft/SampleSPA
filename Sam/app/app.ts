@@ -17,31 +17,29 @@ module App {
 
     export var app: IApp = <IApp>angular.module('app', [
         // Angular modules 
-        'ngAnimate',               // animations
-        'ngRoute',                 // routing
-        'ngSanitize',              // sanitizes html bindings (ex: sidebarCtrl.js)
-        "ngResource",
-        "pascalprecht.translate",  // translate provider
+        //'ngAnimate'               // animations
+        ,'ngRoute'                 // routing
+        ,'ngSanitize'              // sanitizes html bindings (ex: sidebarCtrl.js)
+        ,"ngResource"
+        ,"pascalprecht.translate"  // translate provider
 
-        'angular-loading-bar',
-        'angularFileUpload',
+        ,'angular-loading-bar'
+        ,'angularFileUpload'
 
         // Custom modules 
-        'common',                  // common functions, logger, spinner
-        'common.bootstrap',        // bootstrap dialog wrapper functions
+        ,'common'                  // common functions, logger, spinner
 
         // 3rd Party Modules
-        'ui.bootstrap',            // ui-bootstrap (ex: carousel, pagination, dialog)
-        "LionSoftAngular",
-        "ui",
-        "ui.select",
+        ,'ui.bootstrap'            // ui-bootstrap (ex: carousel, pagination, dialog)
+        ,"LionSoftAngular"
+        ,"ui.select"
 
-        "smart-table",
+        ,"smart-table"
 
-        "oc.lazyLoad"
+        ,"oc.lazyLoad"
     ]);
 
-    // Handle routing errors and success events
+    // Handle routing errors and success events 
     app.run(['$route',  $route => {
         // Include $route to kick start the router.
     }]);

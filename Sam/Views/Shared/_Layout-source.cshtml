@@ -1,0 +1,91 @@
+﻿@using System.Configuration
+@using Microsoft.AspNet.Identity
+@using Sam.Extensions
+
+<!DOCTYPE html>
+<html data-ng-app="app">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+    <style>
+        /* This helps the ng-show/ng-hide animations start at the right place. */
+        /* Since Angular has this but needs to load, this gives us the class early. */
+        .ng-hide, .ng-cloak {
+            display: none !important;
+        }
+    </style>
+    <title data-ng-bind="title"></title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+    <script>
+        // Must be first. IE10 mobile viewport fix
+        if ("-ms-user-select" in document.documentElement.style && navigator.userAgent.match(/IEMobile\/10\.0/)) {
+            var msViewportStyle = document.createElement("style");
+            var mq = "@@-ms-viewport{width:auto!important}";
+            msViewportStyle.appendChild(document.createTextNode(mq));
+            document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+        }
+    </script>
+
+    <!--[if lte IE 8]>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/json3/3.2.6/json3.min.js"></script>
+        <script>
+            document.createElement('ng-include');
+            document.createElement('ng-pluralize');
+            document.createElement('ng-view');
+
+            // Optionally these for CSS
+            document.createElement('ng:include');
+            document.createElement('ng:pluralize');
+            document.createElement('ng:view');
+        </script>
+    <![endif]-->
+
+    <!-- build:css ../../dist/css/styles.min.css -->
+    <link rel="stylesheet" href="../../dist/css/vendor.css" />
+    <link rel="stylesheet" href="../../dist/css/styles.css"/>
+    <!-- endbuild -->
+
+</head>
+<body>
+
+    <!-- build:js ../../dist/js/scripts.min.js -->
+    <!-- bower:js -->
+    <!-- endbower -->
+    
+    <script src="../../Scripts/angular-translate.js"></script>
+    <script src="../../Scripts/angular-translate-loader-static-files.js"></script>
+    <script src="../../Scripts/linq.array.js"></script>
+    <script src="../../Scripts/linq.jquery.js"></script>
+
+    <script src="../../dist/js/app.js"></script>
+    <!-- endbuild -->
+
+    @RenderBody()
+
+    <script>
+        app._loggedUser = undefined;
+        @if (Request.IsAuthenticated)
+    {
+        <text>
+        app.__loggedUser = { Id: '@User.Identity.GetUserId()', UserName: '@User.Identity.GetUserName()', UserRole: @User.Identity.GetClaimValue("Role") };
+        </text>
+    }
+
+        window.__isDebugMode = @(Startup.IsDebugMode ? "true" : "false");
+        window.__webConfig = {};
+
+        @{
+        foreach (var key in ConfigurationManager.AppSettings.AllKeys.Where(k => k.StartsWith("config.")))
+        {
+            var value = "'" + ConfigurationManager.AppSettings.Get(key).Replace("'", "''") + "'";
+            var k = key.Substring("config.".Length);
+            <text>
+        window.__webConfig['@k'] = @Html.Raw(value);
+        </text>
+        }
+    }
+    </script>
+</body>
+</html>

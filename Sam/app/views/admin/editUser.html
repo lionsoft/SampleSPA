@@ -14,7 +14,7 @@
 <!-- #region - Role - -->
 <div class="form-group">
     <label class="control-label" translate>Role</label>
-    <ui-select class="form-control" ng-model="$item.UserRole">
+    <ui-select ng-model="$item.UserRole">
         <ui-select-match allow-clear="false">
             {{$select.selected | UserRole}}
         </ui-select-match>

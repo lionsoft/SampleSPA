@@ -459,7 +459,8 @@ form{
 
 .dropdown-menu a:hover,.dropdown-menu a:focus{
 	filter:none !important;
-	background: #fff !important;
+    /* removed !important because it's conflicted with ui-select' */
+	background: #fff;
 }
 
 .dropdown-menu::after, .dropdown-menu::before{
@@ -1623,10 +1624,3 @@ border:1px solid #eee;
 		margin-left: 200px;
 	}
 }
-
-
-
-
-
-
-

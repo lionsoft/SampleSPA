@@ -102,7 +102,7 @@ module LionSoftAngular {
         * Пример:
         *     popupService.info('Info message');
         */
-        .service("popupService", ["$modal", "$q", function($modal, $q) {
+        .service("popupService", ["$uibModal", "$q", function ($uibModal, $q) {
 
                 // ReSharper disable once InconsistentNaming
                 var __loadedCss = [];
@@ -154,13 +154,12 @@ module LionSoftAngular {
 
                     (<any>tempPopupDefaults).templateUrl = tempDialogOptions.templateUrl.ExpandPath(tempPopupDefaults.templateUrlBase) + "?" + Math.random();
 
-                    loadCss("css/ng-dialog.css");
+                    // deprecated
+                    /*loadCss("css/ng-dialog.css");
                     if (tempDialogOptions.templateUrl.ExtractOnlyFileName() !== 'ng-dialog')
-                        loadCss(tempDialogOptions.templateUrl.ExpandPath(tempPopupDefaults.templateUrlBase).ChangeFileExt('css'));
-
+                        loadCss(tempDialogOptions.templateUrl.ExpandPath(tempPopupDefaults.templateUrlBase).ChangeFileExt('css'));*/
                     
-
-                    (<any>tempPopupDefaults).controller = ["$scope", "$modalInstance", ($scope, $modalInstance: LionSoftAngular.IModalInstance) => {
+                    (<any>tempPopupDefaults).controller = ["$scope", "$uibModalInstance", ($scope, $modalInstance: LionSoftAngular.IModalInstance) => {
                         angular.extend($scope, tempDialogOptions);
                         tempDialogOptions.scope = tempDialogOptions.scope || {};
                         $scope.$scope = tempDialogOptions.scope;
@@ -171,11 +170,11 @@ module LionSoftAngular {
                                     $scope[prop] = tempDialogOptions.scope[prop];
                             }
                         }
-                        if ($scope.$templateUrl) {
+                        // deprecated
+                        /*if ($scope.$templateUrl) {
                             var css = $scope.$templateUrl.ChangeFileExt('css');
                             loadCss(css);
-                        }
-                            
+                        }*/
 
                         $scope.$modalInstance = $modalInstance;
                         $scope.submit = (form : ng.INgModelController) => {
@@ -217,7 +216,7 @@ module LionSoftAngular {
                         $scope.hasBodyContent = isAssigned(tempDialogOptions.bodyContent);
                     }];
 
-                    var res = $modal.open(tempPopupDefaults).result;
+                    var res = $uibModal.open(tempPopupDefaults).result;
                     if (tempPopupDefaults.noCancelPromise) {
                         var resDeffered = $q.defer();
                         res.then(r => resDeffered.resolve(r)).catch(r => resDeffered.resolve(r));

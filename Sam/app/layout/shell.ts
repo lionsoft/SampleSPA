@@ -1,5 +1,4 @@
-﻿/// <reference path="../common/common.ts" />
-'use strict';
+﻿'use strict';
 
 module App.Controllers
 {

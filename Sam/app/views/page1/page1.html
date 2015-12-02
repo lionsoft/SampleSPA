@@ -1,2 +1,43 @@
-﻿<h1 translate>Page1</h1>
+﻿<h1 translate>Components Examples</h1>
+<hr />
 
+<h3>Toasts</h3>
+<div class="btn-group">
+    <button type="button" class="btn btn-primary" ng-click="$.showToast('alert')">Show alert/info toast</button>
+    <button type="button" class="btn btn-success" ng-click="$.showToast('success')">Show success toast</button>
+    <button type="button" class="btn btn-warning" ng-click="$.showToast('warning')">Show warning toast</button>
+    <button type="button" class="btn btn-danger" ng-click="$.showToast('error')">Show error toast</button>
+</div>
+<hr/>
+
+<div>
+    <h3>ui-select</h3>
+    <a href="https://github.com/angular-ui/ui-select/wiki">Github</a>    
+</div>
+<div class="col-md-3">
+    <ui-select ng-model="$.selectedItem">
+        <ui-select-match placeholder="placeholder..." allow-clear="false">
+            {{$select.selected}}
+        </ui-select-match>
+        <ui-select-choices repeat="$item in ['Mama', 'Myla', 'Ramu']">
+            {{$item}}
+        </ui-select-choices>
+    </ui-select>
+    <span>$.selectedItem: {{$.selectedItem | json}}</span>
+</div>
+
+<div class="pull-left">
+    <h3>sam-date-picker</h3>
+    <div class="col-md-4">
+        <input ng-model="$.selectedDate" placeholder="picker with date" sam-date-picker>
+        <span>$.selectedDate: {{$.selectedDate | date}}</span>
+    </div>
+    <div class="col-md-4">
+        <input ng-model="$.selectedTime" placeholder="picker with time" sam-time-picker>
+        <span>$.selectedTime: {{$.selectedTime | date}}</span>
+    </div>
+    <div class="col-md-4">
+        <input ng-model="$.selectedDateTime" placeholder="picker with date and time" sam-date-time-picker>
+        <span>$.selectedDateTime: {{$.selectedDateTime | date}}</span>
+    </div>
+</div>

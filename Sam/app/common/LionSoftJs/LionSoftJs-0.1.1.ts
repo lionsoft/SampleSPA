@@ -1,6 +1,7 @@
 // ReSharper disable InconsistentNaming
 interface String {
     /**
+     * Реализация форматирования "как в C#": var str = String.Format(format, arg0[, arg1[, arg2 ...]]);
     */
     format(...args: any[]): string;
 
@@ -113,6 +114,13 @@ interface String {
         the specified index and contains the specified number of characters.
     */
     IndexOf(strOrRegexp: any, startIndex?: number, count?: number): number;
+
+    /**
+        Searches for the specified substring or Regexp and returns the zero-based index of 
+        the last occurrence within the range of elements in the strings that starts at 
+        the specified index and contains the specified number of characters.
+    */
+    LastIndexOf(strOrRegexp: any, startIndex?: number, count?: number): number;
 
     /**
         Converts JSON string to an object. Returns defValue for invalid or empty JSON string.
