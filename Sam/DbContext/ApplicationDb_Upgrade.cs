@@ -32,7 +32,8 @@ namespace Sam.DbContext
                     UserName = "1",
                     Email = "user0@mail.com",
                     SecurityStamp = Guid.NewGuid().ToString(),
-                    PasswordHash = _userManager.PasswordHasher.HashPassword("1")
+                    PasswordHash = _userManager.PasswordHasher.HashPassword("1"),
+                    UserRole = UserRole.Admin
                 });
             }
             // Updating database to version 2

@@ -3,10 +3,12 @@
 declare module BootstrapV3DatetimePicker {
     interface DatetimepickerOptions {
         widgetPositioning?: { horizontal: string; vertical: string };
+/*
         format?: string;
         locale?: string;
         inline?: boolean;
         showTodayButton?: boolean;
+*/
         showClear?: boolean;
         keyBinds?: any;
     }
@@ -81,9 +83,9 @@ module App.Directives {
             
             if (controller) {
                 controller.$parsers.push(val => {
-                    var date = moment(val, config.format);
+                    var date = moment(val, <string>config.format);
                     if (!date.isValid() || date.year() < 1950)
-                        date = moment(controller.$modelValue, config.format);
+                        date = moment(controller.$modelValue, <string>config.format);
                     var res = (date && date.isValid() && date.year() > 1950) ? date.toDate() : undefined;
                     return res || null;
 
@@ -91,7 +93,7 @@ module App.Directives {
 
                 controller.$formatters.push(val => {
                     if (!config.format || !val) return "";
-                    var retVal = moment(val).format(config.format);
+                    var retVal = moment(val).format(<string>config.format);
                     return retVal;
                 });
 

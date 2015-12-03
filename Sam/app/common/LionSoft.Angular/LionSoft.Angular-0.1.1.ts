@@ -17,6 +17,11 @@ declare module angular
     interface IFilterFunc {
         (value: any, ...params: any[]): any;
     }
+
+    interface IFilterService {
+        (name: string): IFilterFunc;
+    }
+
 }
 
 interface IKeyValue {
