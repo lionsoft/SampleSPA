@@ -1,4 +1,17 @@
 ﻿'use strict';
+
+declare module angular {
+
+    interface IFilterOrFunc {
+        (items: any[], props: any, startsWith?: boolean): any[];
+    }
+
+    interface IFilterService {
+        (name: 'filterOr'): IFilterOrFunc;
+    }
+
+}
+
 module App.Filters {
 
     /**                                           

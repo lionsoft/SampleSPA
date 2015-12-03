@@ -19,7 +19,7 @@ declare module angular
     }
 
     interface IFilterService {
-        (name: string): IFilterFunc;
+        (name: 'translate'): IFilterFunc;
     }
 
 }
