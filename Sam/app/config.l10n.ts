@@ -56,7 +56,7 @@ module App {
                         $translateProvider.fallbackLanguage(defLang.value.fallbackLangId);
 
                     if (defLang.value.angular)
-                        $.getScript("/Scripts/i18n/angular-locale_{0}.js".format(defLang.value.angular));
+                        $.getScript(`${URL.DIST_ROOT}/i18n/angular-locale_${defLang.value.angular}.js`);
                     if (defLang.value.momentjs)
                         moment.locale(defLang.value.momentjs);
                 }

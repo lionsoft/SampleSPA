@@ -4,7 +4,8 @@ var gulp = require('gulp'),
     rimraf = require('rimraf'),
     wiredep = require('wiredep').stream,
     // needed for gulp-autoprefixer
-    promise = require('es6-promise').polyfill();
+    promise = require('es6-promise').polyfill(),
+    del = require('del');
     // $ = { concat, concatCss, uglify, less, watch, plumber, tsc, useref, if, minifyCss, rename, autoprefixer }
     $ = require('gulp-load-plugins')();
 
@@ -14,6 +15,7 @@ var paths = {
     distJs: './dist/js/',
     distCss: './dist/css/',
     distFonts: './dist/fonts/',
+    distI18n: './dist/i18n/',
     bower: './bower_components/',
     exludedFiles: ['!./**/*.min.*', '!./scripts/_references.js'],
     dtsFiles: ['./scripts/**/*.d.ts', './app/**/*.d.ts', './T4TS/*.d.ts']
@@ -21,7 +23,10 @@ var paths = {
 paths.less = paths.webroot + '**/*.less';
 paths.ts = paths.webroot + '**/*.ts';
 paths.html = paths.webroot + '**/*.html';
+paths.jsWithMap = [paths.webroot + '**/*.js', paths.webroot + '**/*.js.map'];
 paths.fonts = [paths.bower + 'bootstrap/fonts/*.*', paths.bower + 'font-awesome/fonts/*.*'];
+paths.i18n = paths.bower + 'angular-i18n/';
+paths.i18nFiles = [paths.i18n + 'angular-locale_en.js', paths.i18n + 'angular-locale_ru.js'];
 
 var LionSoft = [
         paths.webroot + 'common/LionsoftJs/js.net/**/*.ts',
@@ -152,14 +157,19 @@ gulp.task('fonts', function() {
         .pipe(gulp.dest(paths.distFonts));
 });
 
-gulp.task('debug', ['styles', 'ts', 'fonts'], function () {
+gulp.task('i18n', function() {
+    return gulp.src(paths.i18nFiles)
+        .pipe(gulp.dest(paths.distI18n));
+});
+
+gulp.task('debug', ['styles', 'ts', 'fonts', 'i18n'], function () {
     return gulp.src('./views/shared/_Layout-source.cshtml')
         .pipe($.rename('_Layout.cshtml'))
         .pipe(wiredep())
         .pipe(gulp.dest('./views/shared/'));
 });
 
-gulp.task('release', ['vendorCss', 'autoprefixer', 'ts', 'fonts'], function () {
+gulp.task('release', ['vendorCss', 'autoprefixer', 'ts', 'fonts', 'i18n'], function () {
     return gulp.src('./views/shared/_Layout-source.cshtml')
         .pipe($.rename('_Layout.cshtml'))
         .pipe(wiredep())
@@ -169,8 +179,10 @@ gulp.task('release', ['vendorCss', 'autoprefixer', 'ts', 'fonts'], function () {
         .pipe(gulp.dest('./views/shared/'));
 });
 
+// clean directory "dist" and studio-generated files
 gulp.task('clean', function (cb) {
     rimraf(paths.dist, cb);
+    del(paths.jsWithMap);
 });
 
 gulp.task('watch', function () {
