@@ -202,8 +202,6 @@
     <Compile Include="Api\System\CRUDController.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="App_Start\BreezeWebApiConfig.cs" />
-    <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -568,7 +566,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>65429</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
