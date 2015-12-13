@@ -17,7 +17,7 @@ module App {
 
     export var app: IApp = <IApp>angular.module('app', [
         // Angular modules 
-        //'ngAnimate'               // animations
+        'ngAnimate'               // animations
         ,'ngRoute'                 // routing
         ,'ngSanitize'              // sanitizes html bindings (ex: sidebarCtrl.js)
         ,"ngResource"

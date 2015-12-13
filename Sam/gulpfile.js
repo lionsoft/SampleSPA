@@ -1,7 +1,6 @@
 /// <binding BeforeBuild='debug' Clean='clean' ProjectOpened='default' />
 
 var gulp = require('gulp'),
-    rimraf = require('rimraf'),
     wiredep = require('wiredep').stream,
     // needed for gulp-autoprefixer
     promise = require('es6-promise').polyfill(),
@@ -18,15 +17,21 @@ var paths = {
     distI18n: './dist/i18n/',
     bower: './bower_components/',
     exludedFiles: ['!./**/*.min.*', '!./scripts/_references.js'],
-    dtsFiles: ['./scripts/**/*.d.ts', './app/**/*.d.ts', './T4TS/*.d.ts']
+    dtsFiles: ['./scripts/**/*.d.ts', './app/**/*.d.ts', './T4TS/*.d.ts'],
+    tempFolders: ['./bin/', './obj/']
 };
-paths.less = paths.webroot + '**/*.less';
-paths.ts = paths.webroot + '**/*.ts';
-paths.html = paths.webroot + '**/*.html';
-paths.jsWithMap = [paths.webroot + '**/*.js', paths.webroot + '**/*.js.map'];
-paths.fonts = [paths.bower + 'bootstrap/fonts/*.*', paths.bower + 'font-awesome/fonts/*.*'];
-paths.i18n = paths.bower + 'angular-i18n/';
-paths.i18nFiles = [paths.i18n + 'angular-locale_en.js', paths.i18n + 'angular-locale_ru.js'];
+
+paths.appLess = paths.webroot + '**/*.less';
+paths.appTs = paths.webroot + '**/*.ts';
+paths.appJsWithMap = [paths.webroot + '**/*.js', paths.webroot + '**/*.js.map'];
+
+paths.libFonts = [paths.bower + 'bootstrap/fonts/*.*', paths.bower + 'font-awesome/fonts/*.*'];
+paths.libI18n = paths.bower + 'angular-i18n/';
+
+paths.i18nFiles = [paths.libI18n + 'angular-locale_en.js', paths.libI18n + 'angular-locale_ru.js'];
+paths.allDistFiles = paths.dist + '**/*.*';
+paths.allDistMinFiles = paths.dist + '**/*.min.*';
+paths.delAfterReleaseFiles = [paths.allDistFiles, '!' + paths.allDistMinFiles, '!' + paths.distFonts + '**/*.*', '!' + paths.distI18n + '**/*.*'];
 
 var LionSoft = [
         paths.webroot + 'common/LionsoftJs/js.net/**/*.ts',
@@ -132,7 +137,7 @@ gulp.task('vendorCss', function () {
 });
 
 gulp.task('less', function () {
-    return gulp.src(paths.less, { base: 'app' })
+    return gulp.src(paths.appLess, { base: 'app' })
         .pipe($.sourcemaps.init())
         .pipe($.plumber())
         .pipe($.less())
@@ -153,7 +158,7 @@ gulp.task('autoprefixer', ['less'], function() {
 gulp.task('styles', ['vendorCss', 'less']);
 
 gulp.task('fonts', function() {
-    return gulp.src(paths.fonts)
+    return gulp.src(paths.libFonts)
         .pipe(gulp.dest(paths.distFonts));
 });
 
@@ -163,33 +168,37 @@ gulp.task('i18n', function() {
 });
 
 gulp.task('debug', ['styles', 'ts', 'fonts', 'i18n'], function () {
-    return gulp.src('./views/shared/_Layout-source.cshtml')
+    gulp.src('./views/shared/_Layout-source.cshtml')
         .pipe($.rename('_Layout.cshtml'))
         .pipe(wiredep())
         .pipe(gulp.dest('./views/shared/'));
 });
 
 gulp.task('release', ['vendorCss', 'autoprefixer', 'ts', 'fonts', 'i18n'], function () {
-    return gulp.src('./views/shared/_Layout-source.cshtml')
+    gulp.src('./views/shared/_Layout-source.cshtml')
         .pipe($.rename('_Layout.cshtml'))
         .pipe(wiredep())
         .pipe($.useref())
         .pipe($.if('*.js', $.uglify()))
         .pipe($.if('*.css', $.minifyCss({ processImport: false })))
-        .pipe(gulp.dest('./views/shared/'));
+        .pipe(gulp.dest('./views/shared/'))
+        .on('end', function() {
+            del(paths.delAfterReleaseFiles);
+        });
 });
 
-// clean directory "dist" and studio-generated files
-gulp.task('clean', function (cb) {
-    rimraf(paths.dist, cb);
-    del(paths.jsWithMap);
+gulp.task('clean', function () {
+    del([].concat(paths.appJsWithMap)
+        .concat(paths.tempFolders)
+        .concat([paths.dist])
+    );
 });
 
 gulp.task('watch', function () {
-    $.watch(paths.ts, function () {
+    $.watch(paths.appTs, function () {
         gulp.start('ts');
     });
-    $.watch(paths.less, function () {
+    $.watch(paths.appLess, function () {
         gulp.start('less');
     });
 });

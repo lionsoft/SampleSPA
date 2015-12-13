@@ -74,7 +74,17 @@ module App {
 
         redirectToDefault($routeParams?: angular.route.IRouteParamsService, $locationPath?: string, $locationSearch?: any): string {
             var route = this._routes.firstOrDefault(r => r.url === $locationPath);
-            if (RouteConfigurator.IsRouteGranted(route)) {
+            if (!route && $locationPath) {
+                // такой роут не найден - возможно это роут с параметрами
+                var paramsRoutes = this._routes.where(r => r.url.Contains("/:")).select(r => ({route: r, url: r.url.split("/:")[0]})).toArray();
+                var locPaths = $locationPath.split("/");
+                while (!route && locPaths.length > 1) {
+                    locPaths.length--;
+                    var locPath = locPaths.join("/");
+                    route = paramsRoutes.where(r => r.url === locPath).select(r => r.route).firstOrDefault();
+                }
+            }
+            if (route && RouteConfigurator.IsRouteGranted(route)) {
                 if (route.settings && route.settings.topMenu)
                     app.$rootScope.$selectedMenuItem = route.settings.topMenu;
                 return $locationPath;

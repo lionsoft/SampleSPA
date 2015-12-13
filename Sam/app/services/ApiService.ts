@@ -19,7 +19,7 @@ module App {
         Account: IAccountApi = {
             Register: <any>{ method: "POST", route: "Register", params: { Login: null, Password: null } },
             Login: <any>{ method: "POST", route: "Login", params: { Login: null, Password: null, RememberMe: null } },
-            Logout: <any>{ method: "POST", route: "Logout" },
+            Logout: <any>{ method: "POST", route: "Logout" }
         };
 
         Init() {

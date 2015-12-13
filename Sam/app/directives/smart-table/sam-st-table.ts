@@ -1,5 +1,12 @@
 ﻿'use strict';
 
+// ReSharper disable once InconsistentNaming
+module samSt {
+    export module Event {
+        export const Refresh: string = "samStRefresh";
+    }
+}
+
 module App.Directives {
 
     interface ISamStTableParams<T extends IEntityObjectId> {
@@ -130,17 +137,18 @@ module App.Directives {
                 noDataRow.insertBefore(innerTable.find('tbody'));
 
                 var pageSize = attrs.stItemsByPage === undefined ? undefined : (attrs.stItemsByPage ? parseInt(attrs.stItemsByPage) : 20);
+
                 if (pageSize) {
                     var showPageSizes = `st-show-page-sizes="${attrs.stShowPageSizes === undefined ? 'true' : attrs.stShowPageSizes}"`;
                     var paging = angular.element(`<div st-pagination st-items-by-page="${pageSize}" ${showPageSizes}></div>`);
                     paging.insertAfter(tableOuterWrapper);
                 }
+
             }
         }
 
 
         PreLink(scope: ISamStTableScope<IEntityObjectId>, element, attrs, ctrl: st.IController) {
-            var pipePromise = null;
             scope.$table = ctrl;
             scope.$params = scope.$eval(attrs.samStTable);
             if (angular.isString(scope.$params.service)) {
@@ -153,12 +161,8 @@ module App.Directives {
             scope.$edit = item => this.Edit(scope, item, attrs.samStTable);
             scope.$delete = item => this.Delete(scope, item);
 
-            scope.$on("samStRefresh", (event, id: string) => {
-                if (id === scope.$params.id)
-                    ctrl.pipe();
-            });
-
             ctrl.preventPipeOnWatch();
+            var pipePromise = null;
             ctrl.pipe = () => {
                 if (pipePromise !== null)
                     this.$timeout.cancel(pipePromise);
@@ -179,9 +183,16 @@ module App.Directives {
                     });
                 return res;
             }
+
+            scope.$on(samSt.Event.Refresh, (event, id: string) => {
+                if (id === scope.$params.id || id === "*") {
+                    ctrl.pipe();
+                }
+
+            });
         }
 
-        Link(scope: ng.IScope, element, attrs, ctrl: st.IController) {
+        Link(scope: ISamStTableScope<IEntityObjectId>, element, attrs, ctrl: st.IController) {
             var stPagination = element.find('div[st-pagination][st-show-page-sizes]');
             if (stPagination.length > 0) {
                 var stShowPageSizes = attrs['stShowPageSizes'];
@@ -200,8 +211,10 @@ module App.Directives {
                 scope['__watchers'] = scope['__watchers'] || [];
                 if (!scope['__watchers'].Contains(expr)) {
                     scope.$watch(expr, (newVal, oldVal) => {
-                        if (newVal !== oldVal)
+                        if (newVal !== oldVal) {
                             scope.$table.pipe();
+                        }
+                            
                     });
                     scope['__watchers'].push(expr);
                 }
@@ -292,6 +305,8 @@ module App.Directives {
     app
         .config(["stConfig", (stConfig: st.IConfig) => {
             stConfig.pagination.template = 'sam-tables-pagination-tmpl.html'.ExpandPath(URL.DIRECTIVES_ROOT + "smart-table");
+            stConfig.pipe.delay = 100;
+            stConfig.sort.delay = 50;   // задержка для сортировки должна быть МЕНЬШЕ задержки пайпа, иначе при установленной сортировки по умолчанию вызов пайпа произойдёт дважды
         }])
         .directive("samStTable", SamStTable.Factory('stConfig', '$controller'));
 }

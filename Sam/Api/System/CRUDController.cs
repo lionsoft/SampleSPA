@@ -54,9 +54,9 @@ namespace Sam.Api
         [HttpGet]
         public async virtual Task<object> Get(ODataQueryOptions<TEntity> queryOptions)
         {
-            var includes = queryOptions.SelectExpand == null ? new string[0] : queryOptions.SelectExpand.RawExpand.Split(',');
             DbQuery<TEntity> query = Db.Set<TEntity>();
 /*
+            var includes = queryOptions.SelectExpand == null ? new string[0] : queryOptions.SelectExpand.RawExpand.Split(',');
             if (includes.Contains("CreatedBy"))
             {
                 query = query.Include("CreatedBy.Employees");

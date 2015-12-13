@@ -17,6 +17,7 @@ declare module st {
         ascentClass: string,
         descentClass: string,
         skipNatural: boolean,
+        delay: number, //ms
     }
     interface IPipeConfig {
         delay: number, //ms
