@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using Sam.DbContext;
 
 namespace Sam.Api
@@ -49,8 +50,13 @@ namespace Sam.Api
         }
 
 
+        [JsonProperty("value")]
         public IEnumerable<T> Results { get; protected set; }
 
+        [JsonProperty("odata.count")]
         public long? Count { get; protected set; }
+
+        [JsonProperty("odata.metadata")]
+        public string MetadataUrl { get; protected set; }
     }
 }

@@ -376,6 +376,8 @@
     <TypeScriptCompile Include="app\routes\page1.ts" />
     <TypeScriptCompile Include="app\routes\page2.ts" />
     <TypeScriptCompile Include="app\routes\home.ts" />
+    <TypeScriptCompile Include="app\services\ApiService.ts" />
+    <TypeScriptCompile Include="app\services\SamProductsService.ts" />
     <TypeScriptCompile Include="app\services\SamUsersService.ts" />
     <TypeScriptCompile Include="app\services\system\CRUDService.ts" />
     <TypeScriptCompile Include="app\common\Directive.ts" />
@@ -461,7 +463,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="app\services\ApiService.ts" />
+    <TypeScriptCompile Include="app\services\PhpApiService.ts" />
     <TypeScriptCompile Include="app\services\system\ApiServiceBase.ts" />
     <TypeScriptCompile Include="app\services\system\OData.ts" />
     <TypeScriptCompile Include="app\services\system\ODataFilterCreator.ts" />

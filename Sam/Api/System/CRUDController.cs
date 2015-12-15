@@ -20,7 +20,7 @@ namespace Sam.Api
             if (queryOptions.InlineCount != null && queryOptions.InlineCount.Value == InlineCountValue.AllPages)
             {
                 var odataProperties = request.ODataProperties();
-                return new[] { new ODataMetadata<TEntity>(res, odataProperties.TotalCount) };
+                return new ODataMetadata<TEntity>(res, odataProperties.TotalCount);
             }
             else
             {
@@ -34,7 +34,7 @@ namespace Sam.Api
             if (queryOptions.InlineCount != null && queryOptions.InlineCount.Value == InlineCountValue.AllPages)
             {
                 var odataProperties = request.ODataProperties();
-                return new[] { new ODataMetadata<TResultEntity>(res, odataProperties.TotalCount) };
+                return new ODataMetadata<TResultEntity>(res, odataProperties.TotalCount);
             }
             else
             {

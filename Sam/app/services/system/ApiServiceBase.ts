@@ -93,7 +93,7 @@ module App {
         
 
 
-        private transformServiceResponse(data: any, headers: any): any {
+        private transformServiceResponse(data: any, headers: any, isArray: boolean = false): any {
             // Copied from Angular default transform method
             if (angular.isString(data)) {
                 // Strip json vulnerability protection prefix and trim whitespace
@@ -103,6 +103,8 @@ module App {
                     var contentType = headers('Content-Type');
                     if ((contentType && (contentType.indexOf(Utils.Json.APPLICATION_JSON) === 0)) || Utils.Json.IsJsonLike(tempData)) {
                         data = Utils.Json.ResolveReferences(angular.fromJson(tempData));
+                        if (isArray && !angular.isArray(data))
+                            data = [data];
                     }
                 }
             }
@@ -261,7 +263,7 @@ module App {
                         query: {
                             method: "GET",
                             isArray: true,
-                            transformResponse: (data, headers) => this.transformServiceResponse(data, headers) 
+                            transformResponse: (data, headers) => this.transformServiceResponse(data, headers, true),
                         },
                         // получение  объекта по его Id
                         get:    { method: "GET", transformResponse: (data, headers) => this.transformServiceResponse(data, headers) },

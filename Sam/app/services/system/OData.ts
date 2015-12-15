@@ -106,6 +106,7 @@ module App.Services {
          */
         $inlinecount(): OData {
             this._extra.push("$inlinecount=allpages");
+            this._extra.push("$format=json");
             return this;
         }
 
@@ -175,6 +176,11 @@ module App.Services {
          */
         $skip(value: number): OData {
             this._skip = value;
+            return this;
+        }
+
+        $addExtra(value: string): OData {
+            this._extra.push(value);
             return this;
         }
 
