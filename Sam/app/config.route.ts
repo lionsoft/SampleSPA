@@ -12,7 +12,10 @@ module App {
         private _routes: IAppRoute[] = [];
 
         constructor(private $routeProvider: ng.route.IRouteProvider, public routes: IAppRoute[]) {
-            routes.forEach(r => {
+
+            for (var i = 0; i < routes.length; i++) {
+                var r = routes[i];
+
                 if (r) {
                     var template = "";
                     if (!r.templateUrl)
@@ -32,7 +35,8 @@ module App {
                         var path = template.ExtractDirectory();
                         var name = template.ExtractOnlyFileName();
                         r.files = [];
-/*
+                        
+                        /*// Lazy load
                         var scriptFileName = path + '/' + name + '.js';
                         var styleFileName = path + '/' + name + '.css';
                         if (!r.files) r.files = [];
@@ -46,8 +50,7 @@ module App {
                         if (!r.files.Contains(scriptFileName))
                             r.files.push(scriptFileName);
                         if (!r.files.Contains(styleFileName))
-                            r.files.push(styleFileName);
-*/
+                            r.files.push(styleFileName);*/
 
                         if (r.files && r.files.length > 0) {
                             r.resolve = r.resolve || {};
@@ -62,11 +65,38 @@ module App {
                         r.controller = r.controller || name;
                         r.controllerAs = r.controllerAs || "$";
                     }
+
+                    /*
+                    * Если роут имеет URL с параметрами (/:routeParam),
+                    * для его корректной работы в итоговый список роутов нужно добавить 2 роута:
+                    * 1-й должен содержать URL с параметрами и не содержать объект settings (опции отображения роута как пункта меню),
+                    * 2-й не должен содержать URL с параметрами и может содержать/не содержать объект settings
+                    */
+                    if (r.url.indexOf('/:') !== -1) {
+                        // копируем объект роута
+                        var routeCopy = angular.copy(r);
+                        var settings;
+
+                        // проверяем наличие settings, копируем его и удаляем
+                        if (!!r.settings) {
+                            settings = angular.copy(r.settings);
+                            delete r.settings;
+                        }
+
+                        // если settings был скопирован и удален из исходного роута,
+                        // добавляем его в копию роута и копию добавляем в исходный список роутов
+                        // для его последующей обработки на следующей итерации цикла
+                        if (settings) {
+                            routeCopy.url = routeCopy.url.split('/:')[0];
+                            routes.push(routeCopy);
+                        }
+                    }
+
                     r.redirectTo = ($routeParams, $locationPath, $locationSearch) => this.redirectToDefault($routeParams, $locationPath, $locationSearch);
                     $routeProvider.when(r.url, r);
                     this._routes.push(r);
                 }
-            });
+            }
 
             //$routeProvider.otherwise({ redirectTo: '/' });
             $routeProvider.otherwise({ redirectTo: ($routeParams, $locationPath, $locationSearch) => this.redirectToDefault($routeParams, $locationPath, $locationSearch) });
@@ -87,6 +117,7 @@ module App {
             if (route && RouteConfigurator.IsRouteGranted(route)) {
                 if (route.settings && route.settings.topMenu)
                     app.$rootScope.$selectedMenuItem = route.settings.topMenu;
+
                 return $locationPath;
             }
             // try to find route enabled route
@@ -117,12 +148,10 @@ module App {
     app.config([
         '$routeProvider', 'routes', '$locationProvider',
         ($routeProvider, routes/*, $locationProvider*/) => {
-            /*
-                        $locationProvider.html5Mode({
+            /*$locationProvider.html5Mode({
                             enabled: true,
                             requireBase: false
-                        });
-            */
+            });*/
             return new RouteConfigurator($routeProvider, routes);
         }
     ]);
@@ -168,5 +197,4 @@ module App {
         });
     }]);    
     //#endregion
-
 }
